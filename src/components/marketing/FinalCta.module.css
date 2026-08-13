@@ -1,0 +1,57 @@
+.section {
+  padding: 100px 24px;
+  /* Deliberately not var(--foreground) (that's the light text color under this dark palette,
+     round 5) — a distinct, deeper blue-black closing band instead. */
+  background: linear-gradient(160deg, #060810 0%, #0d1a2e 100%);
+}
+
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.title {
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 800;
+  margin: 0;
+  color: #ffffff;
+}
+
+.subtitle {
+  margin: 18px 0 0;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+.ghostBtn {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+}
+.ghostBtn:hover {
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+}
+
+:global(html[data-theme='light']) .section {
+  background: linear-gradient(160deg, #eaf1fb 0%, #dfeaf8 100%);
+}
+:global(html[data-theme='light']) .title { color: #0d1420; }
+:global(html[data-theme='light']) .subtitle { color: rgba(13, 20, 32, 0.66); }
+:global(html[data-theme='light']) .ghostBtn {
+  border-color: rgba(13, 20, 32, 0.24);
+  color: #0d1420;
+}
+:global(html[data-theme='light']) .ghostBtn:hover {
+  border-color: #1c6fe0 !important;
+  color: #1c6fe0 !important;
+}

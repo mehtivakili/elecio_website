@@ -1,0 +1,3 @@
+'use client';
+import { useState } from 'react';import { useRouter } from '@/i18n/navigation';import styles from './Admin.module.css';
+export function AdminLogout({locale}:{locale:string}){const router=useRouter();const[busy,setBusy]=useState(false);async function logout(){setBusy(true);await fetch('/api/account/sessions',{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'all'})});router.replace('/admin/login');router.refresh();}return <button className={`${styles.button} ${styles.secondary}`} disabled={busy} onClick={logout}>{locale==='en'?'Sign out':'خروج'}</button>}

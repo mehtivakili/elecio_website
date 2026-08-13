@@ -1,0 +1,5 @@
+import { requireStaffPermission } from '@/server/auth/staff-flow';
+import { knex } from '@/server/db/knex';
+import { MediaManager } from '@/components/admin/MediaManager';
+import styles from '@/components/admin/Admin.module.css';
+export default async function Media({params}:{params:Promise<{locale:string}>}){const{locale}=await params;const en=locale==='en';await requireStaffPermission('media','read');const assets=await knex('media_assets').select('id','public_path','byte_size','width','height','alt_fa','alt_en','created_at').orderBy('created_at','desc').limit(200);return <><header className={styles.head}><span className={styles.eyebrow}>Media</span><h1>{en?'Optimized media library':'کتابخانه رسانه بهینه'}</h1><p className={styles.muted}>{en?'Upload safe article imagery, copy its path, and delete only assets that are not referenced by an article.':'تصویر امن مقاله را بارگذاری کنید، مسیر آن را بردارید و فقط رسانه بدون ارجاع را حذف کنید.'}</p></header><MediaManager locale={locale} assets={assets}/></>}

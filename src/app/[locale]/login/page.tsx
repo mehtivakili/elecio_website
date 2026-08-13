@@ -1,0 +1,6 @@
+import type { Metadata } from 'next';
+import { LoginForm } from '@/components/account/LoginForm';
+import styles from '@/components/account/Account.module.css';
+import { Link } from '@/i18n/navigation';
+export const metadata: Metadata = { robots: { index: false, follow: false } };
+export default async function LoginPage({ params }: { params: Promise<{ locale: 'fa' | 'en' }> }) { const { locale } = await params; const en = locale === 'en'; return <main className={styles.page}><section className={styles.authCard}><span className={styles.eyebrow}>{en ? 'Elecio account' : 'حساب Elecio'}</span><h1 className={styles.title}>{en ? 'One code. No password.' : 'یک کد، بدون گذرواژه.'}</h1><p className={styles.lead}>{en ? 'Use your Iranian mobile number to sign in or create an account securely. We use it for account access and requested support.' : 'با شماره موبایل ایران، امن وارد شوید یا حساب بسازید. شماره برای دسترسی به حساب و پشتیبانی درخواستی استفاده می‌شود.'}</p><LoginForm locale={locale} /><div className={styles.authAlternative}><span>{en ? 'Staff or administrator?' : 'کارمند یا مدیر هستید؟'}</span><Link className={`${styles.button} ${styles.secondary}`} href="/admin/login">{en ? 'Sign in with email and password' : 'ورود با ایمیل و گذرواژه'}</Link></div></section></main>; }

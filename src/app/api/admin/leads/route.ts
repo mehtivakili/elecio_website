@@ -1,0 +1,7 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { requireStaffPermission } from '@/server/auth/staff-flow';
+import { hasTrustedRequestOrigin } from '@/server/auth/customer-flow';
+import { knex } from '@/server/db/knex';
+import { writeAuditEvent } from '@/server/audit/write-audit-event';
+export const runtime = 'nodejs';
+export async function PATCH(request: NextRequest) { if (!hasTrustedRequestOrigin(request)) return NextResponse.json({ error: 'forbidden' }, { status: 403 }); try { const principal = await requireStaffPermission('leads', 'update'); const body = await request.json().catch(() => null); const id = Number(body?.id); if (!Number.isInteger(id) || !['new', 'contacted', 'closed'].includes(body?.status)) return NextResponse.json({ error: 'invalid_request' }, { status: 400 }); const row = await knex('contact_submissions').select('assigned_to').where({ id }).first(); if (!row) return NextResponse.json({ error: 'not_found' }, { status: 404 }); if (principal.role === 'support' && row.assigned_to !== principal.userId) return NextResponse.json({ error: 'not_found' }, { status: 404 }); await knex('contact_submissions').where({ id }).update({ status: body.status, updated_at: knex.fn.now() }); await writeAuditEvent({ actorUserId: principal.userId, actorRole: principal.role, action: 'lead.updated', resource: 'contact_submission', resourceId: String(id), outcome: 'success', metadata: { status: body.status } }); return NextResponse.json({ ok: true }); } catch { return NextResponse.json({ error: 'forbidden' }, { status: 403 }); } }

@@ -1,0 +1,5 @@
+'use client';
+import { useState } from 'react';
+import { useRouter } from '@/i18n/navigation';
+import styles from './Admin.module.css';
+export function DeletePost({id,locale}:{id:number;locale:string}){const en=locale==='en';const router=useRouter();const[busy,setBusy]=useState(false);async function remove(){if(!window.confirm(en?'Permanently delete this article and every revision?':'این مقاله و همه نسخه‌های آن برای همیشه حذف شود؟'))return;setBusy(true);const response=await fetch('/api/admin/cms/posts',{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({id})});if(response.ok){router.replace('/admin/content');router.refresh();return;}setBusy(false);}return <section className={styles.card} style={{marginTop:'1rem'}}><h2>{en?'Danger zone':'عملیات حساس'}</h2><p className={styles.muted}>{en?'Deletion is permanent. Use draft status when you only want to unpublish.':'حذف دائمی است. برای برداشتن از سایت بدون حذف، وضعیت پیش‌نویس را انتخاب کنید.'}</p><button className={`${styles.button} ${styles.danger}`} disabled={busy} onClick={remove}>{en?'Delete article permanently':'حذف دائمی مقاله'}</button></section>}

@@ -1,0 +1,2 @@
+import { TwoFactorForm } from '@/components/admin/StaffAuthForms';import styles from '@/components/admin/Admin.module.css';
+export default async function TwoFactorPage({params}:{params:Promise<{locale:string}>}){const{locale}=await params;return <main className={styles.page}><section className={styles.auth}><span className={styles.eyebrow}>Second factor</span><h1>{locale==='en'?'Verify your identity':'تأیید هویت'}</h1><TwoFactorForm locale={locale}/></section></main>}

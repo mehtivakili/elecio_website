@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev Journal"
+  short_description: "Append-only engineering decision journal"
+  default_prompt: "Use $dev-journal to append a durable record of this engineering change and its rationale."

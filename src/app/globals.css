@@ -1,26 +1,167 @@
-@import "tailwindcss";
+/* Self-hosted fonts — no CDN link (avoids a silent-fallback flash and an external request).
+   Vazirmatn: Persian-first, full Latin coverage too — the primary content typeface.
+   Archivo Black: reserved for the Latin "ELECIO" wordmark and big numerals, echoing the bold
+   geometric wordmark treatment already used in the brand's own product renders. */
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('/fonts/vazirmatn-400.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('/fonts/vazirmatn-500.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('/fonts/vazirmatn-700.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('/fonts/vazirmatn-900.woff2') format('woff2');
+  font-weight: 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Archivo Black';
+  src: url('/fonts/archivo-black-latin.woff2') format('woff2');
+  font-weight: 900;
+  font-display: swap;
+}
 
+/* Round 5 (2026-08-07, doc/journey.md): explicit direction — dark and blue, modern. Pulled
+   straight from the user's own supplied 3D-viewer HTML (elecio_smart_dnc_3d_v6.html)'s color
+   language (--void:#080a0d, --led:#4aa0ff) rather than inventing a new one, so the site and the
+   product viewer read as one system instead of two different palettes bolted together. Dark is
+   the real default now (not scoped to just the hero) — content sections that were solid white
+   in round 4 are ported to these tokens too. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --ink: #0a0c10;
+  --surface: #10141b;
+  --surface-2: #171c25;
+  --signal: #4aa0ff;
+  --signal-glow: #86c4ff;
+  --stone: #4aa0ff;
+  --foreground: #eef2f7;
+  --text-60: rgba(238, 242, 247, 0.66);
+  --text-40: rgba(238, 242, 247, 0.44);
+  --border: rgba(238, 242, 247, 0.1);
+  --background: #0a0c10;
+  --glass-blur: blur(20px) saturate(180%);
+  --glass-bg: rgba(16, 20, 27, 0.72);
+  --glass-border: rgba(238, 242, 247, 0.12);
+  color-scheme: dark;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Round 8 (2026-08-07, doc/journey.md): a light counterpart to the dark-blue default, toggled
+   via the `data-theme` attribute set by theme-context.tsx (never React-rendered directly, so
+   there's no hydration mismatch — see that file's comment). Same blue family throughout, just
+   deepened for AA contrast on white instead of the glow tint dark mode uses. The 3D scene's own
+   finish (black/white shell) is switched alongside this by AboutProduct.tsx, not by CSS. */
+:root[data-theme='light'] {
+  --ink: #f5f7fa;
+  --surface: #ffffff;
+  --surface-2: #eef1f6;
+  --signal: #1c6fe0;
+  --signal-glow: #1c6fe0;
+  --stone: #1c6fe0;
+  --foreground: #0d1420;
+  --text-60: rgba(13, 20, 32, 0.66);
+  --text-40: rgba(13, 20, 32, 0.44);
+  --border: rgba(13, 20, 32, 0.1);
+  --background: #f5f7fa;
+  --glass-bg: rgba(255, 255, 255, 0.78);
+  --glass-border: rgba(13, 20, 32, 0.1);
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  height: 100%;
+}
+
+html,
+body {
+  max-width: 100vw;
+  /* `overflow-x: hidden` (not `clip`) forces overflow-y to compute as `auto` per spec — that
+     turns body into its own scroll container and breaks `position: sticky` for descendants
+     (exactly what made the Hero3D section and everything after it go blank while scrolling).
+     `clip` prevents horizontal overflow without establishing a scroll container. */
+  overflow-x: clip;
 }
 
 body {
-  background: var(--background);
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background);
+  font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:focus-visible { outline: 3px solid var(--signal); outline-offset: 3px; }
+.skip-link { position: fixed; inset-block-start: 8px; inset-inline-start: 8px; z-index: 10000; padding: .7rem 1rem; color: white; background: #0759c7; border-radius: 10px; transform: translateY(-160%); }
+.skip-link:focus { transform: translateY(0); }
+.page-content { display: contents; }
+button, input, select, textarea { font: inherit; }
+button, [role='button'], input[type='checkbox'], input[type='radio'], select { min-height: 44px; }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+main {
+  flex: 1;
+}
+
+.latin {
+  font-family: 'Archivo Black', 'Vazirmatn', sans-serif;
+  direction: ltr;
+  unicode-bidi: isolate;
+  letter-spacing: 0.02em;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Glass is now used in exactly one place (the floating nav pill) rather than on every surface —
+   see round-3 note above. Kept as a utility since the nav still wants it. */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* A key word or phrase picked out in the brand blue within an otherwise dark headline —
+   Deepgram's technique for its hero ("...Powered by <span>Deepgram</span>"), adapted here. */
+.highlight {
+  color: var(--signal);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+@media (max-width: 720px) {
+  .container {
+    padding: 0 20px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }

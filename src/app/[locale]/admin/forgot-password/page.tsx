@@ -1,0 +1,2 @@
+import { ForgotPasswordForm } from '@/components/admin/PasswordRecoveryForms';import styles from '@/components/admin/Admin.module.css';
+export default async function Forgot({params}:{params:Promise<{locale:string}>}){const{locale}=await params;return <main className={styles.page}><section className={styles.auth}><span className={styles.eyebrow}>Recovery</span><h1>{locale==='en'?'Reset staff password':'بازیابی گذرواژه کارکنان'}</h1><ForgotPasswordForm locale={locale}/></section></main>}

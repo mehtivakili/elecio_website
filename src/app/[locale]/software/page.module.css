@@ -1,0 +1,21 @@
+.downloadSection {
+  padding: 88px 24px;
+  background: var(--surface);
+}
+
+.downloadCard {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 40px;
+  border-radius: 20px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+
+.downloadTitle {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0 0 24px;
+  color: var(--foreground);
+  text-align: center;
+}

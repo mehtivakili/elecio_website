@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ELECIO Smart DNC — 3D product view</title>
+<style>
+  :root{
+    --void:#080a0d;
+    --ink:#eef2f7;
+    --dim:#7f8a99;
+    --line:rgba(255,255,255,.10);
+    --panel:rgba(14,18,24,.62);
+    --led:#4aa0ff;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;overflow:hidden;background:var(--void);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+  body{touch-action:none;user-select:none;-webkit-user-select:none}
+
+  #scene{position:fixed;inset:0;
+    background:
+      radial-gradient(120% 80% at 50% 8%, #1b222c 0%, #0e1218 45%, #06080b 100%),
+      radial-gradient(60% 40% at 50% 96%, rgba(74,160,255,.10), transparent 70%);
+  }
+  #scene::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(100% 70% at 50% 50%, transparent 55%, rgba(0,0,0,.55) 100%)}
+  canvas{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab}
+  canvas.dragging{cursor:grabbing}
+
+  .ui{position:fixed;z-index:10;pointer-events:none;opacity:0;transform:translateY(6px);
+      animation:rise .7s .35s cubic-bezier(.2,.8,.25,1) forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+
+  /* ---------- brand ---------- */
+  .brand{top:26px;left:28px}
+  .kicker{font-family:var(--mono);font-size:10px;letter-spacing:.28em;color:var(--led);text-transform:uppercase;margin-bottom:10px}
+  .brand h1{margin:0;font-size:clamp(26px,3.2vw,42px);font-weight:650;letter-spacing:-.035em;line-height:.98}
+  .brand h1 span{display:block;font-weight:250;color:var(--dim);letter-spacing:-.02em}
+  .brand p{margin:12px 0 0;max-width:34ch;font-size:12.5px;line-height:1.6;color:var(--dim)}
+
+  /* ---------- spec rail (signature) ---------- */
+  .rail{top:26px;right:28px;width:236px;pointer-events:auto;
+        border:1px solid var(--line);border-radius:14px;background:var(--panel);backdrop-filter:blur(18px);
+        padding:14px 16px 12px}
+  .rail h2{margin:0 0 12px;font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;color:var(--dim);text-transform:uppercase;font-weight:500}
+  .spec{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid rgba(255,255,255,.055);font-family:var(--mono);font-size:11px}
+  .spec:first-of-type{border-top:0}
+  .spec b{font-weight:500;color:var(--dim)}
+  .spec i{font-style:normal;color:var(--ink);text-align:right}
+  .spec i em{font-style:normal;color:var(--led)}
+
+  /* ---------- controls ---------- */
+  .dock{left:50%;bottom:26px;transform:translateX(-50%);pointer-events:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:min(94vw,900px)}
+  .dock.ui{animation-name:riseX}
+  @keyframes riseX{to{opacity:1;transform:translateX(-50%)}}
+  .group{display:flex;align-items:center;gap:2px;border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(18px);border-radius:12px;padding:4px}
+  button{appearance:none;border:0;background:transparent;color:var(--dim);font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+         padding:9px 13px;border-radius:9px;cursor:pointer;transition:color .18s,background .18s;white-space:nowrap}
+  button:hover{color:var(--ink);background:rgba(255,255,255,.05)}
+  button[aria-pressed="true"]{color:#04070c;background:var(--ink)}
+  button.tog[aria-pressed="true"]{color:var(--void);background:var(--led)}
+  button:focus-visible{outline:2px solid var(--led);outline-offset:2px}
+  .swatch{width:13px;height:13px;border-radius:4px;margin-right:8px;border:1px solid rgba(255,255,255,.22);display:inline-block;vertical-align:-2px}
+
+  .hint{left:28px;bottom:28px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:rgba(127,138,153,.7);text-transform:uppercase}
+
+  #boot{position:fixed;inset:0;z-index:30;display:grid;place-items:center;background:var(--void);transition:opacity .6s}
+  #boot p{font-family:var(--mono);font-size:11px;letter-spacing:.26em;color:var(--dim);text-transform:uppercase}
+  #boot.done{opacity:0;pointer-events:none}
+
+  @media (max-width:860px){
+    .brand{top:18px;left:18px}
+    .brand p{display:none}
+    .rail{top:auto;left:18px;right:18px;bottom:96px;width:auto;display:grid;grid-template-columns:1fr 1fr;gap:0 18px;padding:10px 14px}
+    .rail h2{grid-column:1/-1;margin-bottom:6px}
+    .dock{bottom:18px;gap:6px}
+    button{padding:8px 10px;font-size:9.5px;letter-spacing:.1em}
+    .hint{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){.ui{animation:none;opacity:1;transform:none}.dock.ui{transform:translateX(-50%)}}
+</style>
+</head>
+<body>
+<div id="scene"><canvas id="c"></canvas></div>
+
+<header class="ui brand">
+  <div class="kicker">Elecio · Smart DNC</div>
+  <h1>AF7E60<span>Wi-Fi DNC bridge</span></h1>
+  <p>Drip-feeds G-code to a CNC control over RS-232. Drag to orbit the housing, scroll to move closer.</p>
+</header>
+
+<aside class="ui rail" id="rail">
+  <h2 id="railTitle">Front elevation</h2>
+  <div class="spec"><b>Housing</b><i>80 × 80 × 24.5 mm</i></div>
+  <div class="spec"><b>Display</b><i>0.96″ OLED</i></div>
+  <div class="spec"><b>Keys</b><i>Enter · Down · Up</i></div>
+  <div class="spec"><b>Serial</b><i>DB-25 male</i></div>
+  <div class="spec"><b>Supply</b><i>5.5 × 2.1 mm, 12 V</i></div>
+</aside>
+
+<div class="ui dock">
+  <div class="group" id="views">
+    <button data-view="iso" aria-pressed="true">Studio</button>
+    <button data-view="front">Front</button>
+    <button data-view="back">Back</button>
+    <button data-view="top">Power</button>
+    <button data-view="ports">Port</button>
+  </div>
+  <div class="group" id="finish">
+    <button data-finish="black" aria-pressed="true"><i class="swatch" style="background:#1c1f24"></i>Graphite</button>
+    <button data-finish="white" aria-pressed="false"><i class="swatch" style="background:#eceae6"></i>Arctic</button>
+  </div>
+  <div class="group">
+    <button class="tog" id="tSpin" aria-pressed="true">Spin</button>
+    <button class="tog" id="tScreen" aria-pressed="true">Screen</button>
+    <button class="tog" id="tLed" aria-pressed="true">Status LED</button>
+  </div>
+</div>
+
+<div class="ui hint">Drag to orbit · scroll to zoom</div>
+<div id="boot"><p>Building geometry…</p></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="./elecio-device.js"></script>
+<script>
+(function(){
+"use strict";
+if(!window.THREE || !window.ElecioDevice){
+  document.getElementById('boot').innerHTML='<p>Could not load the 3D library. Check the connection and reload.</p>';
+  return;
+}
+
+/* ============================================================
+   renderer / scene / lights
+   ============================================================ */
+/* ============================================================
+   5. renderer / scene / lights
+   ============================================================ */
+const canvas=document.getElementById('c');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.outputEncoding=THREE.sRGBEncoding;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.06;
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(27,1,1,3000);
+
+const pmrem=new THREE.PMREMGenerator(renderer);
+scene.environment=pmrem.fromEquirectangular(ElecioDevice.envTexture()).texture;
+
+scene.add(new THREE.HemisphereLight(0x9fb6d6,0x090c11,0.5));
+const key=new THREE.DirectionalLight(0xffffff,2.35);
+key.position.set(-110,150,120); key.castShadow=true;
+key.shadow.mapSize.set(2048,2048); key.shadow.radius=4; key.shadow.bias=-0.0009;
+const sc=key.shadow.camera; sc.left=-110; sc.right=110; sc.top=110; sc.bottom=-110; sc.near=50; sc.far=420;
+scene.add(key);
+const fill=new THREE.DirectionalLight(0xbcd3f2,0.6);  fill.position.set(140,45,90);  scene.add(fill);
+const rim =new THREE.DirectionalLight(0x8fb4ff,1.15); rim.position.set(45,-35,-150); scene.add(rim);
+
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(700,700), new THREE.ShadowMaterial({opacity:0.35}));
+ground.rotation.x=-Math.PI/2; ground.position.y=-62; ground.receiveShadow=true; scene.add(ground);
+
+const TAU = Math.PI * 2;
+
+/* the device now comes from the shared builder, so this page and the
+   scroll story cannot drift apart */
+const dev = ElecioDevice.create({finish:'black'});
+scene.add(dev.group);
+
+/* ============================================================
+   9. views + orbit
+   ============================================================ */
+const VIEWS={
+  iso  :{t: 0.62, p:1.17, r:232, title:'Studio three-quarter',
+         specs:[['Housing','80 x 80 x 24.5 mm'],['Shell','2-part ABS, 4 screws'],['Display','0.96" OLED'],['Serial','DB-25 male'],['Supply','5.5 x 2.1 mm, 12 V']]},
+  front:{t: 0.0,  p:1.5708, r:212, title:'Front elevation',
+         specs:[['Window','24 x 13.6 mm'],['Keys','Enter / Down / Up'],['Key pitch','13.4 mm'],['Key travel','proud 1.35 mm'],['Plateau','64 mm + 8 mm shoulder']]},
+  back :{t: Math.PI, p:1.5708, r:212, title:'Rear elevation',
+         specs:[['Label','Model / IP / SSID'],['Mounting','2 x keyhole'],['Vents','6 slots'],['Fixings','4 x M3 pan'],['Status LED','blue, internal']]},
+  top  :{t: 0.10, p:0.42, r:224, title:'Power edge',
+         specs:[['Switch','latching, 14.5 mm'],['Jack','DC 5.5 x 2.1 mm'],['Input','12 V, 0.5 A'],['Edge','24.5 mm deep'],['Fillet','R2.8']]},
+  ports:{t: 0.28, p:2.30, r:220, title:'Serial edge',
+         specs:[['Connector','DB-25 male'],['Shell','38.96 mm'],['Screw pitch','47.04 mm'],['Pins','13 + 12 @ 2.77'],['Protocol','RS-232 DNC']]}
+};
+const cam={t:1.55,p:1.05,r:420};
+const goal={t:VIEWS.iso.t,p:VIEWS.iso.p,r:VIEWS.iso.r};
+let dragging=false,px=0,py=0,pinch=0;
+
+canvas.addEventListener('pointerdown',e=>{dragging=true;px=e.clientX;py=e.clientY;
+  canvas.setPointerCapture(e.pointerId);canvas.classList.add('dragging');});
+canvas.addEventListener('pointermove',e=>{
+  if(!dragging)return;
+  goal.t-=(e.clientX-px)*0.0085; goal.p-=(e.clientY-py)*0.0075;
+  goal.p=Math.max(0.12,Math.min(Math.PI-0.12,goal.p));
+  px=e.clientX;py=e.clientY;
+});
+['pointerup','pointercancel','pointerleave'].forEach(ev=>
+  canvas.addEventListener(ev,()=>{dragging=false;canvas.classList.remove('dragging');}));
+canvas.addEventListener('wheel',e=>{e.preventDefault();
+  goal.r=Math.max(125,Math.min(400,goal.r+e.deltaY*0.25));},{passive:false});
+canvas.addEventListener('touchmove',e=>{
+  if(e.touches.length!==2)return;
+  const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+  if(pinch) goal.r=Math.max(125,Math.min(400,goal.r+(pinch-d)*0.6));
+  pinch=d;
+},{passive:true});
+canvas.addEventListener('touchend',()=>{pinch=0;});
+
+/* ============================================================
+   10. UI
+   ============================================================ */
+const state={finish:'black',spin:true,screen:true,led:true,view:'iso'};
+const railTitle=document.getElementById('railTitle'), rail=document.getElementById('rail');
+function setView(v,user){
+  state.view=v;
+  const V=VIEWS[v];
+  goal.t += ((V.t-goal.t+Math.PI*3)%TAU)-Math.PI;
+  goal.p=V.p; goal.r=V.r;
+  if(user && state.spin){ state.spin=false;
+    document.getElementById('tSpin').setAttribute('aria-pressed','false'); }
+  railTitle.textContent=V.title;
+  rail.querySelectorAll('.spec').forEach(el=>el.remove());
+  V.specs.forEach(([k,val])=>{
+    const d=document.createElement('div'); d.className='spec';
+    d.innerHTML='<b>'+k+'</b><i>'+val+'</i>'; rail.appendChild(d);
+  });
+  document.querySelectorAll('#views button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.view===v));
+}
+document.querySelectorAll('#views button').forEach(b=>b.onclick=()=>setView(b.dataset.view,true));
+document.querySelectorAll('#finish button').forEach(b=>b.onclick=()=>{
+  state.finish=b.dataset.finish;
+  document.querySelectorAll('#finish button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  dev.setFinish(state.finish);
+});
+const tog=(id,keyName,after)=>{
+  const el=document.getElementById(id);
+  el.onclick=()=>{state[keyName]=!state[keyName];el.setAttribute('aria-pressed',state[keyName]);after();};
+};
+tog('tSpin','spin',()=>{});
+tog('tScreen','screen',()=>dev.setScreen(state.screen?'files':'off'));
+tog('tLed','led',()=>dev.setLed(state.led));
+
+/* ============================================================
+   11. run
+   ============================================================ */
+setView('iso',false);
+
+function resize(){
+  const w=innerWidth,h=innerHeight;
+  renderer.setSize(w,h,false);
+  camera.aspect=w/h;
+  camera.fov = w<720 ? 34 : 27;
+  camera.updateProjectionMatrix();
+}
+addEventListener('resize',resize); resize();
+
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function frame(){
+  requestAnimationFrame(frame);
+  if(state.spin && !dragging && !reduce) goal.t+=0.0021;
+  cam.t+=(goal.t-cam.t)*0.075;
+  cam.p+=(goal.p-cam.p)*0.075;
+  cam.r+=(goal.r-cam.r)*0.06;
+  camera.position.set(
+    cam.r*Math.sin(cam.p)*Math.sin(cam.t),
+    cam.r*Math.cos(cam.p),
+    cam.r*Math.sin(cam.p)*Math.cos(cam.t));
+  camera.lookAt(0,0,0);
+  renderer.render(scene,camera);
+}
+frame();
+setTimeout(()=>document.getElementById('boot').classList.add('done'),260);
+
+})();
+</script>
+</body>
+</html>

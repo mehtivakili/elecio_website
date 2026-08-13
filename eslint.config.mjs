@@ -12,6 +12,13 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Previous site, kept as a reference for real content/specs (doc/plan.md §4), not part of
+    // this app's build or lint surface.
+    "old/**",
+    // Raw and deployed third-party-style 3D assets are classic browser scripts, not application
+    // source. They are exercised through the embedded story rather than transpiled by Next/ESLint.
+    "3dObject/**",
+    "public/3d/**",
   ]),
 ]);
 

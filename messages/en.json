@@ -1,0 +1,346 @@
+{
+  "nav": {
+    "home": "Home",
+    "product": "Product",
+    "software": "Software",
+    "blog": "Blog",
+    "about": "About",
+    "contact": "Contact",
+    "order": "Order Now",
+    "lightMode": "Light mode",
+    "darkMode": "Dark mode"
+  },
+  "aboutProduct": {
+    "eyebrow": "A precise 3D model",
+    "title": "ElecIO, from every angle",
+    "hint": "Drag to rotate"
+  },
+  "aboutProductFeatures": {
+    "items": [
+      "Wireless program transfer — no DNC cables",
+      "Isolated serial-port protection",
+      "Precise runtime & downtime reporting",
+      "Dual-core processor, 8GB storage",
+      "Simple OLED display with three operator keys",
+      "Broad CNC controller compatibility",
+      "Local program archive and backup"
+    ]
+  },
+  "hero": {
+    "compat": "Compatible with FANUC · SIEMENS · HEIDENHAIN · MITSUBISHI · HAAS · CHARMILLES",
+    "slides": [
+      {
+        "kicker": "ELECIO SMART DNC",
+        "headlineStart": "Less computer. Less cable.",
+        "headlineHighlight": "Less downtime.",
+        "subheadline": "A device for every CNC machine: wireless program transfer, serial-port protection, and precise downtime reporting.",
+        "ctaPrimary": "Order the device",
+        "ctaSecondary": "See technical specs"
+      },
+      {
+        "kicker": "For owners & managers",
+        "headlineStart": "An ROI you actually",
+        "headlineHighlight": "see, not just sense.",
+        "subheadline": "ElecIO logs real working time per machine — no extra staff to track it, no guessing where time is lost.",
+        "ctaPrimary": "Built for managers",
+        "ctaSecondary": "Order the device"
+      },
+      {
+        "kicker": "For programmers & technical office",
+        "headlineStart": "Compatibility, stated",
+        "headlineHighlight": "precisely — no guessing.",
+        "subheadline": "A controller compatibility matrix for FANUC, SIEMENS, HEIDENHAIN, and full serial-protocol detail.",
+        "ctaPrimary": "Built for engineers",
+        "ctaSecondary": "Order the device"
+      },
+      {
+        "kicker": "For CNC operators",
+        "headlineStart": "One screen,",
+        "headlineHighlight": "three buttons. That's it.",
+        "subheadline": "Receive the file and run it — no confusing menus, no complicated training at the machine.",
+        "ctaPrimary": "Built for operators",
+        "ctaSecondary": "Order the device"
+      },
+      {
+        "kicker": "Two finishes, one standard",
+        "headlineStart": "Black or white;",
+        "headlineHighlight": "the choice is yours.",
+        "subheadline": "ElecIO Smart DNC ships in two finishes — to match your workshop.",
+        "ctaPrimary": "Order the device",
+        "ctaSecondary": "See technical specs"
+      }
+    ]
+  },
+  "features": {
+    "eyebrow": "Why ElecIO",
+    "title": "Four reasons workshops trust ElecIO",
+    "items": [
+      {
+        "title": "An interface built for the machine operator",
+        "body": "A screen and three simple buttons — the operator receives the file and runs it, without added complexity."
+      },
+      {
+        "title": "Dual-core processor, 8GB internal storage",
+        "body": "Stable operation next to the machine while processing serial communication in real time, plus program archives and backups."
+      },
+      {
+        "title": "A short, protected connection to the serial port",
+        "body": "The serial port is a sensitive point — ElecIO's internal isolated circuit protects it against sudden voltage spikes."
+      },
+      {
+        "title": "Built-in Wi-Fi with wide coverage",
+        "body": "Send programs over the network — no more running long DNC cables."
+      }
+    ]
+  },
+  "personas": {
+    "eyebrow": "Just for you",
+    "title": "Three roles. One experience for each.",
+    "intro": "ElecIO gives every person around the machine a clearer, simpler way to work—from management decisions to technical preparation and daily operation.",
+    "viewFullPage": "Explore this experience",
+    "steps": ["See & improve", "Prepare & send", "Receive & run"],
+    "items": [
+      {
+        "title": "Business Owner",
+        "description": "Less downtime, a clearer ROI — without adding headcount.",
+        "brief": "See which machines actually ran and which sat idle — precise uptime/downtime reporting per device, without needing extra staff to track it.",
+        "href": "/for/business-owners",
+        "highlights": ["Precise uptime/downtime reporting per machine", "No extra staff needed to track it", "A measurable, defensible ROI"]
+      },
+      {
+        "title": "Programmer / Technical Office",
+        "description": "Real controller compatibility and protocol-level detail, stated precisely.",
+        "brief": "A controller compatibility matrix (FANUC, SIEMENS, HEIDENHAIN, and more), serial-protocol detail, and LSV2 support — no guessing.",
+        "href": "/for/programmers",
+        "highlights": ["Compatible with FANUC, SIEMENS, HEIDENHAIN & more", "LSV2 support for Heidenhain", "Simultaneous send via dual-core processor"]
+      },
+      {
+        "title": "CNC Operator",
+        "description": "No added complexity — receive the file, run the file.",
+        "brief": "One screen, three buttons. Receive the file and run it — no confusing menus, no complicated training.",
+        "href": "/for/operators",
+        "highlights": ["One screen, three buttons — no training needed", "Isolated serial-port protection", "Automatic repeat for serial production"]
+      }
+    ]
+  },
+  "softwarePage": {
+    "eyebrow": "Software",
+    "headline": "ElecIO Manager — manage, send, and report",
+    "subheadline": "Programs are managed from Windows, Android, and a Web App, and every machine's status is visible to the technical office and management.",
+    "downloadTitle": "Get the software or documentation"
+  },
+  "softwareFeatures": {
+    "eyebrow": "Capabilities",
+    "title": "Four capabilities that make file management simple",
+    "items": [
+      {
+        "title": "Program folder organization",
+        "body": "Sort files by order, part, or machine — no confusion between versions."
+      },
+      {
+        "title": "Transfer status monitor",
+        "body": "See a program's transfer status to the machine, directly from the software."
+      },
+      {
+        "title": "Advanced reporting",
+        "body": "Two modes — comprehensive and per-machine/shift — for reviewing performance."
+      },
+      {
+        "title": "Backup and program archive",
+        "body": "Along with send history and support for grouped/batch programs."
+      }
+    ]
+  },
+  "downloadForm": {
+    "resource": "What do you need?",
+    "resources": {
+      "catalog_pdf": "Product catalog (PDF)",
+      "features_pdf": "Technical spec sheet (PDF)",
+      "windows_installer": "ElecIO Manager — Windows",
+      "android_apk": "ElecIO Manager — Android"
+    },
+    "name": "Full name",
+    "email": "Email",
+    "company": "Company / workshop (optional)",
+    "submit": "Get the download link",
+    "downloadNow": "Download",
+    "success": "Your download link is ready.",
+    "error": "Something went wrong. Please try again.",
+    "nameRequired": "Please enter your name",
+    "emailRequired": "Please enter a valid email"
+  },
+  "operatorFeatures": {
+    "eyebrow": "At the machine",
+    "title": "Built for your shift, not for the manual",
+    "items": [
+      {
+        "title": "A simple interface",
+        "body": "One screen, three buttons (ENTER, DOWN, UP) — no extra keyboard, no confusing menus."
+      },
+      {
+        "title": "Serial-port protection",
+        "body": "An internal isolated circuit protects against sudden voltage spikes — a damaged port means days of machine downtime; ElecIO is designed around exactly that risk."
+      },
+      {
+        "title": "Quick setup",
+        "body": "A short, controlled connection to the machine's serial port — no need to modify the machine's control panel."
+      },
+      {
+        "title": "Automatic repeat",
+        "body": "For serial-production lines — the same program repeats automatically without needing to be resent."
+      }
+    ]
+  },
+  "controllers": {
+    "eyebrow": "Compatibility",
+    "title": "Compatible with the industry's leading controllers",
+    "caveat": "Final compatibility is verified before purchase, based on the control model, port type, and machine condition."
+  },
+  "protocolSpecs": {
+    "eyebrow": "Technical detail",
+    "title": "Exactly how it talks to your controller",
+    "items": [
+      {
+        "title": "Standard serial protocols",
+        "body": "XON/XOFF and RTS/CTS flow control supported — compatible with most industrial controllers' existing settings."
+      },
+      {
+        "title": "Heidenhain communication upgrade",
+        "body": "Compatible with TNC Server and supports the LSV2 protocol at higher transfer speed — a networked alternative to TNCRemo."
+      },
+      {
+        "title": "Simultaneous send via dual-core processor",
+        "body": "Sends the next program while the current one is still running, with no delay — for production lines with fast job changeovers."
+      },
+      {
+        "title": "Batch send with automatic repeat",
+        "body": "Send grouped programs with sequential auto-run — built for serial-production lines."
+      }
+    ]
+  },
+  "personaPages": {
+    "businessOwner": {
+      "eyebrow": "For Business Owners",
+      "headline": "An ROI you actually see, not just sense.",
+      "subheadline": "ElecIO logs real working time per machine — no extra staff to track it, no guessing where the production line is actually losing time.",
+      "ctaPrimary": "Order the device",
+      "ctaSecondary": "Free consultation"
+    },
+    "programmer": {
+      "eyebrow": "For Programmers & Technical Office",
+      "headline": "Compatibility, stated precisely — no guessing.",
+      "subheadline": "Controller compatibility matrix, serial-protocol detail, and LSV2 support for Heidenhain — everything you need to know before buying or deploying.",
+      "ctaPrimary": "Order the device",
+      "ctaSecondary": "Have a technical question?"
+    },
+    "operator": {
+      "eyebrow": "For CNC Operators",
+      "headline": "One screen, three buttons. That's it.",
+      "subheadline": "Receive the file and run it — no confusing menus, no complicated training, no change to your daily routine at the machine.",
+      "ctaPrimary": "Order the device",
+      "ctaSecondary": "Contact us"
+    }
+  },
+  "trust": {
+    "items": ["12-month warranty", "Free software updates", "Technical support"]
+  },
+  "roi": {
+    "eyebrow": "Reporting",
+    "title": "Numbers that actually matter on the shop floor",
+    "body": "ElecIO doesn't just send files — it logs every program run with a timestamp, so working time, downtime, and setup time per machine are all visible. A simple formula for the workshop manager:",
+    "shiftTime": "Shift time",
+    "actualRunTime": "Actual run time",
+    "reviewableTime": "Time worth reviewing"
+  },
+  "partners": {
+    "label": "Trusted alongside"
+  },
+  "stats": {
+    "eyebrow": "Numbers",
+    "title": "Numbers that show the trust",
+    "items": {
+      "customers": "Satisfied customers",
+      "devices": "Active devices",
+      "hours": "Hours of logged runtime",
+      "satisfaction": "Satisfaction rate"
+    }
+  },
+  "supportedMachines": {
+    "eyebrow": "Compatibility",
+    "title": "Built for the industry's leading controllers",
+    "caveat": "Final compatibility is verified before purchase, based on the control model, port type, and machine condition."
+  },
+  "blogPreview": {
+    "eyebrow": "ElecIO Blog",
+    "title": "Guides & technical articles — coming soon",
+    "subtitle": "Content on setup, troubleshooting, and getting more out of ElecIO, on its way.",
+    "cta": "Visit the blog",
+    "comingSoon": "Coming soon",
+    "items": [
+      { "tag": "Setup", "title": "How to install ElecIO next to a FANUC machine" },
+      { "tag": "Troubleshooting", "title": "Fixing common serial-connection errors" },
+      { "tag": "Productivity", "title": "Reading runtime reports to cut production downtime" }
+    ]
+  },
+  "learning": {
+    "eyebrow": "Learning Center",
+    "title": "Everything you need to get started",
+    "items": [
+      {
+        "title": "Product catalog",
+        "body": "Full specs and ordering info in one PDF.",
+        "href": "/downloads/elecio-smart-dnc-catalog-2026-en.pdf",
+        "external": true
+      },
+      {
+        "title": "Technical spec sheet",
+        "body": "Precise technical detail for the technical office and programmers.",
+        "href": "/downloads/elecio-smart-dnc-features-en.pdf",
+        "external": true
+      },
+      {
+        "title": "Real installation videos",
+        "body": "ElecIO installed next to real machines in real workshops.",
+        "href": "/for/business-owners",
+        "external": false
+      },
+      {
+        "title": "Protocol documentation",
+        "body": "Serial-protocol detail and controller compatibility.",
+        "href": "/for/programmers",
+        "external": false
+      }
+    ]
+  },
+  "testimonials": {
+    "eyebrow": "Real installations",
+    "title": "Workshops already running on ElecIO",
+    "close": "Close video"
+  },
+  "finalCta": {
+    "title": "Your workshop, ready to connect.",
+    "subtitle": "Order the device or get free technical advice — reach out now.",
+    "ctaPrimary": "Order the device",
+    "ctaSecondary": "Contact us"
+  },
+  "contactPage": {
+    "title": "Contact Us",
+    "subtitle": "Send your details and we'll get back to you as soon as possible.",
+    "name": "Full name",
+    "phone": "Phone number",
+    "email": "Email (optional)",
+    "company": "Company / workshop name (optional)",
+    "message": "Message (optional)",
+    "submit": "Send request",
+    "success": "Your request was submitted successfully. We'll be in touch soon.",
+    "error": "Something went wrong. Please try again or contact us directly.",
+    "nameRequired": "Please enter your name",
+    "phoneRequired": "Please enter your phone number"
+  },
+  "footer": {
+    "contactTitle": "Contact",
+    "socialTitle": "Follow Us",
+    "address": "Tehran, Shahr-e Qods, 30-Metri Shohada Blvd, Sahel St, Ashkan Alley, No. 25",
+    "rights": "All rights reserved — ElecIO."
+  }
+}

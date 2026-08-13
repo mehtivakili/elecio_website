@@ -1,0 +1,137 @@
+.orbitSection {
+  position: relative;
+  height: 195vh;
+  color: var(--foreground);
+  background: var(--ink);
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  min-height: 620px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 58%, rgba(74, 160, 255, 0.075), transparent 30%),
+    var(--ink);
+}
+
+.copy {
+  position: absolute;
+  z-index: 3;
+  top: clamp(68px, 8vh, 88px);
+  left: 50%;
+  width: min(640px, calc(100% - 40px));
+  text-align: center;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.copy > p {
+  margin: 0 0 12px;
+  color: var(--signal-glow);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.copy h2 {
+  margin: 0;
+  color: var(--foreground);
+  font-size: clamp(29px, 3.4vw, 43px);
+  font-weight: 900;
+  line-height: 1.06;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.copy > span {
+  display: block;
+  max-width: 580px;
+  margin: 12px auto 0;
+  color: var(--text-60);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.scene {
+  position: absolute;
+  z-index: 1;
+  top: 24%;
+  bottom: 12%;
+  left: 50%;
+  width: min(1040px, 92vw);
+  transform: translateX(-50%);
+}
+
+.canvas { width: 100%; height: 100%; }
+
+.footer {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: clamp(22px, 3.5vh, 38px);
+  width: min(920px, calc(100% - 40px));
+  text-align: center;
+  transform: translateX(-50%);
+}
+
+.protocols {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.protocols span {
+  color: var(--signal-glow);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.protocols span:not(:last-child)::after {
+  content: ' · ';
+  margin-inline-start: 9px;
+  color: rgba(134, 196, 255, 0.32);
+}
+
+.footer p {
+  max-width: 650px;
+  margin: 10px auto 0;
+  color: var(--text-40);
+  font-size: 11.5px;
+  line-height: 1.65;
+}
+
+:global(html[data-theme='light']) .orbitSection {
+  color: var(--foreground);
+  background: var(--ink);
+}
+:global(html[data-theme='light']) .sticky {
+  background:
+    radial-gradient(circle at 50% 58%, rgba(28, 111, 224, 0.09), transparent 31%),
+    var(--ink);
+}
+:global(html[data-theme='light']) .copy h2 { color: var(--foreground); }
+:global(html[data-theme='light']) .copy > span,
+:global(html[data-theme='light']) .footer p { color: var(--text-60); }
+
+@media (pointer: coarse) {
+  .canvas { pointer-events: none; }
+}
+
+@media (max-width: 700px) {
+  .orbitSection { height: 175vh; }
+  .sticky { min-height: 580px; }
+  .copy { top: 70px; width: calc(100% - 32px); }
+  .copy h2 { font-size: clamp(27px, 8vw, 36px); }
+  .copy > span { margin-top: 11px; font-size: 12px; }
+  .scene { top: 27%; bottom: 16%; width: 112vw; }
+  .footer { bottom: 76px; width: calc(100% - 28px); }
+  .footer p { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbitSection { height: 100svh; }
+}

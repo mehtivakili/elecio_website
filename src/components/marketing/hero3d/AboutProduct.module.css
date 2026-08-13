@@ -1,0 +1,205 @@
+.wrap {
+  position: relative;
+  background: var(--ink);
+  height: 360vh;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 100px 24px 40px;
+}
+
+.glowA,
+.glowB {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.glowA {
+  width: 50vw;
+  height: 50vw;
+  top: -10vw;
+  inset-inline-end: -12vw;
+  background: radial-gradient(circle, rgba(74, 160, 255, 0.16) 0%, transparent 70%);
+}
+.glowB {
+  width: 42vw;
+  height: 42vw;
+  bottom: -14vw;
+  inset-inline-start: -10vw;
+  background: radial-gradient(circle, rgba(74, 160, 255, 0.1) 0%, transparent 70%);
+}
+
+.copy {
+  position: relative;
+  text-align: center;
+  max-width: 620px;
+}
+
+.eyebrow {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--signal-glow);
+  text-transform: uppercase;
+  margin: 0 0 14px;
+}
+
+.title {
+  font-size: clamp(26px, 3.6vw, 40px);
+  font-weight: 900;
+  margin: 0;
+  color: var(--foreground);
+}
+
+/* Product on one side, the critical-feature list on the other — round 8 correction
+   (doc/journey.md 2026-08-07): not floating annotations pinned to the device, a real list beside
+   it. Flex row direction follows `dir`, so this mirrors automatically for fa (RTL) vs en (LTR)
+   without any locale-specific CSS, same pattern PersonaGrid's rail+panel already uses. */
+.split {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 56px;
+  width: 100%;
+  max-width: 1240px;
+  flex: 1;
+  min-height: 0;
+}
+@media (max-width: 900px) {
+  .split {
+    flex-direction: column;
+    gap: 20px;
+    justify-content: flex-start;
+  }
+}
+
+.stageCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.hint {
+  margin: 0;
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  color: var(--text-40);
+}
+
+.stage {
+  position: relative;
+  flex-shrink: 0;
+  width: min(50vw, 560px);
+  height: min(54vh, 480px);
+  opacity: 1;
+}
+@media (max-width: 900px) {
+  .stage {
+    width: min(70vw, 380px);
+    height: min(32vh, 320px);
+  }
+}
+
+.canvas {
+  width: 100%;
+  height: 100%;
+}
+
+@media (pointer: coarse) {
+  .canvas {
+    /* The model already follows page scroll; don't let drag capture compete with touch panning. */
+    pointer-events: none;
+  }
+}
+
+.features {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+  width: min(360px, 100%);
+}
+
+.featureItem {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.featureItemVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* The reveal line: draws left-to-right (transform-origin: left, not a logical/direction-aware
+   start) — an explicit, literal "line goes left to right" request, kept the same physical
+   direction in both fa and en rather than mirrored per-locale. */
+.featureLine {
+  display: block;
+  height: 2px;
+  width: 100%;
+  margin-bottom: 12px;
+  background: linear-gradient(to right, var(--signal) 0%, var(--signal-glow) 55%, transparent 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.featureItemVisible .featureLine {
+  transform: scaleX(1);
+}
+
+.featureLabel {
+  font-size: 16.5px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--foreground);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wrap { height: auto; min-height: 100svh; }
+  .sticky { position: relative; min-height: 100svh; }
+  .featureItem,
+  .featureLine {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .wrap {
+    height: 300vh;
+  }
+  .sticky {
+    gap: 14px;
+    padding: 76px 18px 20px;
+  }
+  .features {
+    width: min(420px, 100%);
+    gap: 9px;
+  }
+  .copy {
+    max-width: 90vw;
+  }
+  .featureLine {
+    margin-bottom: 7px;
+  }
+  .featureLabel {
+    font-size: 14px;
+    line-height: 1.35;
+  }
+}
