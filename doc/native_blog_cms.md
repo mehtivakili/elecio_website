@@ -30,7 +30,7 @@ minutes. Preview pages are noindex/nocache and render drafts through the same sa
 URL as a temporary bearer secret: do not paste it into analytics, tickets, chats with broad history,
 or public pages. Tokens expire automatically and can be removed by a periodic retention job.
 
-Scheduling is UTC in PostgreSQL; the browser `datetime-local` value is converted by JavaScript to an
+Scheduling is UTC in MySQL; the browser `datetime-local` value is converted by JavaScript to an
 instant. A future scheduled post may have published status but remains absent until its timestamp.
 Public routes are request-rendered, so no cron job is required to make it visible. Publish/unpublish,
 slug change, and restore revalidate both locales and old/current article paths.
@@ -64,7 +64,7 @@ permanent legacy-slug redirects. Missing/draft/untranslated/future content retur
 
 ## Deployment and acceptance
 
-1. Back up PostgreSQL; apply migration 13; verify baseline revisions for existing posts and rehearse
+1. Back up MySQL; apply migration 13; verify baseline revisions for existing posts and rehearse
    rollback on a staging copy.
 2. Confirm production URL/auth secrets, Redis, database timezone, persistent/object storage,
    writable limits, CDN caching, CSP image origins, backup, media retention, and upload monitoring.

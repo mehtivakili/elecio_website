@@ -50,10 +50,10 @@ guessed or linked.
 1. Approve legal text, retention/deletion SLA, Kavenegar template, sender, and spend limits.
 2. Configure real secrets, HTTPS URL/origins, production Redis, trusted proxy IP headers, provider
    credentials, alerts, and keep the kill switch off until ready.
-3. Back up PostgreSQL; apply migrations; verify `otp_intents`, `account_deletion_requests`, and the
+3. Back up MySQL; apply migrations; verify `otp_intents`, `account_deletion_requests`, and the
    two nullable `user_id` ownership columns. Rehearse rollback on a staging copy.
 4. Run test, typecheck, lint, build, dependency audit, and integration tests with isolated
-   PostgreSQL/Redis/provider sandbox.
+   MySQL/Redis/provider sandbox.
 5. Prove success, wrong/expired/replayed OTP, resend invalidation, attempt/send caps, provider
    timeout/outage, origin rejection, session rotation/revocation/logout, record ownership, and kill
    switch behavior. Confirm messages and provider dashboards contain no OTP/PII leakage beyond the

@@ -12,6 +12,7 @@ import { PartnerStrip } from '@/components/marketing/PartnerStrip';
 import { FinalCta } from '@/components/marketing/FinalCta';
 import { ProductSectionDock } from '@/components/product/ProductSectionDock';
 import { ShopFloorStory } from '@/components/marketing/ShopFloorStory';
+import { HomeReturnScrollReset } from '@/components/marketing/HomeReturnScrollReset';
 
 export default async function HomePage({
   params,
@@ -32,6 +33,7 @@ export default async function HomePage({
 
   return (
     <main>
+      <HomeReturnScrollReset />
       <ProductSectionDock items={dockItems} ariaLabel={en ? 'Home page sections' : 'بخش‌های صفحه اصلی'} />
       {/* Photo-only top hero — the interactive 3D device lives in AboutProduct further down,
           not at the top (doc/journey.md 2026-08-07). */}

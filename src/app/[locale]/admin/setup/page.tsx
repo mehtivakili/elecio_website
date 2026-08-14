@@ -1,2 +1,8 @@
-import { redirect } from 'next/navigation';import { getStaffPrincipal } from '@/server/auth/staff-flow';import { MfaSetupForm } from '@/components/admin/StaffAuthForms';import styles from '@/components/admin/Admin.module.css';
-export default async function SetupPage({params}:{params:Promise<{locale:string}>}){const{locale}=await params;const staff=await getStaffPrincipal(false);if(!staff)redirect(`/${locale}/admin/login`);if(staff.twoFactorEnabled)redirect(`/${locale}/admin`);return <main className={styles.page}><section className={styles.auth}><span className={styles.eyebrow}>Mandatory security</span><h1>{locale==='en'?'Set up multi-factor authentication':'راه‌اندازی احراز هویت دومرحله‌ای'}</h1><MfaSetupForm locale={locale}/></section></main>}
+import { redirect } from 'next/navigation';
+import { getStaffPrincipal } from '@/server/auth/staff-flow';
+
+export default async function SetupPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const staff = await getStaffPrincipal();
+  redirect(staff ? `/${locale}/admin` : `/${locale}/admin/login`);
+}

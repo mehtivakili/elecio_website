@@ -73,7 +73,7 @@ async function main() {
     });
   });
 
-  process.stdout.write('Local demo admin ready: admin@admin / admin. Development-only MFA bypass is active.\n');
+  process.stdout.write('Local demo admin ready: admin@admin / admin.\n');
 }
 
 main()

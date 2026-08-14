@@ -9,47 +9,71 @@ build depends on.
 
 ## Stack
 
-Next.js (App Router, full-stack) · TypeScript · Ant Design · PostgreSQL + Knex + Objection.js ·
+Next.js (App Router, full-stack) · TypeScript · Ant Design · MySQL + Knex + Objection.js ·
 next-intl (fa default/RTL + en) · Refine (admin, `/admin`, Phase 7) · React Three Fiber (hero,
 Phase 3). Full rationale in `doc/plan.md` §2–3.
 
 ## Getting started
 
-1. **Node 20+** and a local **PostgreSQL** server (this repo was set up against a local
-   `postgresql-x64-17` Windows service — any Postgres 14+ works).
+1. **Node 20+** and **MySQL 8.0.16+**. The minimum version matters because the schema uses
+   enforced `CHECK` constraints.
 
-2. Create a dedicated database and role for this project (don't reuse `postgres`/superuser).
-   **Already done on the original dev machine** — `elecio_app`/`elecio_dev`, see
-   `doc/journey.md` 2026-08-06.04 for how. On a fresh machine, run as the `postgres` superuser:
+2. Create a dedicated database and user for this project (do not run the app as `root`):
 
    ```sql
-   CREATE ROLE elecio_app WITH LOGIN PASSWORD 'pick-a-real-password';
-   CREATE DATABASE elecio_dev OWNER elecio_app;
+   CREATE DATABASE elecio_dev CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+   CREATE USER 'elecio_app'@'localhost' IDENTIFIED BY 'pick-a-real-password';
+   GRANT SELECT, INSERT, UPDATE, DELETE ON elecio_dev.* TO 'elecio_app'@'localhost';
+
+   CREATE USER 'elecio_migrator'@'localhost' IDENTIFIED BY 'pick-another-real-password';
+   GRANT ALL PRIVILEGES ON elecio_dev.* TO 'elecio_migrator'@'localhost';
    ```
 
-3. Copy the env template and fill in the password you used above:
+3. Copy the env template and fill in the password you used above. Keep `timezone=Z` and
+   `charset=utf8mb4` in the connection URL:
 
    ```
    cp .env.example .env
    ```
 
-4. Install dependencies and run migrations:
+4. Install dependencies and run migrations with the migration credential:
 
-   ```
+   ```sh
    npm install
-   npm run db:migrate
+   DATABASE_URL='mysql://elecio_migrator:PASSWORD@localhost:3306/elecio_dev?timezone=Z&charset=utf8mb4' npm run db:migrate
    ```
 
-5. Start the dev server:
+   Migration `20260813000010` creates append-only audit triggers. On MySQL servers with binary
+   logging enabled, an administrator may also need to grant the migrator global `SUPER` temporarily.
+   Revoke it immediately afterward, reduce the migrator to `TRIGGER` on `elecio_dev.*`, and lock the
+   account. Do not grant global `SUPER` access to the runtime application user. Restore
+   `DATABASE_URL` to the application credential before running the app.
+
+5. For a local or staging test environment, seed all bundled demo content:
+
+   ```sh
+   NODE_ENV=development ALLOW_INSECURE_DEV_ADMIN=true npm run dev:seed-admin
+   npm run content:seed-initial
+   npm run content:import-en-ec-001
+   npm run content:import-fa-ec-001
+   ```
+
+   The demo login is `admin@admin` / `admin`; never enable it in production.
+
+   Verify the resulting schema and seeded row counts from the runtime connection:
+
+   ```
+   npm run db:verify:mysql
+   ```
+
+6. Start the dev server:
 
    ```
    npm run dev
    ```
 
-> Local-only note: this project's `.env` currently uses `1234` as the `elecio_app` password —
-> deliberate, per the owner's preference to avoid managing a separate local secret, and safe only
-> because this Postgres instance never leaves the local machine. **Never reuse it for a hosted
-> database.**
+> These migrations create a fresh MySQL schema. They do not copy rows from an existing PostgreSQL
+> database; export/import existing production data separately before switching traffic.
 
 ## Scripts
 
@@ -62,6 +86,10 @@ Phase 3). Full rationale in `doc/plan.md` §2–3.
 | `npm run db:migrate` | Run pending Knex migrations (`src/server/db/migrations`) |
 | `npm run db:migrate:rollback` | Roll back the last migration batch |
 | `npm run db:migrate:make <name>` | Scaffold a new migration file |
+| `npm run db:verify:mysql` | Verify MySQL connectivity, schema counts, UUID defaults, and audit triggers |
+| `npm run dev:seed-admin` | Create the development-only owner login |
+| `npm run content:seed-initial` | Seed the initial bilingual blog catalog |
+| `npm run content:import-en-ec-001` / `content:import-fa-ec-001` | Import the bundled DOCX article content |
 
 ## Project layout
 
@@ -72,7 +100,7 @@ previous site, kept as a reference for real product/company content, not as a co
 
 ## What's real vs. placeholder right now
 
-Contact form (`/contact`) is fully wired end-to-end to Postgres — a genuine fix for the old site's
+Contact form (`/contact`) is fully wired end-to-end to MySQL — a genuine fix for the old site's
 form, which only simulated submission client-side (see `doc/journey.md` 2026-08-06.01). Persona
 pages, `/product`, `/software`, `/blog`, and `/about` are intentionally placeholder stubs (see each
 page's note) pending content decisions tracked in `doc/plan.md` §6 and `doc/business_path.md`. The

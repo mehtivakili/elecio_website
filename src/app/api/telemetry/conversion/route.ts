@@ -20,8 +20,7 @@ export async function POST(request: NextRequest) {
   await knex.raw(
     `insert into conversion_daily_counts (day, event, locale, count)
      values (?, ?, ?, 1)
-     on conflict (day, event, locale)
-     do update set count = conversion_daily_counts.count + 1`,
+     on duplicate key update count = count + 1`,
     [day, body.event, body.locale],
   );
   return new NextResponse(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });

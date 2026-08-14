@@ -6,8 +6,8 @@ import { AdminLogout } from '@/components/admin/AdminLogout';
 import styles from '@/components/admin/Admin.module.css';
 
 export default async function PanelLayout({children,params}:{children:React.ReactNode;params:Promise<{locale:string}>}) {
-  const {locale}=await params; const staff=await getStaffPrincipal(true);
-  if(!staff){const partial=await getStaffPrincipal(false);redirect(`/${locale}/admin/${partial?'setup':'login'}`);}
+  const {locale}=await params; const staff=await getStaffPrincipal();
+  if(!staff)redirect(`/${locale}/admin/login`);
   const en=locale==='en';
   const links=[
     ['/admin',en?'Dashboard':'داشبورد',true],

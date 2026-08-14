@@ -8,19 +8,17 @@ export const STAFF_ROLES: AppRole[] = ['support', 'editor', 'admin', 'owner'];
 export { staffInternalHeaders } from './staff-gateway';
 export { createInvitationToken, hashInvitationToken, strongPassword } from './staff-policy';
 
-export type StaffPrincipal = { userId: string; sessionId: string; role: AppRole; twoFactorEnabled: boolean };
-export async function getStaffPrincipal(requireMfa = true): Promise<StaffPrincipal | null> {
+export type StaffPrincipal = { userId: string; sessionId: string; role: AppRole };
+export async function getStaffPrincipal(): Promise<StaffPrincipal | null> {
   const session = await auth.api.getSession({ headers: await headers() }); if (!session) return null;
-  const row = await knex('user_profiles as p').join('auth_users as u', 'u.id', 'p.user_id')
-    .select('p.role', 'p.is_active', 'u.two_factor_enabled', 'u.email').where('p.user_id', session.user.id).first();
+  const row = await knex('user_profiles as p')
+    .select('p.role', 'p.is_active').where('p.user_id', session.user.id).first();
   if (!row?.is_active || !roles.includes(row.role) || !STAFF_ROLES.includes(row.role)) return null;
-  const localDemo = process.env.NODE_ENV === 'development' && process.env.ALLOW_INSECURE_DEV_ADMIN === 'true' && row.email === 'admin@admin.local';
-  if (requireMfa && !row.two_factor_enabled && !localDemo) return null;
-  return { userId: session.user.id, sessionId: session.session.id, role: row.role, twoFactorEnabled: Boolean(row.two_factor_enabled || localDemo) };
+  return { userId: session.user.id, sessionId: session.session.id, role: row.role };
 }
 
 export async function requireStaffPermission(resource: AppResource, action: AppAction, relationship: 'own' | 'assigned' | 'all' = 'all') {
-  const principal = await getStaffPrincipal(true);
+  const principal = await getStaffPrincipal();
   if (!principal || !can(principal.role, resource, action, relationship)) throw new Error('FORBIDDEN');
   return principal;
 }

@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { Button, Drawer, Menu } from 'antd';
-import { MenuOutlined, GlobalOutlined, BulbOutlined, BulbFilled, UserOutlined } from '@ant-design/icons';
+import { MenuOutlined, GlobalOutlined, BulbOutlined, BulbFilled } from '@ant-design/icons';
 import Image from 'next/image';
 import { Link, usePathname } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
@@ -16,17 +16,7 @@ export function SiteHeader() {
   const locale = useLocale();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [staffAuthenticated, setStaffAuthenticated] = useState(false);
   const { mode, toggle } = useThemeMode();
-
-  useEffect(() => {
-    const controller = new AbortController();
-    fetch('/api/staff-auth/status', { cache: 'no-store', signal: controller.signal })
-      .then((response) => response.ok ? response.json() : null)
-      .then((status) => setStaffAuthenticated(Boolean(status?.authenticated)))
-      .catch(() => undefined);
-    return () => controller.abort();
-  }, [pathname]);
 
   const items = [
     { key: '/', label: t('home') },
@@ -36,9 +26,6 @@ export function SiteHeader() {
     { key: '/about', label: t('about') },
     { key: '/contact', label: t('contact') },
   ];
-  const accountLabel = locale === 'fa' ? 'حساب کاربری' : 'Account';
-  const adminLabel = locale === 'fa' ? 'پنل مدیریت' : 'Admin panel';
-
   const otherLocale = routing.locales.find((l) => l !== locale)!;
 
   return (
@@ -68,10 +55,6 @@ export function SiteHeader() {
         />
 
         <div className={styles.actions}>
-          <Link href="/account" className={styles.accountLink} aria-label={accountLabel} title={accountLabel}>
-            <UserOutlined />
-          </Link>
-          {staffAuthenticated && <Link href="/admin" className={styles.adminLink}>{adminLabel}</Link>}
           <Link
             href={pathname}
             locale={otherLocale}
@@ -114,7 +97,7 @@ export function SiteHeader() {
         <Menu
           mode="vertical"
           selectedKeys={[pathname]}
-          items={[...items, { key: '/account', label: accountLabel }, ...(staffAuthenticated ? [{ key: '/admin', label: adminLabel }] : [])].map((item) => ({
+          items={items.map((item) => ({
             key: item.key,
             label: (
               <Link href={item.key} onClick={() => setOpen(false)}>

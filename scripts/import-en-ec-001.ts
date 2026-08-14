@@ -38,7 +38,9 @@ async function main() {
   const author = await knex('auth_users').where({ id: current.author_user_id }).first();
   if (!author) throw new Error('The article author no longer exists.');
 
-  const category = await knex('categories').insert({ slug: 'cnc-technical-guides', name_fa: 'راهنماهای فنی CNC', name_en: 'CNC Technical Guides', sort_order: 12 }).onConflict('slug').merge(['name_fa', 'name_en']).returning(['id']);
+  await knex('categories').insert({ slug: 'cnc-technical-guides', name_fa: 'راهنماهای فنی CNC', name_en: 'CNC Technical Guides', sort_order: 12 }).onConflict('slug').merge(['name_fa', 'name_en']);
+  const category = await knex('categories').select('id').where({ slug: 'cnc-technical-guides' }).first();
+  if (!category) throw new Error('Failed to create the CNC Technical Guides category.');
   const tagDefinitions = [
     ['cnc-file-transfer', 'انتقال فایل CNC', 'CNC file transfer'],
     ['cnc-program-transfer', 'انتقال برنامه CNC', 'CNC program transfer'],
@@ -57,7 +59,7 @@ async function main() {
   await knex.transaction(async (trx) => {
     const nextRevision = Number(current.current_revision_number) + 1;
     await trx('posts').where({ id: current.id }).update({
-      category_id: category[0].id,
+      category_id: category.id,
       title_en: 'CNC File Transfer: Methods, Setup, and Common Errors',
       excerpt_en: 'A practical, controller-aware guide to CNC file transfer methods, setup choices, compatibility checks, troubleshooting, security, and safer program-management workflows.',
       body_en: JSON.stringify(bodyEn),

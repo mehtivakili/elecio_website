@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "invalid_schedule" }, { status: 400 });
     }
     const result = await knex.transaction(async (trx) => {
-      const [post] = await trx("posts")
+      const [postId] = await trx("posts")
         .insert({
           slug,
           category_id: Number(body.categoryId) || null,
@@ -150,8 +150,8 @@ export async function POST(request: NextRequest) {
           scheduled_for: scheduledFor,
           published_at: targetStatus === "published" ? trx.fn.now() : null,
           current_revision_number: 1,
-        })
-        .returning(["id", "slug"]);
+        });
+      const post = { id: postId, slug };
       const tagIds: number[] = Array.isArray(body.tagIds)
         ? body.tagIds.map(Number).filter(Number.isInteger)
         : [];

@@ -53,8 +53,8 @@ after learning something the hard way. So, concretely:
 | # | Decision | Date | Rationale |
 |---|---|---|---|
 | D1 | v1 does **not** rebuild checkout/order flow. Primary CTAs link out to the existing live order page (`elecio.ir/order/product/elecio-smart-dnc-g1/`). | 2026-08-06 | It already works and has presumably processed real orders; rebuilding it is scope creep for a site whose job is persuasion + lead capture, not payments. Revisit in Phase 10+ once the new site has traffic data. |
-| D2 | Framework: **Next.js (App Router), full-stack** — no separate backend service. All server logic (Objection/Knex/Postgres access, form handling, admin API) lives in Next.js Route Handlers / Server Actions within the same app. | 2026-08-06 | Your explicit call, overriding the Fastify/NestJS/Express options I'd framed. Right-sized for this project: one product, one team, no second client needing the API independently (ElecIO Manager is a separate system — see §0). One deploy target, no CORS, simpler ops on Iranian PaaS hosting. Extractable into a standalone API later if a real second consumer ever shows up. |
-| D3 | Database: **PostgreSQL + Knex + Objection.js** (your explicit, non-negotiable requirement). | 2026-08-06 | Given. Objection sits on Knex as the query builder/migration tool; Objection adds the model layer (relations, validation, `$beforeInsert` hooks) on top. |
+| D2 | Framework: **Next.js (App Router), full-stack** — no separate backend service. All server logic (Objection/Knex/MySQL access, form handling, admin API) lives in Next.js Route Handlers / Server Actions within the same app. | 2026-08-06 | Your explicit call, overriding the Fastify/NestJS/Express options I'd framed. Right-sized for this project: one product, one team, no second client needing the API independently (ElecIO Manager is a separate system — see §0). One deploy target, no CORS, simpler ops on Iranian PaaS hosting. Extractable into a standalone API later if a real second consumer ever shows up. |
+| D3 | Database: **MySQL 8.0.16+ + Knex + Objection.js**. | 2026-08-13 | Replaces the original PostgreSQL decision so deployment can use the MySQL server already available. Objection remains the model layer and Knex remains the query/migration layer. |
 | D4 | UI/component system: **Ant Design**, kept and modernized (not migrated to shadcn/ui). | 2026-08-06 | Your call over shadcn/ui. Zero-migration continuity from the old site, proven RTL behavior already, and — importantly — **Refine has first-class official Ant Design bindings** (`@refinedev/antd`), which is actually the *best-supported* Refine+UI pairing available, better wired than Refine+shadcn would have been. So D4 and D5 reinforce each other rather than fighting. |
 | D5 | Admin/CMS: **Refine**, mounted inside the same Next.js app at `/admin` (using `@refinedev/nextjs-router` + `@refinedev/antd`), talking to our own Route Handlers. | 2026-08-06 | Avoids hand-building CRUD screens for blog posts, leads, and partner/testimonial content — the exact "don't reinvent the wheel" ask. Headless-enough to still look like *our* admin, not a generic dashboard, because it's using our own Ant Design theme. |
 | D6 | 3D product view: **Three.js, but fully procedural geometry — no `.glb` file loaded.** Currently `src/components/marketing/hero3d/elecioSceneV6.ts`, ported near-verbatim from a complete working scene you supplied directly (`elecio_smart_dnc_3d_v6.html`) — extruded/lofted housing geometry measured off the real device, PBR materials, procedural decal/screen/environment textures, real shadows. | 2026-08-06, superseded 2026-08-07 (twice — see `journey.md` `.07`, `.08`, `.11`) | Went custom-R3F → hand-rolled canvas-2D rasterizer → back to Three.js, each time on your direct steer, not my own drift. The canvas-2D detour (entries `.07`–`.10`) was replaced once you supplied a materially more sophisticated Three.js scene and were explicit that GLB-file loading specifically (not WebGL itself) was what to avoid — this version never loads an external asset, so it doesn't reintroduce the GLTFLoader crash risk that started this whole chain. `@react-three/fiber`/`@react-three/drei` remain uninstalled (this uses plain Three.js in a `useEffect`, not R3F's declarative layer) — `three` itself was reinstalled. |
@@ -74,7 +74,7 @@ to `business_path.md` rather than duplicated.
 | UI kit | Ant Design (v6) | Continued from `old/`; re-themed, not reused as-is |
 | 3D | Procedural canvas-2D renderer (`src/components/marketing/hero3d/proceduralDevice.ts`) — no WebGL/Three.js | See D6 (superseded) |
 | i18n | `next-intl` | App Router-native, fa (RTL, default) + en |
-| Database | PostgreSQL | Hosting TBD — see §6 Phase 1 |
+| Database | MySQL 8.0.16+ | Existing server; hosting details TBD — see §6 Phase 1 |
 | Query builder / migrations | Knex | |
 | ORM/model layer | Objection.js | |
 | Admin/CMS | Refine (`@refinedev/nextjs-router`, `@refinedev/antd`) | Mounted at `/admin` |
@@ -82,7 +82,7 @@ to `business_path.md` rather than duplicated.
 | Forms | Ant Design `Form` (already used throughout `old/`) | |
 | Auth (admin only — public site has no user accounts in v1) | To decide in Phase 6: lightweight session-based auth (e.g. `iron-session` or Auth.js Credentials) against an `admin_users` table | Small, fixed set of internal users — no need for a heavy auth-as-a-service product |
 | Analytics | **[DECISION NEEDED]** PostHog vs GA4 — see `business_path.md` §5 | Must verify reachability from Iran before committing either way |
-| Hosting | **[DECISION NEEDED]** Liara (recommended default — Iranian PaaS with managed Postgres + Node, Persian dashboard, built for exactly this shape of app) vs ArvanCloud (recommended as a *complement* for CDN/object storage/DDoS protection on media, not as the app host) vs self-managed VPS | See `business_path.md` §3–4 |
+| Hosting | **[DECISION NEEDED]** Deploy the Node app where it can securely reach the existing MySQL server; use a CDN/object-storage provider separately for media if needed. | See `business_path.md` §3–4 |
 | Package manager | pnpm | Faster installs, disk-efficient; no strong reason not to |
 
 ---
@@ -200,14 +200,11 @@ numbers (0, 1, 4, 6, 8, 9, 10+), so those anchors don't move even as task detail
 
 ### Phase 1 — Infrastructure & Foundations
 - [x] Initialize Next.js (TypeScript, App Router) project at repo root — done 2026-08-06.
-- [x] Knex config + Objection base model + first 9 migrations (admin_users, contact_submissions,
-  download_requests, partners, testimonials, categories, tags, posts, post_tags) — done
-  2026-08-06. **Not yet run against a real database** — see the blocker below.
-- [x] **Resolved 2026-08-06.** User's existing local `postgres` password turned out to be `1234`
-  (tried directly rather than the full reset procedure). Created a dedicated `elecio_app`
-  role/`elecio_dev` database (same `1234` password, deliberately — user doesn't want a separate
-  password to manage for local-only dev; this must never be reused for any hosted/production
-  database). All 9 migrations applied (`npm run db:migrate`) and verified via `\dt`.
+- [x] Knex config + Objection base model + 16 migrations for the application, identity, admin,
+  CMS, and SEO schema — complete and converted to MySQL.
+- [x] **Resolved 2026-08-13.** MySQL 8.0.45 on Ubuntu 24.04 now mirrors the target server. The
+  dedicated `elecio_dev` database has all 16 migrations and the bundled bilingual content; the
+  runtime account is DML-only and the locked migration account retains only `TRIGGER` privilege.
 - [ ] Domain/DNS + hosting account (**[DECISION NEEDED]** Liara vs ArvanCloud vs VPS).
 - [x] CI: lint + typecheck + build on push — `.github/workflows/ci.yml` added 2026-08-06 (will
   activate once this repo has a GitHub remote).
@@ -375,11 +372,11 @@ decisions. The original Phase 0–10+ plan remains preserved as the historical b
 
 | # | Proposed decision | Reason |
 |---|---|---|
-| A-D1 | Use **Better Auth** with the existing PostgreSQL database; keep Knex/Objection for application models and review/version auth schema changes as Knex migrations. | Avoid hand-building session/authentication security while remaining inside the existing Next.js application. |
+| A-D1 | Use **Better Auth** with the existing MySQL database; keep Knex/Objection for application models and review/version auth schema changes as Knex migrations. | Avoid hand-building session/authentication security while remaining inside the existing Next.js application. |
 | A-D2 | Customers use phone-first OTP. Staff use a separate invite-only email/password or passkey flow with mandatory MFA; never public admin registration or SMS-only admin access. | Customer convenience and privileged staff security have different threat models. |
 | A-D3 | Implement an `SmsProvider` adapter and start with Kavenegar Verify/Lookup only after delivery, template, cost, and SLA tests. Use the provider dashboard for billing/templates; the Elecio admin shows only redacted delivery health. | Avoid rebuilding telecom infrastructure and keep provider replacement possible. |
 | A-D4 | Keep **Refine + Ant Design** for `/admin`; reject `eee7654/esima-builder` as a production dependency. | Refine matches the locked UI stack and current models; the reviewed repository is an unfinished page-builder demo without a complete backend or license. |
-| A-D5 | Keep the blog **native Next.js + PostgreSQL**. WordPress remains a fallback only if future editors require WordPress-specific workflows/plugins. | The bilingual schema already exists; WordPress adds another runtime, database, patch surface, API, caching, and webhook layer without an inherent SEO advantage. |
+| A-D5 | Keep the blog **native Next.js + MySQL**. WordPress remains a fallback only if future editors require WordPress-specific workflows/plugins. | The bilingual schema already exists; WordPress adds another runtime, database, patch surface, API, caching, and webhook layer without an inherent SEO advantage. |
 | A-D6 | Use one authoritative identity system. Migrate/supersede the password-bearing `admin_users` scaffold before production data, preserving author attribution through an application profile/role mapping. | Two password/session systems duplicate recovery, authorization, audit, and incident-response risk. |
 | A-D7 | Enforce server-side least-privilege RBAC: `customer`, `support`, `editor`, `admin`, `owner`. Refine/CASL visibility is UX only. | Every protected query and mutation must validate the live session, action, object, and ownership at the server. |
 | A-D8 | Auth/admin/blog launch requires staging security, accessibility, RTL/LTR, performance, backup/restore, audit-log, and monitoring exit gates. | These features add PII, privileged mutations, uploads, public rich content, and billable abuse paths. |
@@ -397,7 +394,7 @@ Owner decisions needed before implementation:
 ## A2. Proposed implementation phases
 
 ### Expansion Phase 1 — Identity and abuse-control foundation
-- [x] Install Better Auth at `/api/auth/[...all]` with PostgreSQL. Generate and review its schema, then
+- [x] Install Better Auth at `/api/auth/[...all]` with MySQL. Generate and review its schema, then
   commit reversible Knex migrations instead of running unreviewed production auto-migrations.
 - [x] Consolidate the current `admin_users` scaffold into one identity authority; add application
   profiles, role mapping, consent/version timestamps, and canonical normalized phone storage.
@@ -582,7 +579,7 @@ Single Next.js 16 application
   └─ Publish/revalidation + audit services
        │          │              │
        ▼          ▼              ▼
- PostgreSQL   Redis-compatible   Object storage/CDN
+    MySQL     Redis-compatible   Object storage/CDN
  identities, shared rate limit,  validated media
  content,    OTP abuse limits
  audit

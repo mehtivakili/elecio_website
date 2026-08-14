@@ -1,11 +1,11 @@
 import 'server-only';
 
 import { createHmac } from 'node:crypto';
-import { Pool } from 'pg';
+import { createPool, type Pool } from 'mysql2/promise';
 import { betterAuth } from 'better-auth';
 import { APIError, createAuthMiddleware } from 'better-auth/api';
 import { nextCookies } from 'better-auth/next-js';
-import { phoneNumber, twoFactor } from 'better-auth/plugins';
+import { phoneNumber } from 'better-auth/plugins';
 import { knex } from '@/server/db/knex';
 import { redisSecondaryStorage } from '@/server/redis/client';
 import { writeAuditEvent } from '@/server/audit/write-audit-event';
@@ -25,11 +25,13 @@ declare global {
 
 const authPool =
   globalThis.__elecioAuthPool ??
-  new Pool({
-    connectionString: process.env.DATABASE_URL,
-    max: 10,
-    idleTimeoutMillis: 30_000,
-    connectionTimeoutMillis: 5_000,
+  createPool({
+    uri: process.env.DATABASE_URL,
+    connectionLimit: 10,
+    idleTimeout: 30_000,
+    connectTimeout: 5_000,
+    timezone: 'Z',
+    charset: 'utf8mb4',
   });
 
 if (process.env.NODE_ENV !== 'production') {
@@ -69,7 +71,6 @@ export const auth = betterAuth({
       emailVerified: 'email_verified',
       createdAt: 'created_at',
       updatedAt: 'updated_at',
-      twoFactorEnabled: 'two_factor_enabled',
     },
   },
   session: {
@@ -236,17 +237,6 @@ export const auth = betterAuth({
           code,
           locale: await localeForPendingOtp(phoneNumber),
         });
-      },
-    }),
-    twoFactor({
-      issuer: 'Elecio Staff',
-      twoFactorTable: 'auth_two_factors',
-      twoFactorCookieMaxAge: 5 * 60,
-      trustDeviceMaxAge: 0,
-      accountLockout: { enabled: true, maxFailedAttempts: 5, durationSeconds: 30 * 60 },
-      schema: {
-        user: { fields: { twoFactorEnabled: 'two_factor_enabled' } },
-        twoFactor: { fields: { userId: 'user_id', backupCodes: 'backup_codes', failedVerificationCount: 'failed_verification_count', lockedUntil: 'locked_until' } },
       },
     }),
     nextCookies(),

@@ -19,7 +19,7 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  await knex.raw('alter table posts drop constraint if exists posts_schema_type_check');
+  await knex.raw('alter table posts drop check posts_schema_type_check');
   await knex.schema.alterTable('posts', (table) => {
     table.dropColumns(
       'focus_keyword_fa', 'focus_keyword_en', 'secondary_keywords_fa', 'secondary_keywords_en',

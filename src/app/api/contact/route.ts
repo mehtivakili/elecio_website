@@ -5,7 +5,7 @@ import { isRateLimited } from '@/server/services/rate-limit';
 import { hashRequestIp } from '@/server/services/ip-hash';
 import { auth } from '@/server/auth/config';
 
-// Objection/Knex need real Node APIs (TCP sockets to Postgres) — must not run on the Edge runtime.
+// Objection/Knex need real Node APIs (TCP sockets to MySQL) — must not run on the Edge runtime.
 export const runtime = 'nodejs';
 
 export async function POST(request: NextRequest) {

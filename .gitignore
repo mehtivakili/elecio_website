@@ -20,6 +20,9 @@
 # production
 /build
 
+# local backup archives (GitHub rejects historical blobs over 100 MB)
+*.rar
+
 # misc
 .DS_Store
 *.pem

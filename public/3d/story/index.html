@@ -4,13 +4,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ELECIO Smart DNC — one shop floor, six machines</title>
+<link rel="preload" href="/fonts/vazirmatn-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/vazirmatn-700.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+  @font-face{font-family:'Vazirmatn';src:url('/fonts/vazirmatn-400.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+  @font-face{font-family:'Vazirmatn';src:url('/fonts/vazirmatn-500.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
+  @font-face{font-family:'Vazirmatn';src:url('/fonts/vazirmatn-700.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+  @font-face{font-family:'Vazirmatn';src:url('/fonts/vazirmatn-900.woff2') format('woff2');font-weight:900;font-style:normal;font-display:swap}
   :root{
     --void:#080a0d; --ink:#eef2f7; --dim:#7f8a99;
     --line:rgba(255,255,255,.10); --panel:rgba(14,18,24,.62);
     --led:#4aa0ff; --fault:#ff5468; --ok:#39d68a;
     --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
     --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  html[lang="fa"]{
+    --sans:'Vazirmatn','Tahoma','Segoe UI',sans-serif;
+    --mono:'Vazirmatn','Tahoma','Segoe UI',sans-serif;
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--void);color:var(--ink);font-family:var(--sans);
@@ -19,41 +29,24 @@
     background:radial-gradient(120% 82% at 50% 4%, #141a22 0%, #0b0e14 50%, #06080b 100%)}
   #stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 
-  /* ---------- panes ---------- */
-  .pane{position:fixed;z-index:3;border:1px solid var(--line);border-radius:12px;
-        pointer-events:none;opacity:0;transition:opacity .18s linear}
-  .pane .tag{position:absolute;top:-1px;left:-1px;padding:6px 10px;
-    font-family:var(--mono);font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;
-    color:var(--dim);border:1px solid var(--line);border-radius:12px 0 8px 0;
-    background:rgba(8,10,13,.82)}
-  .pane .scale{position:absolute;right:10px;bottom:8px;font-family:var(--mono);
-    font-size:8.5px;letter-spacing:.18em;color:var(--dim)}
-  /* the four sub-frames inside the left pane */
-  .cell{position:fixed;z-index:4;border:1px solid rgba(255,255,255,.07);border-radius:7px;
-        pointer-events:none;opacity:0;transition:opacity .18s linear}
-  .cell b{position:absolute;left:9px;top:7px;font-family:var(--mono);font-weight:500;
-    font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
-  .cell i{position:absolute;right:9px;bottom:7px;font-style:normal;font-family:var(--mono);
+  /* ---------- the two corner windows ---------- */
+  .win{position:fixed;z-index:4;border:1px solid var(--line);border-radius:9px;
+       pointer-events:none;opacity:0;transition:opacity .35s ease}
+  .win .tag{position:absolute;top:-1px;left:-1px;padding:5px 9px;
+    font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--dim);border:1px solid var(--line);border-radius:9px 0 7px 0;
+    background:rgba(8,10,13,.85)}
+  .win i{position:absolute;right:9px;bottom:7px;font-style:normal;font-family:var(--mono);
     font-size:9px;letter-spacing:.06em;color:var(--led)}
-
-  #link{position:fixed;z-index:4;display:flex;flex-direction:column;align-items:center;
-        justify-content:center;gap:10px;opacity:0;transition:opacity .18s linear;
-        pointer-events:none}
-  #link svg{width:34px;height:26px;overflow:visible}
+  /* the wifi mark that sits between them */
+  #link{position:fixed;z-index:4;display:flex;align-items:center;justify-content:center;
+        opacity:0;transition:opacity .35s ease;pointer-events:none}
+  #link svg{width:26px;height:20px;overflow:visible}
   #link .arc{fill:none;stroke:var(--led);stroke-width:2;stroke-linecap:round;
              opacity:.25;animation:ping 1.6s infinite}
   #link .arc:nth-child(2){animation-delay:.2s} #link .arc:nth-child(3){animation-delay:.4s}
   #link .dot{fill:var(--led)}
-  #link span{font-family:var(--mono);font-size:8px;letter-spacing:.18em;
-             text-transform:uppercase;color:var(--dim);text-align:center;line-height:1.6}
   @keyframes ping{0%,70%,100%{opacity:.2} 25%{opacity:1}}
-
-  #blackout{position:fixed;inset:0;z-index:20;background:#080a0d;opacity:0;pointer-events:none}
-  #paneCaption{position:fixed;left:0;right:0;bottom:28px;z-index:6;text-align:center;
-    padding:0 24px;opacity:0;transition:opacity .22s;pointer-events:none}
-  #paneCaption .h{font-size:clamp(19px,2.1vw,28px);font-weight:650;letter-spacing:-.03em}
-  #paneCaption .s{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;
-    text-transform:uppercase;color:var(--dim);margin-top:9px}
 
   /* ---------- callouts ---------- */
   #leads{position:fixed;inset:0;z-index:4;pointer-events:none}
@@ -83,19 +76,35 @@
   .spec i{font-style:normal;color:var(--ink);text-align:right;transition:color .3s}
   .spec i.bad{color:var(--fault)} .spec i.good{color:var(--ok)} .spec i.led{color:var(--led)}
 
-  main{position:relative;z-index:6;transition:opacity .22s}
-  .beat{min-height:120vh;display:flex;align-items:center;padding:0 clamp(20px,6vw,110px)}
-  .beat:nth-child(even){justify-content:flex-end}
-  .copy{max-width:26rem;opacity:0;transform:translateY(14px);
-        transition:opacity .45s cubic-bezier(.2,.8,.25,1),transform .45s cubic-bezier(.2,.8,.25,1)}
-  .copy.on{opacity:1;transform:none}
-  .copy .step{font-family:var(--mono);font-size:9.5px;letter-spacing:.26em;color:var(--dim);
-              text-transform:uppercase;margin-bottom:12px}
+  main{position:relative;z-index:6;transition:opacity .22s;pointer-events:none}
+  .beat{min-height:120vh}
+  .copy{--enter-x:-34px;position:fixed;z-index:7;width:min(390px,32vw);max-width:calc(100vw - 48px);
+        padding:20px 22px 22px;overflow:hidden;border:1px solid rgba(255,255,255,.13);
+        border-radius:20px;background:linear-gradient(145deg,rgba(15,20,28,.93),rgba(8,11,16,.84));
+        box-shadow:0 24px 70px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.08);
+        backdrop-filter:blur(18px) saturate(130%);-webkit-backdrop-filter:blur(18px) saturate(130%);
+        opacity:0;visibility:hidden;transform:translate3d(var(--enter-x),28px,0);
+        transition:opacity .58s cubic-bezier(.2,.8,.25,1),transform .82s cubic-bezier(.16,1,.3,1),visibility 0s linear .58s;
+        will-change:opacity,transform}
+  .copy::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;
+        background:linear-gradient(180deg,transparent 8%,var(--led) 36%,rgba(74,160,255,.25) 74%,transparent 94%)}
+  .beat:nth-child(even) .copy{--enter-x:34px}
+  .beat:nth-child(even) .copy::before{inset:0 0 0 auto}
+  .copy.on{opacity:1;visibility:visible;transform:translate3d(0,0,0);transition-delay:0s}
+  .beat:nth-child(1) .copy{left:clamp(20px,2vw,32px);top:15vh;width:min(370px,30vw)}
+  .beat:nth-child(2) .copy{left:clamp(24px,3.5vw,56px);bottom:5vh}
+  .beat:nth-child(3) .copy{left:clamp(24px,3.5vw,56px);bottom:5vh}
+  .beat:nth-child(4) .copy{right:clamp(24px,3.5vw,56px);bottom:5vh}
+  .beat:nth-child(5) .copy{right:clamp(24px,3.5vw,56px);top:27vh}
+  .beat:nth-child(6) .copy{left:clamp(24px,3.5vw,56px);bottom:8vh}
+  .beat:nth-child(7) .copy{right:clamp(24px,3.5vw,56px);bottom:10vh}
+  .copy .step{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:#82bfff;
+              text-transform:uppercase;margin-bottom:11px}
   .copy .step b{color:var(--led);font-weight:500}
-  .copy h2{margin:0 0 12px;font-size:clamp(25px,3.2vw,38px);font-weight:650;
-           letter-spacing:-.035em;line-height:1.08}
-  .copy h2 span{display:block;font-weight:250;color:var(--dim)}
-  .copy p{margin:0;max-width:32ch;font-size:12.5px;line-height:1.75;color:var(--dim)}
+  .copy h2{margin:0 0 11px;font-size:clamp(24px,2.35vw,32px);font-weight:720;
+           letter-spacing:-.03em;line-height:1.12;text-wrap:balance}
+  .copy h2 span{display:block;margin-top:4px;font-weight:430;color:rgba(224,232,243,.7)}
+  .copy p{margin:0;max-width:40ch;font-size:12.5px;line-height:1.72;color:rgba(224,232,243,.8)}
 
   .hint{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:10;
         font-family:var(--mono);font-size:9.5px;letter-spacing:.24em;color:rgba(127,138,153,.7);
@@ -103,37 +112,40 @@
   #boot{position:fixed;inset:0;z-index:40;display:grid;place-items:center;background:var(--void);
         transition:opacity .5s}
   #boot .w{text-align:center}
-  #boot p{font-family:var(--mono);font-size:10.5px;letter-spacing:.26em;color:var(--dim);
-          text-transform:uppercase;margin:0 0 14px}
-  #boot .bar{width:190px;height:2px;background:rgba(255,255,255,.09);border-radius:2px;
-             overflow:hidden;margin:0 auto}
-  #boot .bar i{display:block;height:100%;width:0;background:var(--led);transition:width .25s}
+  #boot p{font-family:var(--sans);font-size:clamp(17px,2vw,22px);font-weight:650;color:var(--ink);margin:0}
   #boot.done{opacity:0;pointer-events:none}
 
   @media (max-width:900px){
-    #leads,#notes,.pane,.cell,#link,#paneCaption{display:none}
+    #leads,#notes,.win,#link{display:none}
     .brand{top:16px;left:18px}
     .rail{top:auto;left:18px;right:18px;bottom:18px;width:auto;
           display:grid;grid-template-columns:1fr 1fr;gap:0 18px;padding:10px 14px}
     .rail h2{grid-column:1/-1;margin-bottom:4px}
-    .beat,.beat:nth-child(even){padding:0 20px 30vh;justify-content:flex-start;
-      align-items:flex-end}
-    .copy p{display:none}
+    .copy,.beat:nth-child(n) .copy{top:auto;right:18px;bottom:145px;left:18px;width:auto;
+      max-width:none;padding:18px 19px 20px;border-radius:17px}
+    .copy h2{font-size:clamp(24px,7vw,32px)}
+    .copy p{display:block;font-size:13px;line-height:1.7}
     .hint{display:none}
   }
   @media (prefers-reduced-motion:reduce){ .copy{transition:none} }
+  html[lang="fa"] .copy,html[lang="fa"] .rail,html[lang="fa"] .win,
+  html[lang="fa"] .hint,html[lang="fa"] #boot{direction:rtl}
+  html[lang="fa"] body{font-family:var(--sans);font-feature-settings:'ss01' 1;font-variant-numeric:tabular-nums}
+  html[lang="fa"] .copy{text-align:right}
+  html[lang="fa"] .copy::before{inset:0 0 0 auto}
+  html[lang="fa"] .beat:nth-child(even) .copy::before{inset:0 auto 0 0}
+  html[lang="fa"] .copy .step{font-family:var(--sans);font-size:11px;letter-spacing:0;font-weight:650}
+  html[lang="fa"] .copy h2{font-size:clamp(25px,2.45vw,33px);font-weight:760;letter-spacing:0;line-height:1.34}
+  html[lang="fa"] .copy h2 span{margin-top:2px;line-height:1.45}
+  html[lang="fa"] .copy p{font-size:13px;line-height:1.85;color:rgba(238,242,247,.84)}
 </style>
 </head>
 <body>
 
 <div id="stage"><canvas id="c"></canvas></div>
 
-<div class="pane" id="paneL"><span class="tag">A · at the desk</span><span class="scale">Sending</span></div>
-<div class="pane" id="paneR"><span class="tag">B · at the controls</span><span class="scale">Receiving</span></div>
-<div class="cell" id="cell0"><b></b><i></i></div>
-<div class="cell" id="cell1"><b></b><i></i></div>
-<div class="cell" id="cell2"><b></b><i></i></div>
-<div class="cell" id="cell3"><b></b><i></i></div>
+<div class="win" id="winA"><span class="tag">Station · sending</span><i id="winAv"></i></div>
+<div class="win" id="winB"><span class="tag">At the control · receiving</span><i id="winBv"></i></div>
 <div id="link">
   <svg viewBox="0 0 26 20">
     <path class="arc" d="M3 13 A 13 13 0 0 1 23 13"/>
@@ -141,12 +153,6 @@
     <path class="arc" d="M10 18 A 4.2 4.2 0 0 1 16 18"/>
     <circle class="dot" cx="13" cy="19.4" r="1.8"/>
   </svg>
-  <span>WiFi<br>network</span>
-</div>
-<div id="blackout"></div>
-<div id="paneCaption">
-  <div class="h">One send. Every control at once.</div>
-  <div class="s">no serial run between the desk and the machine</div>
 </div>
 
 <svg id="leads"></svg>
@@ -180,41 +186,74 @@
 
   <section class="beat"><div class="copy">
     <div class="step"><b>03</b> — what comes out</div>
-    <h2>The towers go.<span>The floor cable goes with them.</span></h2>
-    <p>One Elecio mounts at each control. What remains of the serial run is a short jumper that stays connected, per machine.</p>
+    <h2>Five towers go.<span>So does the floor cable.</span></h2>
+    <p>One Elecio mounts at each control. What remains of the serial run is a short jumper that stays connected, per machine — and one tower stays, on the bench.</p>
   </div></section>
 
   <section class="beat"><div class="copy">
     <div class="step"><b>04</b> — the link</div>
     <h2>One send,<span>every control at once</span></h2>
-    <p>The station pushes the program over the shop network. Each unit takes it at its own machine, at the same time, with nothing running between them along the floor.</p>
+    <p>The tower that stayed pushes the program over the shop network. Each unit takes it at its own machine, at the same time, with nothing running between them along the floor.</p>
   </div></section>
 
   <section class="beat"><div class="copy">
     <div class="step"><b>05</b> — what replaces them</div>
-    <h2>One PC. Or one phone.<span>Handling all six.</span></h2>
-    <p>Programs go from a single place to any control on the floor. The far corner of the shop is the same send as the machine beside the office.</p>
+    <h2>One PC left.<span>Handling all six.</span></h2>
+    <p>Programs go from a single place to any control on the floor. The far corner of the shop is the same send as the machine next to the bench.</p>
   </div></section>
 
   <section class="beat"><div class="copy">
-    <div class="step"><b>06</b> — and it answers back</div>
-    <h2>Every machine reports<span>to the same screen</span></h2>
-    <p>Transfers, run time and the gaps between cycles come back from all six, so the state of the floor is one view instead of six walks.</p>
+    <div class="step"><b>06</b> — when the network drops</div>
+    <h2>The link goes down.<span>The machines do not.</span></h2>
+    <p>Three controls lose the station. Each unit already holds the program in its own memory, so the spindles keep turning and the file keeps feeding into the control on its own.</p>
+  </div></section>
+
+  <section class="beat"><div class="copy">
+    <div class="step"><b>07</b> — and it comes back</div>
+    <h2>The link returns<span>on its own</span></h2>
+    <p>The three come back without anyone walking out to them, take what they missed, and report run time and idle time to the same screen as the rest.</p>
   </div></section>
 </main>
 
 <div class="hint" id="hint">Scroll</div>
-<div id="boot"><div class="w"><p id="bootMsg">Laying out the floor</p><div class="bar"><i id="bootBar"></i></div></div></div>
+<div id="boot"><div class="w"><p id="bootMsg">Loading the Elecio story…</p></div></div>
 
 <script src="./three.min.js"></script>
 <script src="./elecio-device.js"></script>
 <script>
 (function(){
 "use strict";
-const bootEl=document.getElementById('boot'), bootMsg=document.getElementById('bootMsg'),
-      bootBar=document.getElementById('bootBar');
+const FA=new URLSearchParams(location.search).get('lang')==='fa';
+const tr=(en,fa)=>FA?fa:en;
+if(FA){
+  document.documentElement.lang='fa';
+  document.documentElement.dir='rtl';
+  document.title='داستان سه‌بعدی Elecio Smart DNC';
+  document.querySelector('#winA .tag').textContent='ایستگاه · ارسال';
+  document.querySelector('#winB .tag').textContent='کنار کنترلر · دریافت';
+  document.querySelector('.brand strong').textContent='یک کارگاه، شش دستگاه';
+  const specLabels=['PC کنار دستگاه','کابل Serial','ارسال از','محدودیت'];
+  document.querySelectorAll('.spec b').forEach(function(el,i){el.textContent=specLabels[i];});
+  const stages=[
+    ['۰۱ — وضعیت فعلی','شش دستگاه.<span>شش PC و کابل‌هایی که میانشان کشیده شده.</span>','هر کنترلر به PC، کارت Serial و مسیر کابل مستقل خودش نیاز دارد. طولانی‌ترین مسیر این کارگاه ۲۱ متر است و با جابه‌جایی دستگاه بلندتر هم می‌شود.'],
+    ['۰۲ — نقاط خرابی','هیچ‌چیز مشترک نیست؛<span>جز مشکلات.</span>','خرابی یک PC یک دستگاه را متوقف می‌کند و کابل بلند می‌تواند انتقال را نیمه‌کاره قطع کند؛ هر مسیر تعمیر و نسخه فایل جداگانه خودش را دارد.'],
+    ['۰۳ — حذف تجهیزات اضافی','پنج PC حذف می‌شوند.<span>کابل‌های کف کارگاه هم حذف می‌شوند.</span>','کنار هر کنترلر یک Elecio Smart DNC و یک کابل Serial کوتاه و ثابت باقی می‌ماند؛ فقط یک PC در ایستگاه مرکزی می‌ماند.'],
+    ['۰۴ — اتصال','یک ارسال؛<span>برای همه کنترلرها به‌صورت هم‌زمان.</span>','PC مرکزی برنامه را روی شبکه کارگاه می‌فرستد و هر دستگاه همان‌جا آن را دریافت می‌کند؛ بدون کابل‌کشی طولانی روی کف.'],
+    ['۰۵ — مدیریت مرکزی','یک PC باقی می‌ماند.<span>برای مدیریت هر شش دستگاه.</span>','برنامه‌ها از یک نقطه به هر کنترلر می‌رسند؛ دورترین دستگاه کارگاه درست مثل نزدیک‌ترین دستگاه مدیریت می‌شود.'],
+    ['۰۶ — قطع شبکه','ارتباط قطع می‌شود.<span>اما دستگاه‌ها متوقف نمی‌شوند.</span>','سه کنترلر ارتباطشان را با ایستگاه از دست می‌دهند، اما برنامه در حافظه هر واحد ذخیره است و ماشین‌کاری بدون توقف ادامه پیدا می‌کند.'],
+    ['۰۷ — بازگشت خودکار','ارتباط دوباره برقرار می‌شود؛<span>بدون مراجعه به دستگاه.</span>','واحدها خودکار به شبکه برمی‌گردند، داده‌های عقب‌افتاده را دریافت می‌کنند و زمان کار و توقف را کنار بقیه دستگاه‌ها گزارش می‌دهند.']
+  ];
+  document.querySelectorAll('.beat').forEach(function(beat,i){
+    beat.querySelector('.step').textContent=stages[i][0];
+    beat.querySelector('h2').innerHTML=stages[i][1];
+    beat.querySelector('p').textContent=stages[i][2];
+  });
+  document.getElementById('hint').textContent='اسکرول کنید';
+  document.getElementById('bootMsg').textContent='در حال بارگذاری داستان الکسیو…';
+}
+const bootEl=document.getElementById('boot'), bootMsg=document.getElementById('bootMsg');
 if(!window.THREE || !window.ElecioDevice){
-  bootMsg.textContent='Could not load the 3D library'; return;
+  bootMsg.textContent=tr('Could not load the 3D library','بارگذاری داستان سه‌بعدی ممکن نشد'); return;
 }
 
 const clamp01=v=>v<0?0:v>1?1:v;
@@ -290,11 +329,44 @@ LB.prototype.flush=function(group){
 };
 const rect=(x0,y0,x1,y1)=>[[x0,y0],[x1,y0],[x1,y1],[x0,y1]];
 
+/* ------------------------------------------------------------
+   the spindle, as a turned wireframe so rotation actually reads:
+   two rings joined by staves, then the taper and the tool
+   ------------------------------------------------------------ */
+function makeSpindle(){
+  const g=new THREE.Group(), b=new LB();
+  const R=92, N=12, TOP=300, BOT=0;
+  for(let i=0;i<N;i++){
+    const a1=i/N*TAU, a2=(i+1)/N*TAU;
+    b.seg(LINE.detail,Math.cos(a1)*R,TOP,Math.sin(a1)*R,Math.cos(a2)*R,TOP,Math.sin(a2)*R);
+    b.seg(LINE.detail,Math.cos(a1)*R,BOT,Math.sin(a1)*R,Math.cos(a2)*R,BOT,Math.sin(a2)*R);
+  }
+  for(let i=0;i<N;i+=3){                       /* staves: these show the spin */
+    const a=i/N*TAU;
+    b.seg(LINE.edge,Math.cos(a)*R,TOP,Math.sin(a)*R,Math.cos(a)*R,BOT,Math.sin(a)*R);
+  }
+  const r2=30;
+  for(let i=0;i<N;i++){                        /* taper down to the holder */
+    const a1=i/N*TAU, a2=(i+1)/N*TAU;
+    b.seg(LINE.detail,Math.cos(a1)*r2,-130,Math.sin(a1)*r2,Math.cos(a2)*r2,-130,Math.sin(a2)*r2);
+    if(i%3===0) b.seg(LINE.detail,Math.cos(a1)*R,BOT,Math.sin(a1)*R,
+                                  Math.cos(a1)*r2,-130,Math.sin(a1)*r2);
+  }
+  b.seg(LINE.edge,0,-130,0,0,-300,0);          /* the tool */
+  b.seg(LINE.edge,-18,-130,0,-18,-280,0);
+  b.seg(LINE.edge, 18,-130,0, 18,-280,0);
+  b.flush(g);
+  return g;
+}
+
 /* ============================================================
    the machining centre
    ============================================================ */
 const ZF=900, ZB=-900;
 const PORT_LOCAL=V(1488.2,1370,978.2);
+/* on the enclosure front, above the window: the unit is its own box on the
+   machine, wired down into the control - not something hanging off the port */
+const DEV_LOCAL=V(520,1830,ZF+52);
 function makeMachine(x,z){
   const g=new THREE.Group(); g.position.set(x,0,z);
   const b=new LB();
@@ -309,9 +381,8 @@ function makeMachine(x,z){
   b.poly(LINE.detail,rect(40,1120,86,1420),ZF+3,true);
   b.poly(LINE.detail,[[-1120,180],[1120,180]],ZF+1,false);
   b.poly(LINE.detail,rect(-430,2140,430,2360),ZF-40,true);
-  b.poly(LINE.detail,rect(-70,1500,70,1660),0,true);
-  b.poly(LINE.detail,[[-70,1500],[-46,1420],[46,1420],[70,1500]],0,false);
-  b.poly(LINE.detail,rect(-520,1080,520,1180),0,true);
+  b.poly(LINE.detail,rect(-520,1080,520,1180),0,true);        /* the table */
+  b.poly(LINE.detail,[[-1120,1700],[-940,1700]],ZF-200,false);
   b.poly(LINE.quiet,[[1120,1700],[1330,1700],[1330,1660]],ZF-120,false);
   b.flush(g);
 
@@ -333,13 +404,23 @@ function makeMachine(x,z){
       side:THREE.DoubleSide}));
   bar.position.set(0,2820,ZF-400); g.add(bar);
 
-  const sym=new THREE.Group(); sym.position.copy(PORT_LOCAL).add(V(-40,340,60));
+  const spindle=makeSpindle(); spindle.position.set(0,1660,0); g.add(spindle);
+
+  /* the unit sits on the enclosure above the window, not down at the port */
+  const sym=new THREE.Group(); sym.position.copy(DEV_LOCAL);
   const sb=new LB();
-  sb.poly(LINE.mark,rect(-190,-190,190,190),0,true);
-  sb.poly(LINE.mark,[[-190,0],[-330,0]],0,false);
+  sb.poly(LINE.mark,rect(-210,-210,210,210),0,true);
+  sb.poly(LINE.mark,[[210,0],[360,0]],0,false);
   sb.flush(sym); g.add(sym);
 
-  return {group:g, port:PORT_LOCAL.clone().add(V(x,0,z)), live:live, bar:bar, sym:sym};
+  return {group:g, port:PORT_LOCAL.clone().add(V(x,0,z)),
+          dev:DEV_LOCAL.clone().add(V(x,0,z)),
+          live:live, bar:bar, sym:sym, spindle:spindle,
+          /* every machine gets its own incommensurate rhythm */
+          seed:{ph1:Math.random()*TAU, ph2:Math.random()*TAU, ph3:Math.random()*TAU,
+                f1:.21+Math.random()*.13, f2:.53+Math.random()*.28,
+                f3:.09+Math.random()*.06, rpm:2.4+Math.random()*2.6},
+          spin:0};
 }
 
 /* the machine-side tower: line art, because it is the thing being removed */
@@ -393,8 +474,19 @@ function makeWifi(scale){
   const dg=new THREE.BufferGeometry();
   dg.setAttribute('position',new THREE.Float32BufferAttribute(dv,3));
   g.add(new THREE.LineSegments(dg,dm));
-  g.userData.mats=mats; g.userData.dot=dm;
+  /* the cross that marks a dropped link */
+  const xm=new THREE.LineBasicMaterial({color:0xff5468,transparent:true,opacity:0});
+  const cy=scale*1.05, s=scale*.72, xv=[];
+  xv.push(-s,cy-s,0, s,cy+s,0,  -s,cy+s,0, s,cy-s,0);
+  const xg=new THREE.BufferGeometry();
+  xg.setAttribute('position',new THREE.Float32BufferAttribute(xv,3));
+  g.add(new THREE.LineSegments(xg,xm));
+  g.userData.mats=mats; g.userData.dot=dm; g.userData.cross=xm;
   return g;
+}
+function setWifiColor(w,hex){
+  w.userData.mats.forEach(function(m){ m.color.setHex(hex); });
+  w.userData.dot.color.setHex(hex);
 }
 function pulseWifi(w,amt,t,off){
   const m=w.userData.mats;
@@ -438,9 +530,8 @@ const PCPOS=[[-12200,-4200,.9],[-12200,-1400,.9],[-12200,1400,.9],
              [  7400,-4200,-.9],[  7400,-1400,-.9],[  7400,1400,-.9]];
 const FEED=[0,3,4,2,5,1];
 const MNAME=['CNC 01','CNC 02','CNC 03','CNC 04','CNC 05','CNC 06'];
+const FAILED_PC=3, FAILED_MACHINE=FEED[FAILED_PC];
 const machines=[], pcs=[], cables=[];
-const DEV_OFFSET=V(-40,340,60);
-const OFFICE=V(8600,900,6400);
 let TOTAL_LONG=0, TOTAL_SHORT=0;
 const fmt=mm=>(mm/1000).toFixed(1)+' m';
 
@@ -510,22 +601,30 @@ function buildFloor(){
 
   PCPOS.forEach(function(q,i){
     const mi=FEED[i], port=machines[mi].port, pcTop=pcs[i].top;
-    const dev=port.clone().add(DEV_OFFSET);
+    const dev=machines[mi].dev.clone();
     const trunk=-1050+i*230, sgn=trunk<pcTop.z?-1:1;
     const long=[pcTop.clone(), V(pcTop.x,40,pcTop.z+700*sgn), V(pcTop.x,30,trunk),
       V((pcTop.x+port.x)/2,30,trunk), V(port.x+520,30,trunk),
       V(port.x+520,30,port.z+780), port.clone().add(V(180,-380,300)), port.clone()];
-    const short=[dev.clone().add(V(0,-48,0)), dev.clone().add(V(-6,-96,10)),
-      dev.clone().add(V(8,-150,14)), dev.clone().add(V(30,-210,20)),
-      port.clone().add(V(20,150,90)), port.clone().add(V(34,70,74)),
-      port.clone().add(V(30,10,52)), port.clone()];
+    /* the blue run on the drawing: out of the DB-25, down the enclosure
+       and across into the control */
+    const short=[dev.clone().add(V(0,-52,0)),
+      dev.clone().add(V(30,-170,14)),
+      dev.clone().add(V(150,-300,26)),
+      dev.clone().add(V(400,-390,34)),
+      dev.clone().add(V(700,-420,40)),
+      port.clone().add(V(-150,10,30)),
+      port.clone().add(V(-60,-6,20)),
+      port.clone()];
     const pts=long.map(v=>v.clone());
     const curve=new THREE.CatmullRomCurve3(pts);
     TOTAL_LONG+=curve.getLength();
     TOTAL_SHORT+=new THREE.CatmullRomCurve3(short).getLength();
     const tube=makeTube(curve,cableMat);
     floorRoot.add(tube.mesh);
-    cables.push({mesh:tube.mesh, machine:mi, curve:curve,
+    const flow=makeStream(curve,3,105,0x4aa0ff);
+    floorRoot.add(flow);
+    cables.push({mesh:tube.mesh, machine:mi, curve:curve, flow:flow,
       reshape:function(t){
         for(let k=0;k<pts.length;k++) pts[k].lerpVectors(long[k],short[k],t);
         tube.write(CABLE_R*(1-.55*t));
@@ -534,38 +633,14 @@ function buildFloor(){
 }
 
 /* ============================================================
-   the station: a solid, lit laptop — the one thing that stays
+   the station is one of the six towers: the other five are removed
+   and this one keeps sending, so no new hardware appears in the story
    ============================================================ */
-const LAYER_DESK=5;
-let laptopScreen=null, deskStream=null, officeWifi=null, laptopLid=null;
-let paneWifi=null, paneStream=null;
-function roundedSlab(w,d,h,r){
-  const s=new THREE.Shape();
-  s.moveTo(-w/2+r,-d/2);
-  s.lineTo(w/2-r,-d/2); s.quadraticCurveTo(w/2,-d/2,w/2,-d/2+r);
-  s.lineTo(w/2,d/2-r);  s.quadraticCurveTo(w/2,d/2,w/2-r,d/2);
-  s.lineTo(-w/2+r,d/2); s.quadraticCurveTo(-w/2,d/2,-w/2,d/2-r);
-  s.lineTo(-w/2,-d/2+r);s.quadraticCurveTo(-w/2,-d/2,-w/2+r,-d/2);
-  const g=new THREE.ExtrudeGeometry(s,{depth:h,bevelEnabled:true,bevelThickness:h*.16,
-    bevelSize:h*.16,bevelSegments:2,curveSegments:8});
-  g.translate(0,0,-h/2); g.computeVertexNormals();
-  return g;
-}
-function deckTexture(){
-  const c=document.createElement('canvas'); c.width=1024; c.height=720;
-  const x=c.getContext('2d');
-  x.fillStyle='#3c424b'; x.fillRect(0,0,1024,720);
-  x.fillStyle='#2a2f37'; x.fillRect(70,60,884,400);          /* key well */
-  x.fillStyle='#14171c';
-  for(let r=0;r<5;r++) for(let k=0;k<14;k++){
-    const w=(884-15*8)/14, h=(400-6*8)/5;
-    x.fillRect(70+8+k*(w+8), 60+8+r*(h+8), w, h);
-  }
-  x.fillStyle='#343a43'; x.fillRect(342,500,340,180);        /* trackpad */
-  x.strokeStyle='#22262d'; x.lineWidth=3; x.strokeRect(342,500,340,180);
-  const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; t.anisotropy=4;
-  return t;
-}
+const KEEP=5;                      /* which tower stays on the bench */
+const LAYER_DEV=1, LAYER_PC=2;
+let stationPos=V(0,0,0), stationScreen=null, stationWifi=null,
+    stationWifiBig=null, stationStream=null;
+
 function screenCanvas(){
   const c=document.createElement('canvas'); c.width=1024; c.height=640;
   const t=new THREE.CanvasTexture(c);
@@ -607,83 +682,6 @@ function screenCanvas(){
   draw(0);
   return {tex:t, draw:draw};
 }
-function buildStation(){
-  const g=new THREE.Group(); g.position.copy(OFFICE); scene.add(g);
-
-  /* desk top sits at y = 30 */
-  const desk=new THREE.Mesh(roundedSlab(2600,1300,60,40),
-    new THREE.MeshStandardMaterial({color:0x1c222c,roughness:.72,metalness:.18}));
-  desk.rotation.x=-Math.PI/2; g.add(desk);
-
-  /* ------------------------------------------------------------
-     the laptop, built in plain local axes: X across, Y up, Z toward
-     the viewer. the base lies flat, the lid hinges at its back edge
-     and leans back 16 degrees, and the screen plane keeps its default
-     +Z normal so it faces the camera.
-     ------------------------------------------------------------ */
-  const LX=-150, LZ=40;                    /* where the laptop sits on the desk */
-  const alu=new THREE.MeshStandardMaterial({color:0xa7b0ba,roughness:.3,metalness:.94});
-  const dark=new THREE.MeshStandardMaterial({color:0x14171c,roughness:.42,metalness:.5});
-
-  const base=new THREE.Mesh(roundedSlab(330,230,15,13),alu);
-  base.rotation.x=-Math.PI/2; base.position.set(LX,38,LZ); g.add(base);
-  const deck=new THREE.Mesh(new THREE.PlaneGeometry(312,212),
-    new THREE.MeshStandardMaterial({map:deckTexture(),roughness:.58,metalness:.5}));
-  deck.rotation.x=-Math.PI/2; deck.position.set(LX,45.6,LZ); g.add(deck);
-
-  /* hinge barrel along the back edge */
-  const hinge=new THREE.Mesh(new THREE.CylinderGeometry(7,7,300,14),dark);
-  hinge.rotation.z=Math.PI/2; hinge.position.set(LX,46,LZ-113); g.add(hinge);
-
-  const lid=new THREE.Group();
-  lid.position.set(LX,46,LZ-113);
-  lid.rotation.x=-0.28;                    /* ~106 degrees open */
-  g.add(lid); laptopLid=lid;
-  const lidSlab=new THREE.Mesh(roundedSlab(330,222,9,13),alu);
-  lidSlab.position.set(0,111,-5); lid.add(lidSlab);          /* upright, faces +Z */
-  const bezel=new THREE.Mesh(new THREE.PlaneGeometry(314,206),dark);
-  bezel.position.set(0,111,0.4); lid.add(bezel);
-  const sc=screenCanvas(); laptopScreen=sc;
-  const scr=new THREE.Mesh(new THREE.PlaneGeometry(296,185),
-    new THREE.MeshBasicMaterial({map:sc.tex}));
-  scr.position.set(0,113,1.2); lid.add(scr);                 /* the send, on screen */
-
-  /* phone on the desk, mirroring the same send */
-  const ph=new THREE.Mesh(roundedSlab(140,290,13,20),
-    new THREE.MeshStandardMaterial({color:0x22262d,roughness:.38,metalness:.62}));
-  ph.rotation.x=-Math.PI/2; ph.rotation.z=-.3; ph.position.set(205,37,150); g.add(ph);
-  const phs=new THREE.Mesh(new THREE.PlaneGeometry(118,254),
-    new THREE.MeshBasicMaterial({map:sc.tex}));
-  phs.rotation.x=-Math.PI/2; phs.rotation.z=-.3; phs.position.set(205,44,150); g.add(phs);
-
-  g.traverse(function(o){ o.layers.enable(LAYER_DESK); });
-
-  /* two scales of the same idea: one sized for the 35 m wide shot,
-     one sized to sit inside the desk pane */
-  officeWifi=makeWifi(300);
-  officeWifi.position.set(LX,900,0);
-  officeWifi.traverse(function(o){ o.layers.set(0); });
-  g.add(officeWifi);
-  paneWifi=makeWifi(104);
-  paneWifi.position.set(LX+30,300,-40);
-  paneWifi.traverse(function(o){ o.layers.set(LAYER_DESK); });
-  g.add(paneWifi);
-
-  const far=new THREE.CatmullRomCurve3([
-    V(LX,150,-40), V(-60,470,60), V(120,780,180), V(360,1120,320)]);
-  deskStream=makeStream(far,7,26,0x4aa0ff);
-  deskStream.traverse(function(o){ o.layers.set(0); });
-  g.add(deskStream);
-
-  const near=new THREE.CatmullRomCurve3([
-    V(LX,215,-60), V(LX+70,330,-10), V(LX+180,430,50), V(LX+310,530,120)]);
-  paneStream=makeStream(near,6,11,0x4aa0ff);
-  paneStream.traverse(function(o){ o.layers.set(LAYER_DESK); });
-  g.add(paneStream);
-
-  return g;
-}
-
 /* ------------------------------------------------------------
    the unit arrives as 83 separate meshes. materials are what force
    a draw call, not objects, so everything sharing a material is
@@ -735,28 +733,54 @@ function mergeByMaterial(root){
   return out;
 }
 
+function dressStation(){
+  const pc=pcs[KEEP];
+  stationPos=pc.top.clone();
+  /* the monitor stops being a flat fill and becomes the send screen */
+  const sc=screenCanvas(); stationScreen=sc;
+  pc.fill.material.dispose();
+  pc.fill.material=new THREE.MeshBasicMaterial({map:sc.tex,transparent:true,opacity:1});
+  pc.group.traverse(function(o){ o.layers.enable(LAYER_PC); });
+
+  stationWifiBig=makeWifi(520);
+  stationWifiBig.position.copy(stationPos).add(V(0,1500,0));
+  stationWifiBig.traverse(function(o){ o.layers.set(0); });
+  floorRoot.add(stationWifiBig);
+
+  stationWifi=makeWifi(150);
+  stationWifi.position.copy(stationPos).add(V(240,760,140));
+  stationWifi.traverse(function(o){ o.layers.set(LAYER_PC); });
+  scene.add(stationWifi);
+
+  const up=new THREE.CatmullRomCurve3([
+    stationPos.clone().add(V(220,420,150)), stationPos.clone().add(V(300,620,220)),
+    stationPos.clone().add(V(430,820,300)), stationPos.clone().add(V(600,1000,380))]);
+  stationStream=makeStream(up,6,26,0x4aa0ff,LAYER_PC);
+  scene.add(stationStream);
+}
+
 /* ============================================================
-   four units, each on its own layer so a pane can show just one
+   one unit, framed in the second window
    ============================================================ */
-const CELL_MACHINE=[5,2,3,0];
+const HERO=5;
 const devs=[];
 function buildDevice(i){
-  const mi=CELL_MACHINE[i];
+  const mi=HERO;
   const d=ElecioDevice.create({finish:'black',screen:'off',led:true,shadows:false});
-  const pos=machines[mi].port.clone().add(DEV_OFFSET);
+  const pos=machines[mi].dev.clone();
   const rendered=mergeByMaterial(d.group);   /* materials still shared with d */
   rendered.position.copy(pos);
-  rendered.traverse(function(o){ o.layers.enable(1+i); });
+  rendered.traverse(function(o){ o.layers.enable(LAYER_DEV); });
   scene.add(rendered);
   d.render=rendered;
   const w=makeWifi(26);
   w.position.copy(pos).add(V(0,56,18));
-  w.traverse(function(o){ o.layers.set(1+i); });
+  w.traverse(function(o){ o.layers.set(LAYER_DEV); });
   scene.add(w);
   const inbound=new THREE.CatmullRomCurve3([
     pos.clone().add(V(-460,520,260)), pos.clone().add(V(-260,300,170)),
     pos.clone().add(V(-90,140,80)),   pos.clone().add(V(0,52,26))]);
-  const st=makeStream(inbound,5,9,0x4aa0ff,1+i);
+  const st=makeStream(inbound,5,9,0x4aa0ff,LAYER_DEV);
   scene.add(st);
   devs.push({api:d, node:rendered, pos:pos, wifi:w, stream:st, machine:mi, prog:0});
 }
@@ -764,24 +788,25 @@ function buildDevice(i){
 /* ============================================================
    network arcs on the floor
    ============================================================ */
-const netMat=new THREE.LineBasicMaterial({color:0x4aa0ff,transparent:true,opacity:0});
 const NET_STEPS=64;
 let nets=[], FARTHEST=0;
 function buildNets(){
   nets=machines.map(function(mk){
-    const a=OFFICE.clone().add(V(-140,900,0)), b=mk.port.clone().add(DEV_OFFSET);
+    const a=stationPos.clone().add(V(120,520,60)), b=mk.dev.clone();
     const mid=a.clone().lerp(b,.5); mid.y+=Math.max(2600,a.distanceTo(b)*.42);
     const c=new THREE.CatmullRomCurve3([a,a.clone().lerp(mid,.5),mid,mid.clone().lerp(b,.5),b]);
     const v=[]; const pp=c.getPoints(NET_STEPS);
     pp.forEach(q=>v.push(q.x,q.y,q.z));
     const g=new THREE.BufferGeometry();
     g.setAttribute('position',new THREE.Float32BufferAttribute(v,3));
-    const l=new THREE.Line(g,netMat); l.geometry.setDrawRange(0,0); floorRoot.add(l);
+    /* each arc owns its material so a single link can drop */
+    const m=new THREE.LineBasicMaterial({color:0x4aa0ff,transparent:true,opacity:0});
+    const l=new THREE.Line(g,m); l.geometry.setDrawRange(0,0); floorRoot.add(l);
     const st=makeStream(c,4,40,0x4aa0ff); floorRoot.add(st);
-    return {line:l, stream:st, curve:c, len:a.distanceTo(b)};
+    return {line:l, mat:m, stream:st, curve:c, len:a.distanceTo(b)};
   });
   FARTHEST=nets.reduce((m,n,i)=>n.len>nets[m].len?i:m,0);
-  const a=OFFICE.clone(), b=machines[FARTHEST].port.clone(); a.y=b.y=60;
+  const a=stationPos.clone(), b=machines[FARTHEST].port.clone(); a.y=b.y=60;
   const d=b.clone().sub(a).normalize(), n=V(-d.z,0,d.x).multiplyScalar(260);
   const lb=new LB();
   const p1=a.clone().add(n), p2=b.clone().add(n);
@@ -794,25 +819,37 @@ function buildNets(){
    callouts
    ============================================================ */
 const NOTES=[
-  {a:()=>pcs[0].top.clone().add(V(0,900,0)), k:'one per machine',
-   v:'tower, serial card, software', dx:-80,dy:-80, side:'l', on:[0,.5,1.6,2.2]},
-  {a:()=>cables[2].curve.getPoint(.5), k:'serial cable, total', v:()=>fmt(TOTAL_LONG),
+  {a:()=>pcs[0].top.clone().add(V(0,900,0)), k:tr('one per machine','برای هر دستگاه'),
+   v:tr('tower, serial card, software','PC، کارت Serial و نرم‌افزار'), dx:-80,dy:-80, side:'l', on:[0,.5,1.6,2.2]},
+  {a:()=>cables[2].curve.getPoint(.5), k:tr('serial cable, total','مجموع کابل Serial'), v:()=>fmt(TOTAL_LONG),
    dx:70,dy:90, side:'r', on:[0,.5,2.2,2.7]},
-  {a:()=>pcs[3].top.clone().add(V(0,700,0)), k:'a tower fails', v:'that machine stops',
-   dx:-70,dy:-60, side:'l', on:[1.1,1.6,2.2,2.7], cls:'bad'},
-  {a:()=>cables[4].curve.getPoint(.58), k:'long run', v:'transfer drops part-way',
-   dx:80,dy:70, side:'r', on:[1.2,1.7,2.2,2.7], cls:'bad'},
-  {a:()=>machines[5].port.clone().add(V(0,900,0)), k:'one at each control',
+  {a:()=>pcs[FAILED_PC].top.clone().add(V(0,700,0)), k:tr('PC connection lost','ارتباط PC قطع شد'), v:tr('that machine stops','آن دستگاه متوقف می‌شود'),
+   dx:-70,dy:-60, side:'l', on:[.62,.88,1.58,1.88], cls:'bad'},
+  {a:()=>cables[FAILED_PC].curve.getPoint(.58), k:tr('long run','مسیر طولانی'), v:tr('transfer drops part-way','انتقال نیمه‌کاره قطع می‌شود'),
+   dx:80,dy:70, side:'r', on:[.72,.95,1.58,1.88], cls:'bad'},
+  {a:()=>machines[FAILED_MACHINE].group.position.clone().add(V(0,3900,450)),
+   k:tr('SYSTEM STOPPED','سیستم متوقف شد'), v:'✕', dx:20,dy:-45, side:'r',
+   on:[.68,.92,1.62,1.9], cls:'bad'},
+  {a:()=>machines[5].port.clone().add(V(0,900,0)), k:tr('one at each control','یکی کنار هر کنترلر'),
    v:'Elecio Smart DNC', dx:110,dy:-90, side:'r', on:[2.4,2.9,9,9], cls:'led'},
-  {a:()=>cables[1].curve.getPoint(.5), k:'serial cable now', v:()=>fmt(TOTAL_SHORT),
+  {a:()=>cables[1].curve.getPoint(.5), k:tr('serial cable now','کابل Serial فعلی'), v:()=>fmt(TOTAL_SHORT),
    dx:-90,dy:70, side:'l', on:[2.8,3.2,9,9], cls:'good'},
-  {a:()=>OFFICE.clone().add(V(-140,1900,0)), k:'sends from', v:'one PC, or a phone',
+  {a:()=>stationPos.clone().add(V(0,1500,0)), k:tr('sends from','ارسال از'), v:tr('the one tower left','تنها PC باقی‌مانده'),
    dx:70,dy:-70, side:'r', on:[4.15,4.5,9,9], cls:'led'},
-  {a:()=>nets.length?nets[FARTHEST].curve.getPoint(.5):V(0,0,0), k:'far corner of the shop',
-   v:()=>fmt(nets[FARTHEST].len)+' · same send', dx:-80,dy:-50, side:'l',
-   on:[4.35,4.7,9,9], cls:'led'},
-  {a:()=>machines[1].group.position.clone().add(V(0,3400,0)), k:'idle',
-   v:'waiting for setup', dx:-60,dy:-50, side:'l', on:[5.4,5.7,9,9], cls:'bad'}
+  {a:()=>nets.length?nets[FARTHEST].curve.getPoint(.5):V(0,0,0), k:tr('far corner of the shop','دورترین نقطه کارگاه'),
+   v:()=>fmt(nets[FARTHEST].len)+' · '+tr('same send','همان ارسال'), dx:-80,dy:-50, side:'l',
+   on:[4.05,4.25,4.85,5.0], cls:'led'},
+  {a:()=>machines[OFFLINE[0]].group.position.clone().add(V(0,3900,400)),
+   k:tr('link lost','ارتباط قطع شد'), v:tr('still cutting, from its own memory','ادامه ماشین‌کاری از حافظه داخلی'),
+   dx:-70,dy:-60, side:'l', on:[4.68,4.9,5.6,5.85], cls:'bad'},
+  {a:()=>machines[OFFLINE[2]].dev.clone().add(V(0,500,0)),
+   k:tr('no station, no stop','بدون ایستگاه، بدون توقف'), v:tr('program held on the unit','برنامه در حافظه واحد باقی است'),
+   dx:90,dy:70, side:'r', on:[4.75,4.98,5.6,5.85], cls:'led'},
+  {a:()=>machines[OFFLINE[1]].group.position.clone().add(V(0,3600,400)),
+   k:tr('back on its own','بازگشت خودکار'), v:tr('no one walked out to it','بدون مراجعه به دستگاه'),
+   dx:80,dy:-50, side:'r', on:[5.7,5.95,9,9], cls:'good'},
+  {a:()=>machines[1].group.position.clone().add(V(0,3400,0)), k:tr('idle','بدون فعالیت'),
+   v:tr('waiting for setup','در انتظار راه‌اندازی'), dx:-60,dy:-50, side:'l', on:[5.85,6.0,9,9], cls:'bad'}
 ];
 const svg=document.getElementById('leads'), notesRoot=document.getElementById('notes');
 const SVGNS='http://www.w3.org/2000/svg';
@@ -860,67 +897,51 @@ function drawNotes(p){
    camera
    ============================================================ */
 const KEYS=[
-  {p:[14280,12412,23212], t:[-1400,1100, 700], title:'Existing shop'},
-  {p:[12772,12860,23860], t:[-1900,1100, 900], title:'Six failure points'},
-  {p:[10932,13296,24096], t:[-1500,1200, 800], title:'Removed'},
-  {p:[11500,13480,23760], t:[  900,1300,1500], title:'The link'},
-  {p:[14644,16755,28676], t:[  200,1200, 900], title:'One station'},
-  {p:[17177,17193,28059], t:[ -600,1500, 700], title:'Whole floor'}
+  {p:[14280,12412,23212], t:[-1400,1100, 700], title:tr('Existing shop','وضعیت فعلی کارگاه')},
+  {p:[12772,12860,23860], t:[-1900,1100, 900], title:tr('Six failure points','شش نقطه خرابی')},
+  {p:[10932,13296,24096], t:[-1500,1200, 800], title:tr('Removed','تجهیزات حذف‌شده')},
+  {p:[11800,13520,23900], t:[  700,1300,1400], title:tr('The link','اتصال شبکه')},
+  {p:[13100,14600,25600], t:[  200,1250,1100], title:tr('One station','یک ایستگاه مرکزی')},
+  {p:[13900,15100,26200], t:[ -200,1350, 900], title:tr('Link down','قطع ارتباط')},
+  {p:[14700,15700,27000], t:[ -400,1400, 800], title:tr('Whole floor','کل کارگاه')}
 ];
 const camPos=new THREE.Vector3().fromArray(KEYS[0].p);
 const camTgt=new THREE.Vector3().fromArray(KEYS[0].t);
 const wantP=camPos.clone(), wantT=camTgt.clone();
 const vA=V(0,0,0), vB=V(0,0,0);
 
-const camCell=[0,1,2,3].map(function(i){
-  const c=new THREE.PerspectiveCamera(30,1,10,6000); c.layers.set(1+i); return c;
-});
-const camR=new THREE.PerspectiveCamera(30,1,40,30000); camR.layers.set(LAYER_DESK);
+const camDev=new THREE.PerspectiveCamera(30,1,10,6000); camDev.layers.set(LAYER_DEV);
+const camPC =new THREE.PerspectiveCamera(30,1,40,40000); camPC.layers.set(LAYER_PC);
 
 /* ============================================================
    DOM handles + layout
    ============================================================ */
-const paneL=document.getElementById('paneL'), paneR=document.getElementById('paneR');
-const linkGlyph=document.getElementById('link'), blackout=document.getElementById('blackout');
-const paneCaption=document.getElementById('paneCaption'), mainEl=document.querySelector('main');
-const cellEls=[0,1,2,3].map(i=>document.getElementById('cell'+i));
-const cellName=cellEls.map(e=>e.querySelector('b'));
-const cellVal=cellEls.map(e=>e.querySelector('i'));
+const winA=document.getElementById('winA'), winB=document.getElementById('winB');
+const winAv=document.getElementById('winAv'), winBv=document.getElementById('winBv');
+const linkGlyph=document.getElementById('link');
 const railTitle=document.getElementById('railTitle');
 const S=['s1','s2','s3','s4'].map(id=>document.getElementById(id));
 const hint=document.getElementById('hint');
-let PANE_L={x:0,y:0,w:1,h:1}, PANE_R={x:0,y:0,w:1,h:1}, CELL=[];
+let WIN_A={x:0,y:0,w:1,h:1}, WIN_B={x:0,y:0,w:1,h:1};
 
 function layoutPanes(){
-  const ms=Math.round(Math.min(70,innerWidth*.045));
-  const gap=Math.round(Math.min(130,innerWidth*.08));
-  const mt=Math.round(Math.min(66,innerHeight*.07));
-  const mb=128;
-  const pw=Math.max(80,Math.floor((innerWidth-2*ms-gap)/2));
-  const ph=Math.max(120,innerHeight-mt-mb);
-  PANE_L={x:ms,y:mb,w:pw,h:ph};
-  PANE_R={x:ms+pw+gap,y:mb,w:pw,h:ph};
-  [[paneL,PANE_L],[paneR,PANE_R]].forEach(function(q){
+  /* two small windows in the bottom-left corner, side by side */
+  const w=Math.max(150,Math.min(268,Math.round(innerWidth*.185)));
+  const hgt=Math.round(w*.74), gap=34, m=28;
+  WIN_A={x:m,           y:m, w:w, h:hgt};
+  WIN_B={x:m+w+gap,     y:m, w:w, h:hgt};
+  [[winA,WIN_A],[winB,WIN_B]].forEach(function(q){
     q[0].style.left=q[1].x+'px';
     q[0].style.top=(innerHeight-q[1].y-q[1].h)+'px';
     q[0].style.width=q[1].w+'px'; q[0].style.height=q[1].h+'px';
   });
-  /* the right pane splits into four */
-  const gi=10, cw=Math.floor((pw-gi*3)/2), ch=Math.floor((ph-gi*3)/2);
-  CELL=[0,1,2,3].map(function(i){
-    const cx=PANE_R.x+gi+(i%2)*(cw+gi);
-    const cyTop=(innerHeight-PANE_R.y-PANE_R.h)+gi+Math.floor(i/2)*(ch+gi);
-    const r={x:cx, y:innerHeight-cyTop-ch, w:cw, h:ch, top:cyTop};
-    cellEls[i].style.left=r.x+'px'; cellEls[i].style.top=r.top+'px';
-    cellEls[i].style.width=r.w+'px'; cellEls[i].style.height=r.h+'px';
-    camCell[i].aspect=r.w/r.h; camCell[i].updateProjectionMatrix();
-    return r;
-  });
-  linkGlyph.style.left=(ms+pw)+'px';
-  linkGlyph.style.top=(innerHeight-mb-ph)+'px';
-  linkGlyph.style.width=gap+'px'; linkGlyph.style.height=ph+'px';
-  camR.aspect=PANE_L.w/PANE_L.h; camR.updateProjectionMatrix();
+  linkGlyph.style.left=(m+w)+'px';
+  linkGlyph.style.top=(innerHeight-m-hgt)+'px';
+  linkGlyph.style.width=gap+'px'; linkGlyph.style.height=hgt+'px';
+  camDev.aspect=camPC.aspect=w/hgt;
+  camDev.updateProjectionMatrix(); camPC.updateProjectionMatrix();
 }
+
 function resize(){
   renderer.setSize(innerWidth,innerHeight,false);
   camera.aspect=innerWidth/innerHeight;
@@ -937,13 +958,20 @@ addEventListener('resize',resize);
    ============================================================ */
 let p=0;
 const copies=[].slice.call(document.querySelectorAll('.copy'));
+let activeCopy=-1;
 function spec(el,t,c){ el.textContent=t; el.className=c||''; }
 function rail(){
-  const gone=p>2.6;
+  const gone=p>1.8;
+  if(p>=4.65&&p<5.85){
+    spec(S[0],'0','good'); spec(S[1],fmt(TOTAL_SHORT),'good');
+    spec(S[2],tr('3 of 6 offline','۳ از ۶ آفلاین'),'bad'); spec(S[3],tr('internal memory','حافظه داخلی'),'led');
+    railTitle.textContent=KEYS[Math.round(Math.min(p,KEYS.length-1))].title;
+    return;
+  }
   spec(S[0], gone?'0':'6', gone?'good':p>1?'bad':'');
   spec(S[1], gone?fmt(TOTAL_SHORT):fmt(TOTAL_LONG), gone?'good':p>1?'bad':'');
-  spec(S[2], p>3.2?'1 PC or phone':'6 stations', p>3.2?'led':'');
-  spec(S[3], p>3.2?'network reach':'cable length', p>3.2?'led':'');
+  spec(S[2], p>3.2?tr('1 PC or phone','۱ PC یا گوشی'):tr('6 stations','۶ ایستگاه'), p>3.2?'led':'');
+  spec(S[3], p>3.2?tr('network reach','محدوده شبکه'):tr('cable length','طول کابل'), p>3.2?'led':'');
   railTitle.textContent=KEYS[Math.round(Math.min(p,KEYS.length-1))].title;
 }
 function onScroll(){
@@ -952,10 +980,11 @@ function onScroll(){
   const i=Math.min(Math.floor(p),KEYS.length-2), f=ease(p-i);
   wantP.fromArray(KEYS[i].p).lerp(vA.fromArray(KEYS[i+1].p),f);
   wantT.fromArray(KEYS[i].t).lerp(vB.fromArray(KEYS[i+1].t),f);
-  copies.forEach(function(c){
-    const r=c.getBoundingClientRect();
-    c.classList.toggle('on', r.top<innerHeight*.72 && r.bottom>innerHeight*.16);
-  });
+  const nextCopy=Math.max(0,Math.min(copies.length-1,Math.round(p)));
+  if(nextCopy!==activeCopy){
+    copies.forEach(function(c,index){c.classList.toggle('on',index===nextCopy);});
+    activeCopy=nextCopy;
+  }
   hint.style.opacity=scrollY>60?0:1;
   rail();
 }
@@ -987,11 +1016,12 @@ if(DEBUG){
    frame
    ============================================================ */
 const clock=new THREE.Clock();
-let lastRetract=-1, lastLed=[], lastPaneMode=null, lastSend=-1;
+let lastRetract=-1, lastLed=[], lastWinOn=null, lastSend=-1;
+let replacementVisual=0;
 let frameAcc=0, frameN=0;
 const IDLE=[1,4];
+const OFFLINE=[0,3,5];      /* three, in three different parts of the shop */
 const detailPos=V(0,0,0);
-let station=null;
 
 function drawPane(r,cam){
   renderer.setScissorTest(true);
@@ -1030,151 +1060,211 @@ function frame(){
   }
   camera.lookAt(camTgt);
 
-  const stress  = band(p,1.0,1.5,2.1,2.6);
-  const gone    = seg(p,2.1,2.7);
-  const retract = ease(seg(p,2.2,2.9));
-  const born    = ease(seg(p,2.05,2.7));
+  // Stage 2: one PC/link fails and the corresponding machine remains stopped.
+  const stress  = band(p,.55,.92,1.62,1.92);
+  // One scroll into stage 3 completes the whole replacement: towers leave, long cable paths
+  // collapse into the short Elecio jumpers, and the Elecio units appear together.
+  const replacementTarget=ease(seg(p,1.5,1.95));
+  // Decouple the cable morph from scroll velocity. Even if the browser jumps straight to the
+  // third stage, the long runs visibly fold into their short Elecio jumpers over ~2 seconds.
+  const replacementFollow=1-Math.exp(-dt*2.15);
+  replacementVisual+=(replacementTarget-replacementVisual)*replacementFollow;
+  if(Math.abs(replacementTarget-replacementVisual)<.0005) replacementVisual=replacementTarget;
+  const replacement=replacementVisual;
+  const gone    = replacement;
+  const retract = replacement;
+  const born    = replacement;
   const wifiAmt = band(p,2.85,3.3,9,9);
-  const stationAmt=seg(p,2.8,3.25);
-  const netAmt  = band(p,3.9,4.35,9,9);
+  // Finish drawing before stage 5 becomes active, so all six links and packets are already
+  // visible for the entire stage instead of flashing in during the transition to stage 6.
+  const netAmt  = ease(seg(p,3.05,3.45));
   const running = band(p,4.2,4.55,9,9);
-  const report  = seg(p,5.1,5.6);
+  /* three links drop, then come back on their own */
+  // The stage-6 card appears at p=4.5; only after that do three selected links drop.
+  const offline = band(p,4.65,4.95,5.6,5.85);
+  const report  = seg(p,5.7,6.0);
   const wide    = innerWidth>900;
-  const paneMode= wide && p>=3.0 && p<3.9;
-  const dip     = wide ? Math.max(band(p,2.86,3.0,3.0,3.14),
-                                  band(p,3.76,3.9,3.9,4.04)) : 0;
-  const sending = paneMode||netAmt>.1;
+  /* the two corner windows fade in over the link beat and out again;
+     the floor view never stops running behind them */
+  const winAmt  = wide ? band(p,2.95,3.35,4.15,4.6) : 0;
+  const winOn   = winAmt>.5;
+  const sending = winAmt>.05||netAmt>.1;
   const sendProg= (t*.30)%1;
 
-  if(paneMode!==lastPaneMode){
-    floorRoot.visible=!paneMode;
-    paneL.style.opacity=paneMode?1:0;
-    paneR.style.opacity=paneMode?1:0;
-    linkGlyph.style.opacity=paneMode?1:0;
-    paneCaption.style.opacity=paneMode?1:0;
-    mainEl.style.opacity=paneMode?0:1;
-    cellEls.forEach(e=>e.style.opacity=paneMode?1:0);
-    lastPaneMode=paneMode;
+  if(winOn!==lastWinOn){
+    winA.style.opacity=winOn?1:0;
+    winB.style.opacity=winOn?1:0;
+    linkGlyph.style.opacity=winOn?1:0;
+    lastWinOn=winOn;
   }
-  blackout.style.opacity=dip;
 
-  /* ---- floor-only work ---- */
-  if(!paneMode){
+  {
     const alive=1-gone;
     for(let i=0;i<pcs.length;i++){
-      const pc=pcs[i];
-      pc.group.visible=alive>.01;
+      const pc=pcs[i], keep=(i===KEEP);
+      const a=keep?1:alive;                       /* one tower stays on the bench */
+      pc.group.visible=a>.01;
       if(!pc.group.visible) continue;
-      const failing=stress*clamp01(1-Math.abs(((t*.42+i*.17)%1)-.5)*4);
-      pc.mats[0].opacity=.5*alive; pc.mats[1].opacity=.72*alive; pc.mats[2].opacity=.5*alive;
-      pc.fill.material.color.setHex(failing>.35?0xff5468:0x2f6fd0);
-      pc.fill.material.opacity=.15*alive*(failing>.35?(.35+.65*Math.abs(Math.sin(t*9))):1);
-      pc.group.position.y=-900*gone*gone;
+      const failing=i===FAILED_PC
+        ? stress*clamp01(1-Math.abs(((t*.55+i*.17)%1)-.5)*4)
+        : 0;
+      pc.mats[0].opacity=.5*a; pc.mats[1].opacity=.72*a; pc.mats[2].opacity=.5*a;
+      if(keep){
+        /* its monitor carries the send once the network comes up */
+        pc.fill.material.opacity=sending?1:.55;
+      } else {
+        pc.fill.material.color.setHex(failing>.35?0xff5468:0x2f6fd0);
+        pc.fill.material.opacity=.15*a*(failing>.35?(.35+.65*Math.abs(Math.sin(t*9))):1);
+      }
+      pc.group.position.y=keep?0:-900*gone*gone;
     }
     if(Math.abs(retract-lastRetract)>.0004){
       for(let i=0;i<cables.length;i++) cables[i].reshape(retract);
       lastRetract=retract;
     }
-    const cm=stress>.35?stressMat:cableMat;
-    for(let i=0;i<cables.length;i++) cables[i].mesh.material=cm;
+    for(let i=0;i<cables.length;i++){
+      cables[i].mesh.material=(i===FAILED_PC&&stress>.18)?stressMat:cableMat;
+    }
 
     LINE.mark.opacity=born*.8;
     for(let i=0;i<machines.length;i++){
       const mk=machines[i], on=IDLE.indexOf(i)<0;
+      const stopped=i===FAILED_MACHINE?stress:0;
+      /* three sines that never line up, so no two machines share a rhythm
+         and none of them loops visibly */
+      const sd=mk.seed;
+      const slow=Math.sin(t*sd.f3+sd.ph3);
+      const cutting=(on||report<.3) && slow>-.45 && stopped<.45;
+      const plunge=cutting
+        ? clamp01(.62+.46*Math.sin(t*sd.f1+sd.ph1)+.3*Math.sin(t*sd.f2+sd.ph2))
+        : 0;
+      mk.spin+=dt*(cutting?sd.rpm*(1.6+.35*Math.sin(t*sd.f2)):0);
+      mk.spindle.rotation.y=mk.spin;
+      mk.spindle.position.y=1620-plunge*140;   /* tool tip 1320 -> 1180, onto the table */
       mk.sym.scale.setScalar(.6+.4*born);
-      mk.live.material.color.setHex(running>.5&&on?0x39d68a:0x1d5fb0);
-      mk.live.material.opacity=.12+(running>.5?.14:0);
-      mk.bar.material.color.setHex(on?0x39d68a:0xff5468);
-      mk.bar.material.opacity=report*(on?.5:.85);
+      mk.live.material.color.setHex(stopped>.2?0xff5468:(running>.5&&on?0x39d68a:0x1d5fb0));
+      mk.live.material.opacity=.12+(running>.5?.14:0)+stopped*.18;
+      mk.bar.material.color.setHex(stopped>.1?0xff5468:(on?0x39d68a:0xff5468));
+      mk.bar.material.opacity=Math.max(report*(on?.5:.85),stopped*.95);
     }
-    netMat.opacity=netAmt*.6;
     LINE.dim.opacity=band(p,4.35,4.7,9,9)*.35;
     for(let i=0;i<nets.length;i++){
-      nets[i].line.geometry.setDrawRange(0,
-        Math.round(NET_STEPS*ease(seg(p,3.95+i*.05,4.35+i*.05))));
-      nets[i].stream.visible=netAmt>.02;
-      if(nets[i].stream.visible) nets[i].stream.userData.step(netAmt,t+i*.7,.3);
+      const n=nets[i], down=OFFLINE.indexOf(i)>=0?offline:0;
+      /* the arc reddens, then retracts toward the station and is gone */
+      const established=ease(seg(p,3.05+i*.035,3.28+i*.035));
+      const draw=established*(1-clamp01(down*1.35));
+      n.line.geometry.setDrawRange(0,Math.round(NET_STEPS*draw));
+      n.mat.color.setHex(down>.15?0xff5468:0x4aa0ff);
+      n.mat.opacity=established*.82*(down>.15?.55:1);
+      n.stream.visible=established>.98 && draw>.35;
+      if(n.stream.visible) n.stream.userData.step((1-down)*.98,t+i*.7,.38);
     }
     for(let i=0;i<machineWifis.length;i++){
       const w=machineWifis[i];
-      w.visible=wifiAmt>.02;
+      const stopped=i===FAILED_MACHINE?stress:0;
+      w.visible=wifiAmt>.02||stopped>.02;
       if(!w.visible) continue;
+      const down=OFFLINE.indexOf(i)>=0?offline:0;
       w.rotation.y=Math.atan2(camera.position.x-w.position.x,camera.position.z-w.position.z);
+      if(stopped>.02){
+        setWifiColor(w,0xff5468);
+        pulseWifi(w,0,t,i*.13);
+        w.userData.cross.opacity=stopped;
+        w.scale.setScalar(.9+stopped*.2);
+        continue;
+      }
       w.scale.setScalar(.74+.26*wifiAmt);
-      pulseWifi(w,wifiAmt*.9,t,i*.13);
+      if(w.userData.down!==(down>.4)){
+        setWifiColor(w,down>.4?0xff5468:0x4aa0ff);
+        w.userData.down=(down>.4);
+      }
+      w.userData.cross.opacity=down*.95;
+      /* a dropped link stops pulsing outward and just sits there, dim */
+      pulseWifi(w,wifiAmt*.9*(1-down*.62),t,i*.13);
+    }
+    /* the jumper keeps feeding the control either way: that is the point */
+    for(let i=0;i<cables.length;i++){
+      const c=cables[i], down=OFFLINE.indexOf(c.machine)>=0?offline:0;
+      // Stage 1 always carries packets along the long runs. In stage 2 only the failed PC's
+      // stream stops; during stage 3 the remaining packets follow the cable as it retracts.
+      const longRunAmt=(1-retract)*(i===FAILED_PC?(1-stress):1);
+      const shortRunAmt=born*Math.max(netAmt,down);
+      const amt=Math.max(longRunAmt,shortRunAmt);
+      c.flow.visible=amt>.03;
+      if(c.flow.visible) c.flow.userData.step(amt,t+i*.43,.42);
     }
   }
 
   /* ---- the units ---- */
   for(let i=0;i<devs.length;i++){
     const d=devs[i];
-    /* the units only render inside the panes: on the floor they are three
-       pixels across and the CAD symbol already stands in for them */
-    d.node.visible=paneMode;
-    d.wifi.visible=paneMode;
-    d.stream.visible=paneMode;
-    if(!paneMode) continue;
-    const cellProg=clamp01((sendProg-i*.09)*1.55);
-    const mode=cellProg<1?'receiving':'ready';
-    if(mode!==d.mode || (mode==='receiving' && Math.abs(cellProg-d.prog)>.02)){
-      d.api.setScreen(mode,cellProg); d.mode=mode; d.prog=cellProg;
+    d.node.visible=born>.01;
+    d.wifi.visible=winOn;
+    d.stream.visible=winOn;
+    if(born<.01) continue;
+    const prog=clamp01(sendProg*1.35);
+    const heroDown=OFFLINE.indexOf(HERO)>=0?offline:0;
+    const mode=heroDown>.4?'ready':(sending?(prog<1?'receiving':'ready'):'files');
+    if(mode!==d.mode || (mode==='receiving' && Math.abs(prog-d.prog)>.02)){
+      d.api.setScreen(mode,prog); d.mode=mode; d.prog=prog;
     }
-    const ledCol=cellProg>=1?0x39d68a:0x2f7dff;
+    const ledCol=heroDown>.4?0x39d68a:((sending&&prog>=1)?0x39d68a:0x2f7dff);
     if(lastLed[i]!==ledCol){ d.api.setLed(true,ledCol,2.2); lastLed[i]=ledCol; }
-    d.wifi.rotation.y=Math.atan2(camCell[i].position.x-d.wifi.position.x,
-                                 camCell[i].position.z-d.wifi.position.z);
-    pulseWifi(d.wifi,.95,t,i*.2);
-    d.stream.userData.step(1,t+i*.5,.42);
-  }
-
-  /* ---- the station ---- */
-  if(station){
-    station.visible=stationAmt>.02||paneMode;
-    if(station.visible){
-      if(paneMode && Math.abs(sendProg-lastSend)>.02){
-        laptopScreen.draw(sendProg); lastSend=sendProg;
-      }
-      officeWifi.visible=!paneMode && wifiAmt>.02;
-      if(officeWifi.visible){
-        officeWifi.rotation.y=Math.atan2(camera.position.x-OFFICE.x,camera.position.z-OFFICE.z);
-        pulseWifi(officeWifi,wifiAmt*.9,t,.5);
-      }
-      paneWifi.visible=paneMode;
-      paneStream.visible=paneMode;
-      if(paneMode){ pulseWifi(paneWifi,.95,t,.5); paneStream.userData.step(1,t,.4); }
-      const ds=paneMode?1:netAmt*.8;
-      deskStream.visible=ds>.02;
-      if(deskStream.visible) deskStream.userData.step(ds,t,.34);
+    if(winOn){
+      d.wifi.rotation.y=Math.atan2(camDev.position.x-d.wifi.position.x,
+                                   camDev.position.z-d.wifi.position.z);
+      pulseWifi(d.wifi,.95,t,0);
+      d.stream.userData.step(1,t,.42);
+      const pr=Math.round(prog*100);
+      const txt=pr>=100?tr('received','دریافت شد'):(pr+'%');
+      if(winBv.textContent!==txt) winBv.textContent=txt;
     }
   }
 
-  drawNotes(paneMode?-9:p);
+  /* ---- the tower that stayed ---- */
+  if(stationScreen){
+    if(sending && Math.abs(sendProg-lastSend)>.02){
+      stationScreen.draw(sendProg); lastSend=sendProg;
+      const pr=Math.round(sendProg*100);
+      const txt=pr>=100?tr('sent','ارسال شد'):(pr+'%');
+      if(winAv.textContent!==txt) winAv.textContent=txt;
+    }
+    stationWifiBig.visible=wifiAmt>.02;
+    if(stationWifiBig.visible){
+      stationWifiBig.rotation.y=Math.atan2(camera.position.x-stationPos.x,
+                                           camera.position.z-stationPos.z);
+      pulseWifi(stationWifiBig,wifiAmt*.9,t,.5);
+    }
+    stationWifi.visible=winOn;
+    stationStream.visible=winOn;
+    if(winOn){
+      stationWifi.rotation.y=Math.atan2(camPC.position.x-stationWifi.position.x,
+                                        camPC.position.z-stationWifi.position.z);
+      pulseWifi(stationWifi,.95,t,.5);
+      stationStream.userData.step(1,t,.4);
+    }
+  }
+
+  drawNotes(p);
 
   renderer.setScissorTest(false);
   renderer.setViewport(0,0,innerWidth,innerHeight);
-  if(paneMode){
-    renderer.setClearColor(0x080a0d,1);
-    renderer.clear(true,true,false);
-    for(let i=0;i<4;i++){
-      const d=devs[i];
-      if(!d) continue;
-      detailPos.copy(d.node.position);
-      camCell[i].position.set(detailPos.x+150,detailPos.y+112,detailPos.z+312);
-      camCell[i].lookAt(detailPos.x,detailPos.y+30,detailPos.z);
-      drawPane(CELL[i],camCell[i]);
-      const pr=Math.round(clamp01((sendProg-i*.09)*1.55)*100);
-      const nm=MNAME[d.machine];
-      if(cellName[i].textContent!==nm) cellName[i].textContent=nm;
-      const txt=pr>=100?'received':(pr+'%');
-      if(cellVal[i].textContent!==txt) cellVal[i].textContent=txt;
-    }
-    camR.position.set(OFFICE.x+640,OFFICE.y+470,OFFICE.z+1380);
-    camR.lookAt(OFFICE.x-40,OFFICE.y+150,OFFICE.z-40);
-    drawPane(PANE_L,camR);
-  } else {
-    renderer.setClearColor(0x000000,0);
-    renderer.clear(true,true,false);
-    renderer.render(scene,camera);
+  renderer.setClearColor(0x000000,0);
+  renderer.clear(true,true,false);
+  renderer.render(scene,camera);
+
+  /* the two corner windows draw over the floor, which keeps running */
+  if(winOn){
+    /* the tower is turned -0.9 rad, so the camera has to stand on the
+       side its monitor actually faces */
+    const st=stationPos;
+    camPC.position.set(st.x-3000,st.y+1350,st.z+2800);
+    camPC.lookAt(st.x-40,st.y+180,st.z+310);
+    drawPane(WIN_A,camPC);
+    const dp=devs[0].node.position;
+    camDev.position.set(dp.x+162,dp.y+124,dp.z+335);
+    camDev.lookAt(dp.x,dp.y+30,dp.z);
+    drawPane(WIN_B,camDev);
   }
 }
 
@@ -1191,13 +1281,9 @@ const TASKS=[
         w.position.set(mk.group.position.x,3260,mk.group.position.z+400);
         floorRoot.add(w); return w;
       });
-      buildNets(); buildNotes();
+      dressStation(); buildNets(); buildNotes();
   }],
-  ['Building the station',      function(){ station=buildStation(); }],
-  ['Building unit 1 of 4',      function(){ buildDevice(0); }],
-  ['Building unit 2 of 4',      function(){ buildDevice(1); }],
-  ['Building unit 3 of 4',      function(){ buildDevice(2); }],
-  ['Building unit 4 of 4',      function(){ buildDevice(3); }],
+  ['Fitting the Elecio unit',   function(){ buildDevice(0); }],
   ['Compiling shaders',         function(){
       /* every material gets its program built now, while the boot screen
          is still up, instead of the frame a pane first appears */
@@ -1217,18 +1303,16 @@ const TASKS=[
       renderer.setViewport(0,0,innerWidth,innerHeight);
       renderer.setClearColor(0x000000,0); renderer.clear(true,true,false);
       renderer.render(scene,camera);
-      for(let i=0;i<4;i++){ camCell[i].position.copy(devs[i].pos).add(V(150,112,312));
-        camCell[i].lookAt(devs[i].pos); drawPane(CELL[i],camCell[i]); }
-      camR.position.copy(OFFICE).add(V(640,470,1380));
-      camR.lookAt(OFFICE.x-40,OFFICE.y+150,OFFICE.z-40);
-      drawPane(PANE_L,camR);
+      camDev.position.copy(devs[0].pos).add(V(162,124,335));
+      camDev.lookAt(devs[0].pos); drawPane(WIN_B,camDev);
+      camPC.position.copy(stationPos).add(V(-3000,1350,2800));
+      camPC.lookAt(stationPos.x-40,stationPos.y+180,stationPos.z+310);
+      drawPane(WIN_A,camPC);
   }]
 ];
 let ti=0;
 function bootStep(){
   if(ti<TASKS.length){
-    bootMsg.textContent=TASKS[ti][0];
-    bootBar.style.width=Math.round(ti/TASKS.length*100)+'%';
     /* paint the message, then do the work on the next frame */
     requestAnimationFrame(function(){
       TASKS[ti][1](); ti++;
@@ -1236,14 +1320,20 @@ function bootStep(){
     });
     return;
   }
-  bootBar.style.width='100%';
   if(DEBUG){ window.__scene=scene; window.__devs=devs; window.__cables=cables;
              window.__totals=[TOTAL_LONG,TOTAL_SHORT]; }
   onScroll(); frame();
   setTimeout(function(){ bootEl.classList.add('done'); },220);
 }
-resize();
-bootStep();
+function startStory(){ resize(); bootStep(); }
+if(FA && document.fonts && document.fonts.load){
+  Promise.all([
+    document.fonts.load('400 16px Vazirmatn'),
+    document.fonts.load('700 16px Vazirmatn')
+  ]).then(startStory,startStory);
+}else{
+  startStory();
+}
 })();
 </script>
 </body>

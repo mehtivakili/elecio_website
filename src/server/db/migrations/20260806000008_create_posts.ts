@@ -9,11 +9,13 @@ export async function up(knex: Knex): Promise<void> {
     table.string('slug').notNullable().unique();
     table
       .integer('category_id')
+      .unsigned()
       .references('id')
       .inTable('categories')
       .onDelete('SET NULL');
     table
       .integer('author_id')
+      .unsigned()
       .references('id')
       .inTable('admin_users')
       .onDelete('SET NULL');

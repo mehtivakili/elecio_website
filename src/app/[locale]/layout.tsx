@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Script from 'next/script';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
@@ -8,6 +7,8 @@ import faIR from 'antd/locale/fa_IR';
 import enUS from 'antd/locale/en_US';
 import { routing, type AppLocale } from '@/i18n/routing';
 import { AppThemeProvider } from '@/components/layout/AppThemeProvider';
+import { InlineScript } from '@/components/layout/InlineScript';
+import { CustomScrollbar } from '@/components/layout/CustomScrollbar';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import '../globals.css';
@@ -65,11 +66,12 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} dir={dir} suppressHydrationWarning>
+      <head>
+        <InlineScript html={THEME_INIT_SCRIPT} />
+      </head>
       <body>
+        <CustomScrollbar />
         <a href="#main-content" className="skip-link">{locale === 'fa' ? 'رفتن به محتوای اصلی' : 'Skip to main content'}</a>
-        <Script id="theme-init" strategy="beforeInteractive">
-          {THEME_INIT_SCRIPT}
-        </Script>
         <NextIntlClientProvider>
           <AntdRegistry>
             <AppThemeProvider direction={dir} locale={antdLocales[locale as AppLocale]}>

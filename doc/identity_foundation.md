@@ -6,7 +6,7 @@ Expansion Phase 2.
 
 ## Required services and secrets
 
-- PostgreSQL from `DATABASE_URL`.
+- MySQL from `DATABASE_URL`.
 - Redis-compatible storage from `REDIS_URL`. Authentication is deliberately fail-closed without it;
   do not silently fall back to per-process memory in production.
 - A unique `BETTER_AUTH_SECRET` containing at least 32 random characters.
@@ -23,7 +23,7 @@ real customer data. Development, staging, and production need separate credentia
 - Better Auth: `auth_users`, `auth_sessions`, `auth_accounts`, `auth_verifications`.
 - Elecio: `user_profiles`, `user_consents`, `audit_events`, and all business/content tables.
 - Roles are stored only in `user_profiles`. Browser-supplied roles are ignored.
-- `audit_events` is append-only at PostgreSQL trigger level; update/delete attempts fail.
+- `audit_events` is append-only at the MySQL trigger level; update/delete attempts fail.
 
 The migration transaction converts any legacy `admin_users` rows into Better Auth users,
 credential accounts, and Elecio profiles, updates post authors to UUID identities, then drops the
@@ -32,7 +32,7 @@ production migration, take a backup and rehearse both directions on a staging co
 
 ## Deployment sequence
 
-1. Provision isolated PostgreSQL and Redis services and store secrets in the host's secret manager.
+1. Provision isolated MySQL and Redis services and store secrets in the host's secret manager.
 2. Restrict both origins to the application network; Redis must require TLS/password when remote.
 3. Run `npm run db:migrate` once as a deployment job, not concurrently on every web replica.
 4. Verify tables, foreign keys, append-only audit trigger, and migration list.
@@ -42,7 +42,7 @@ production migration, take a backup and rehearse both directions on a staging co
 
 ## Backup, restore, and retention decisions
 
-- Enable encrypted automated PostgreSQL backups and point-in-time recovery if the host supports it.
+- Enable encrypted automated MySQL backups and point-in-time recovery if the host supports it.
 - Perform a timed restore drill before auth launch and after meaningful schema changes.
 - Redis contains revocable session/cache/rate-limit state; it is not the authoritative user store.
   Database session rows remain enabled for attribution and controlled recovery.

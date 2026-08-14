@@ -6,6 +6,7 @@ import { CheckOutlined, CodeOutlined, CrownOutlined, ToolOutlined } from '@ant-d
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { PERSONA_STORY_IMAGES } from '@/lib/site-constants';
+import { PERSONA_RETURN_HOME_TOP_KEY } from '@/lib/navigation-scroll';
 import type { AppLocale } from '@/i18n/routing';
 import { RevealOnScroll } from './RevealOnScroll';
 import styles from './PersonaGrid.module.css';
@@ -142,7 +143,16 @@ export function PersonaGrid() {
                         </li>
                       ))}
                     </ul>
-                    <Link href={item.href} className={styles.cta}>
+                    <Link
+                      href={item.href}
+                      className={styles.cta}
+                      onClick={() => {
+                        window.sessionStorage.setItem(PERSONA_RETURN_HOME_TOP_KEY, '1');
+                        if ('scrollRestoration' in window.history) {
+                          window.history.scrollRestoration = 'manual';
+                        }
+                      }}
+                    >
                       <span>{t('viewFullPage')}</span>
                       <span className={styles.ctaArrow} aria-hidden="true">→</span>
                     </Link>

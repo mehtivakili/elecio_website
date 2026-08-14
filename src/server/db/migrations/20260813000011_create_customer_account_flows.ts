@@ -1,7 +1,7 @@
 import type { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
-  await knex.transaction(async (trx) => {
+  const trx = knex;
     await trx.schema.createTable('otp_intents', (table) => {
       table.uuid('id').primary();
       table.string('phone_hash', 64).notNullable().index();
@@ -32,14 +32,18 @@ export async function up(knex: Knex): Promise<void> {
     await trx.schema.alterTable('contact_submissions', (table) => {
       table.uuid('user_id').references('id').inTable('auth_users').onDelete('SET NULL').index();
     });
-  });
 }
 
 export async function down(knex: Knex): Promise<void> {
-  await knex.transaction(async (trx) => {
-    await trx.schema.alterTable('contact_submissions', (table) => table.dropColumn('user_id'));
-    await trx.schema.alterTable('download_requests', (table) => table.dropColumn('user_id'));
+  const trx = knex;
+    await trx.schema.alterTable('contact_submissions', (table) => {
+      table.dropForeign('user_id');
+      table.dropColumn('user_id');
+    });
+    await trx.schema.alterTable('download_requests', (table) => {
+      table.dropForeign('user_id');
+      table.dropColumn('user_id');
+    });
     await trx.schema.dropTable('account_deletion_requests');
     await trx.schema.dropTable('otp_intents');
-  });
 }

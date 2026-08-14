@@ -53,9 +53,9 @@ async function audit(principal: Awaited<ReturnType<typeof requireStaffPermission
 export async function POST(request: NextRequest) {
   try {
     const { principal, body, kind } = await principalAndBody(request, 'create');
-    const [row] = await knex(tables[kind]).insert(dataFor(kind, body)).returning(['id']);
-    await audit(principal, 'content_library.created', kind, row.id);
-    return NextResponse.json({ id: row.id }, { status: 201 });
+    const [id] = await knex(tables[kind]).insert(dataFor(kind, body));
+    await audit(principal, 'content_library.created', kind, id);
+    return NextResponse.json({ id }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: error instanceof Error ? error.message : 'invalid_request' }, { status: 400 });
   }

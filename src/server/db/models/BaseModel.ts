@@ -13,7 +13,7 @@ export class BaseModel extends Model {
   updatedAt?: string;
 
   // Objection defaults to matching JS camelCase property names against DB column names as-is;
-  // our migrations use snake_case columns (standard Postgres convention), so map between them
+  // our migrations use snake_case columns, so map between them
   // here once instead of repeating $formatDatabaseJson/$parseDatabaseJson per model.
   static get columnNameMappers() {
     return {

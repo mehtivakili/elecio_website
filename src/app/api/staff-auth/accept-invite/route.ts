@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
       await trx('user_profiles').where({ user_id: payload.user.id }).update({ role: invitation.role, is_active: true, locale: body?.locale === 'fa' ? 'fa' : 'en', updated_at: trx.fn.now() });
     });
     await writeAuditEvent({ actorUserId: payload.user.id, actorRole: invitation.role, action: 'staff.invitation_accepted', resource: 'staff_invitation', resourceId: invitation.id, outcome: 'success' });
-    const response = NextResponse.json({ ok: true, requiresMfaSetup: true });
+    const response = NextResponse.json({ ok: true });
     const cookies = typeof authResponse.headers.getSetCookie === 'function' ? authResponse.headers.getSetCookie() : [authResponse.headers.get('set-cookie')].filter(Boolean) as string[];
     for (const cookie of cookies) response.headers.append('set-cookie', cookie); response.headers.set('Cache-Control', 'no-store'); return response;
   } catch { return NextResponse.json({ error: 'invalid_or_expired' }, { status: 400 }); }

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { Button } from 'antd';
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { HERO_SLIDES, HERO_SLIDE_IMAGES, HERO_SLIDE_IMAGES_LIGHT } from '@/lib/site-constants';
@@ -10,12 +11,25 @@ import { useThemeMode } from '@/lib/theme-context';
 import type { AppLocale } from '@/i18n/routing';
 import styles from './Hero.module.css';
 
-const ROTATE_MS = 7000;
-const HERO_VIDEOS: Partial<Record<number, string>> = {
-  0: '/videos/elecio-background-1.mp4',
-  1: '/videos/elecio-background-2.mp4',
-  4: '/videos/elecio-background-1.mp4',
-};
+const PHOTO_DURATION_MS = 6000;
+const HERO_VIDEOS = [
+  '/videos/elecio-background-1.mp4',
+  '/videos/elecio-background-2.mp4',
+] as const;
+
+type HeroMediaItem =
+  | { type: 'image'; imageIndex: number; contentIndex: number }
+  | { type: 'video'; videoIndex: number; imageIndex: number; contentIndex: number };
+
+// Keep the requested four-photo/two-video rhythm independent from the five text records.
+const HERO_MEDIA_SEQUENCE = [
+  { type: 'image', imageIndex: 0, contentIndex: 0 },
+  { type: 'video', videoIndex: 0, imageIndex: 0, contentIndex: 0 },
+  { type: 'image', imageIndex: 1, contentIndex: 1 },
+  { type: 'image', imageIndex: 2, contentIndex: 2 },
+  { type: 'video', videoIndex: 1, imageIndex: 2, contentIndex: 3 },
+  { type: 'image', imageIndex: 3, contentIndex: 4 },
+] as const satisfies readonly HeroMediaItem[];
 
 type Slide = {
   kicker: string;
@@ -31,7 +45,7 @@ type Slide = {
  * backdrop: 5 real product photos per locale — media/landings(1-20).png for English,
  * media/fa_landing(1-11).png for Persian (a distinct set, not a translation of the same images) —
  * one per audience, each with its own headline/CTA/link so "the topic changes with the image".
- * Auto-advances every 7s, pauses on hover/focus, fully manually navigable via the dots.
+ * Photos advance after six seconds; videos advance on completion. Arrow controls share that order.
  *
  * Full-bleed: the media band fills the entire viewport (`100svh`) and is pulled up behind the
  * floating header via negative margin (Hero.module.css) rather than starting below it — a plain
@@ -48,14 +62,14 @@ export function Hero() {
   const images = mode === 'light' ? HERO_SLIDE_IMAGES_LIGHT : HERO_SLIDE_IMAGES[locale];
   const [active, setActive] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
+  const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
   const [onscreen, setOnscreen] = useState(true);
   const [reduceMotion, setReduceMotion] = useState(false);
-  const [readyVideo, setReadyVideo] = useState('');
-  // Light mode has fewer background photos (3) than there are text slides (5, driven by
-  // HERO_SLIDES.length) — wrap the image index independently so it still cycles cleanly instead
-  // of running out of bounds.
-  const activeImage = active % images.length;
-  const [paused, setPaused] = useState(false);
+  const [readyVideos, setReadyVideos] = useState<ReadonlySet<number>>(() => new Set());
+  // Light mode has three approved photos, so its fourth photo wraps cleanly to the first.
+  const mediaItem = HERO_MEDIA_SEQUENCE[active];
+  const posterSrc = images[mediaItem.imageIndex % images.length];
+  const activeVideoIndex = mediaItem.type === 'video' ? mediaItem.videoIndex : null;
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -75,73 +89,121 @@ export function Hero() {
     return () => query.removeEventListener('change', update);
   }, []);
 
-  useEffect(() => {
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (paused || reduceMotion || !onscreen) return;
-    const id = setInterval(() => {
-      setActive((i) => (i + 1) % HERO_SLIDES.length);
-    }, ROTATE_MS);
-    return () => clearInterval(id);
-  }, [onscreen, paused]);
+  const goPrevious = useCallback(
+    () => setActive((index) => (index - 1 + HERO_MEDIA_SEQUENCE.length) % HERO_MEDIA_SEQUENCE.length),
+    [],
+  );
+  const goNext = useCallback(
+    () => setActive((index) => (index + 1) % HERO_MEDIA_SEQUENCE.length),
+    [],
+  );
 
-  const goTo = useCallback((i: number) => setActive(i), []);
-  const slide = slides[active];
-  const target = HERO_SLIDES[active];
-  const videoSrc = HERO_VIDEOS[active];
-  const videoKey = videoSrc ? `${active}-${videoSrc}` : '';
-  const videoReady = readyVideo === videoKey;
+  // Photos remain visible for six seconds. Videos advance only when playback really ends.
+  useEffect(() => {
+    if (!onscreen || reduceMotion || mediaItem.type !== 'image') return;
+    const timeout = window.setTimeout(goNext, PHOTO_DURATION_MS);
+    return () => window.clearTimeout(timeout);
+  }, [active, goNext, mediaItem.type, onscreen, reduceMotion]);
+
+  // Preloaded video elements remain mounted. Only the video belonging to the current item plays.
+  useEffect(() => {
+    videoRefs.current.forEach((video, videoIndex) => {
+      if (!video) return;
+      if (videoIndex === activeVideoIndex && onscreen && !reduceMotion) {
+        video.currentTime = 0;
+        void video.play().catch(() => {
+          // Keep the poster visible if the browser temporarily rejects autoplay.
+        });
+      } else {
+        video.pause();
+      }
+    });
+  }, [active, activeVideoIndex, onscreen, reduceMotion]);
+
+  const markVideoReady = useCallback((videoIndex: number) => {
+    setReadyVideos((current) => {
+      if (current.has(videoIndex)) return current;
+      const next = new Set(current);
+      next.add(videoIndex);
+      return next;
+    });
+  }, []);
+
+  useEffect(() => {
+    if (readyVideos.size < HERO_VIDEOS.length) return;
+    document.documentElement.dataset.elecioHeroVideosReady = 'true';
+    window.dispatchEvent(new Event('elecio-hero-videos-ready'));
+  }, [readyVideos]);
+
+  const slide = slides[mediaItem.contentIndex % slides.length];
+  const target = HERO_SLIDES[mediaItem.contentIndex % HERO_SLIDES.length];
 
   return (
     <section
       ref={sectionRef}
       className={styles.hero}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={() => setPaused(false)}
     >
       <div className={styles.media}>
         <Image
-          key={images[activeImage]}
-          src={images[activeImage]}
+          key={posterSrc}
+          src={posterSrc}
           alt=""
           fill
           priority={active === 0}
           sizes="100vw"
-          className={`${styles.slideImg} ${styles.slideImgActive} ${videoReady ? styles.posterBehindVideo : ''}`}
+          className={`${styles.slideImg} ${styles.slideImgActive}`}
         />
-        {videoSrc && onscreen && !reduceMotion && (
-          <video
-            key={`${active}-${videoSrc}`}
-            className={`${styles.slideVideo} ${videoReady ? styles.slideVideoActive : ''}`}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload={active === 0 ? 'auto' : 'metadata'}
-            poster={images[activeImage]}
-            aria-hidden="true"
-            onCanPlay={() => setReadyVideo(videoKey)}
-          >
-            <source src={videoSrc} type="video/mp4" />
-          </video>
-        )}
+        {HERO_VIDEOS.map((videoSrc, videoIndex) => {
+          const isActive = activeVideoIndex === videoIndex && !reduceMotion;
+          const videoItem = HERO_MEDIA_SEQUENCE.find(
+            (item) => item.type === 'video' && item.videoIndex === videoIndex,
+          );
+          const videoPoster = images[(videoItem?.imageIndex ?? 0) % images.length];
+          return (
+            <video
+              key={videoSrc}
+              ref={(element) => {
+                videoRefs.current[videoIndex] = element;
+              }}
+              className={`${styles.slideVideo} ${isActive && readyVideos.has(videoIndex) ? styles.slideVideoActive : ''}`}
+              muted
+              playsInline
+              preload="auto"
+              poster={videoPoster}
+              aria-hidden="true"
+              onCanPlay={() => {
+                markVideoReady(videoIndex);
+                if (activeVideoIndex === videoIndex && onscreen) void videoRefs.current[videoIndex]?.play();
+              }}
+              onEnded={() => {
+                if (activeVideoIndex === videoIndex) goNext();
+              }}
+              onError={() => {
+                if (activeVideoIndex === videoIndex) goNext();
+              }}
+            >
+              <source src={videoSrc} type="video/mp4" />
+            </video>
+          );
+        })}
         <div className={styles.scrim} />
 
-        <div className={styles.dots} role="tablist" aria-label="Hero slides">
-          {HERO_SLIDES.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              role="tab"
-              aria-selected={i === active}
-              tabIndex={i === active ? 0 : -1}
-              aria-label={`Slide ${i + 1}`}
-              className={`${styles.dot} ${i === active ? styles.dotActive : ''}`}
-              onClick={() => goTo(i)}
-            />
-          ))}
-        </div>
+        <button
+          type="button"
+          className={`${styles.heroArrow} ${styles.heroArrowPrevious}`}
+          onClick={goPrevious}
+          aria-label={locale === 'fa' ? 'اسلاید قبلی' : 'Previous slide'}
+        >
+          <LeftOutlined />
+        </button>
+        <button
+          type="button"
+          className={`${styles.heroArrow} ${styles.heroArrowNext}`}
+          onClick={goNext}
+          aria-label={locale === 'fa' ? 'اسلاید بعدی' : 'Next slide'}
+        >
+          <RightOutlined />
+        </button>
       </div>
 
       <div className={styles.content} key={active}>

@@ -224,21 +224,159 @@
       "headline": "An ROI you actually see, not just sense.",
       "subheadline": "ElecIO logs real working time per machine — no extra staff to track it, no guessing where the production line is actually losing time.",
       "ctaPrimary": "Order the device",
-      "ctaSecondary": "Free consultation"
+      "ctaSecondary": "Free consultation",
+      "imageAlts": [
+        "Workshop owner beside a CNC machine holding ElecIO Smart DNC",
+        "Production manager reviewing an ElecIO-connected workshop",
+        "Factory director beside CNC equipment connected with ElecIO"
+      ],
+      "heroHighlights": [
+        "Runtime and downtime reporting for every machine",
+        "One place to manage files across the workshop",
+        "Fewer machine-side PCs and long serial cables"
+      ],
+      "story": {
+        "eyebrow": "From hidden cost to clear decisions",
+        "title": "See the workshop through real numbers, not assumptions.",
+        "body": "ElecIO brings program transfer, file storage, and performance reporting into one orderly flow—giving production a smoother path and management evidence it can actually review.",
+        "steps": [
+          {
+            "label": "STEP 01 — SEE THE REAL PICTURE",
+            "title": "Runtime and downtime stop being a blind spot.",
+            "body": "Every program run is timestamped. That means you can see which machine was productive and where time was lost without relying on verbal updates or assigning another person to track it.",
+            "points": ["An aggregate management view", "Per-machine and per-shift detail", "Traceable program runs with timestamps"]
+          },
+          {
+            "label": "STEP 02 — SIMPLIFY THE INFRASTRUCTURE",
+            "title": "Management becomes central; the machine side becomes lighter.",
+            "body": "Instead of a PC, serial card, and long cable at every control, one ElecIO unit sits beside each machine while files are distributed from a central station over the workshop network.",
+            "points": ["Central access from one PC or phone", "A short, fixed serial cable at the control", "Fewer failure points and fewer trips across the floor"]
+          },
+          {
+            "label": "STEP 03 — PROTECT THE PRODUCTION FLOW",
+            "title": "A network interruption should not stop machining.",
+            "body": "Every unit has its own internal storage. The program remains at the machine, so a temporary network issue does not make the control completely dependent on a central connection.",
+            "points": ["8 GB of internal storage", "Keep working with the locally stored file", "Return to central management when connectivity resumes"]
+          }
+        ]
+      },
+      "outcomes": {
+        "eyebrow": "The management outcome",
+        "title": "Guess less. Invest with better evidence.",
+        "body": "ElecIO is more than wireless transfer. It gives management a more orderly view of infrastructure, production activity, and the areas worth improving next.",
+        "items": [
+          { "title": "Lower infrastructure burden", "body": "Machine-side PCs, serial cards, and long cable runs are removed from the workshop architecture." },
+          { "title": "Defensible reporting", "body": "Runtime and downtime become reviewable inputs for production meetings and planning." },
+          { "title": "Simpler scaling", "body": "Adding another machine does not turn file management back into another scattered workstation." },
+          { "title": "Lower operational risk", "body": "Independent storage at every unit reduces complete dependence on the central connection." }
+        ]
+      }
     },
     "programmer": {
       "eyebrow": "For Programmers & Technical Office",
       "headline": "Compatibility, stated precisely — no guessing.",
       "subheadline": "Controller compatibility matrix, serial-protocol detail, and LSV2 support for Heidenhain — everything you need to know before buying or deploying.",
       "ctaPrimary": "Order the device",
-      "ctaSecondary": "Have a technical question?"
+      "ctaSecondary": "Have a technical question?",
+      "imageAlts": [
+        "CNC programmer examining an ElecIO Smart DNC unit",
+        "Technical-office specialist configuring a CNC controller connection",
+        "Programmer beside technical displays and an ElecIO device"
+      ],
+      "heroHighlights": [
+        "XON/XOFF and RTS/CTS flow control",
+        "LSV2 and TNC Server compatibility for Heidenhain",
+        "Controller model and port verified before purchase"
+      ],
+      "story": {
+        "eyebrow": "From evaluation to deployment",
+        "title": "The technical details should be clear before installation.",
+        "body": "An ElecIO deployment starts with accurate controller identification, continues with the right communication profile, and ends with a traceable transfer path and independent storage beside the machine.",
+        "steps": [
+          {
+            "label": "STEP 01 — IDENTIFY THE CONTROL",
+            "title": "Match the model, port, and transfer method before deployment.",
+            "body": "Final compatibility is more specific than a controller brand. The control model, port condition, and existing parameters are reviewed so the right connection method is established for that machine.",
+            "points": ["Evaluate FANUC, SIEMENS, HEIDENHAIN, and other controls", "Match port type and machine condition", "No blanket compatibility claim without verification"]
+          },
+          {
+            "label": "STEP 02 — CONFIGURE THE PROTOCOL",
+            "title": "Serial parameters follow the logic of your control.",
+            "body": "Software and hardware flow control, serial transfer, and the LSV2 route are selected around the control—so deployment follows technical requirements instead of unlimited trial and error.",
+            "points": ["XON/XOFF support", "RTS/CTS support", "LSV2 and TNC Server for compatible use cases"]
+          },
+          {
+            "label": "STEP 03 — TRANSFER AND OBSERVE",
+            "title": "The right file reaches the right machine with visible status.",
+            "body": "ElecIO Manager organizes programs and exposes transfer state. Each unit also has independent internal storage, keeping the program close to the control that consumes it.",
+            "points": ["Central organization for NC programs", "Visible send and receive status", "Independent storage beside every control"]
+          }
+        ]
+      },
+      "outcomes": {
+        "eyebrow": "The technical-office outcome",
+        "title": "More predictable deployment. More precise support.",
+        "body": "Clear communication details and an independent unit at each machine help the new system enter production without creating another central point of failure.",
+        "items": [
+          { "title": "A defined communication profile", "body": "Flow control and transfer method are selected around the control's real parameters." },
+          { "title": "Port protection", "body": "An isolated circuit between the control and communication equipment reduces risk from electrical potential differences and noise." },
+          { "title": "Organized programs", "body": "NC files are managed centrally instead of being scattered across multiple PCs." },
+          { "title": "Faster troubleshooting", "body": "Transfer state and connection details give the technical team a shorter path to the source of a fault." }
+        ]
+      }
     },
     "operator": {
       "eyebrow": "For CNC Operators",
       "headline": "One screen, three buttons. That's it.",
       "subheadline": "Receive the file and run it — no confusing menus, no complicated training, no change to your daily routine at the machine.",
       "ctaPrimary": "Order the device",
-      "ctaSecondary": "Contact us"
+      "ctaSecondary": "Contact us",
+      "imageAlts": [
+        "CNC operator holding ElecIO Smart DNC beside a machine",
+        "Operator receiving a program on an ElecIO device",
+        "Workshop operator beside a CNC control connected with ElecIO"
+      ],
+      "heroHighlights": [
+        "Three physical buttons and a clear display",
+        "Receive and select the file at the machine",
+        "No deep menus or lengthy training"
+      ],
+      "story": {
+        "eyebrow": "A simpler daily workflow",
+        "title": "From program handoff to machining in a few clear steps.",
+        "body": "ElecIO is designed for the real shop floor: it shows the information that matters, keeps choices limited and clear, and does not ask the operator to manage network complexity.",
+        "steps": [
+          {
+            "label": "STEP 01 — RECEIVE THE PROGRAM",
+            "title": "The technical office sends the file directly to the machine.",
+            "body": "The operator does not need to carry flash drives between systems or hunt for the latest program revision. The file is sent from the central flow to the unit beside that control.",
+            "points": ["Fewer trips across the shop floor", "The file is available where the job runs", "Receive status shown on the unit"]
+          },
+          {
+            "label": "STEP 02 — MAKE A CLEAR SELECTION",
+            "title": "Three buttons for a task that should stay fast.",
+            "body": "The compact display and physical Enter, Up, and Down buttons are built for selection and confirmation—without layers of menus or a touch interface that gets in the way at the machine.",
+            "points": ["Move between options simply", "Confirm the operation directly", "Readable feedback on the display"]
+          },
+          {
+            "label": "STEP 03 — KEEP MOVING",
+            "title": "The program stays beside the machine during a temporary outage.",
+            "body": "Internal storage keeps the file local. A brief network interruption does not force the operator to restart preparation from scratch or wait for a specialist to arrive.",
+            "points": ["8 GB of internal storage", "Less dependence on the network during daily work", "Automatic reconnection after service returns"]
+          }
+        ]
+      },
+      "outcomes": {
+        "eyebrow": "The machine-side outcome",
+        "title": "Less time transferring. More attention on machining.",
+        "body": "ElecIO's focused interface lets operators receive and prepare files without a major change to their established shop-floor routine.",
+        "items": [
+          { "title": "A short learning curve", "body": "The main workflow is concentrated on one display and three physical controls." },
+          { "title": "The right file revision", "body": "Programs arrive through a central path, reducing versions scattered across flash drives and PCs." },
+          { "title": "Less cable handling", "body": "A short, fixed serial cable replaces long and disruptive runs across the workshop floor." },
+          { "title": "Understandable status", "body": "The operator can follow receiving, selection, and file readiness right at the machine." }
+        ]
+      }
     }
   },
   "trust": {

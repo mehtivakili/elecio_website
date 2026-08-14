@@ -4,7 +4,7 @@ import type { Knex } from 'knex';
 const roles = ['customer', 'support', 'editor', 'admin', 'owner'] as const;
 
 export async function up(knex: Knex): Promise<void> {
-  await knex.transaction(async (trx) => {
+  const trx = knex;
     await trx.schema.createTable('auth_users', (table) => {
       table.uuid('id').primary();
       table.string('name', 160).notNullable();
@@ -79,7 +79,7 @@ export async function up(knex: Knex): Promise<void> {
       table.timestamp('withdrawn_at', { useTz: true });
       table.string('ip_hash', 64);
       table.string('user_agent_hash', 64);
-      table.jsonb('metadata').notNullable().defaultTo('{}');
+      table.json('metadata').notNullable();
       table.unique(['user_id', 'document_type', 'document_version']);
       table.index(['document_type', 'document_version']);
     });
@@ -94,7 +94,7 @@ export async function up(knex: Knex): Promise<void> {
       table.string('outcome', 20).notNullable();
       table.uuid('request_id').notNullable();
       table.string('ip_hash', 64);
-      table.jsonb('metadata').notNullable().defaultTo('{}');
+      table.json('metadata').notNullable();
       table.timestamp('created_at', { useTz: true }).notNullable().defaultTo(trx.fn.now());
       table.check("outcome in ('success', 'failure', 'denied')");
       table.index(['actor_user_id', 'created_at']);
@@ -104,16 +104,16 @@ export async function up(knex: Knex): Promise<void> {
     });
 
     await trx.raw(`
-      create function prevent_audit_event_mutation() returns trigger as $$
-      begin
-        raise exception 'audit_events is append-only';
-      end;
-      $$ language plpgsql;
+      create trigger audit_events_no_update
+      before update on audit_events
+      for each row
+      signal sqlstate '45000' set message_text = 'audit_events is append-only'
     `);
     await trx.raw(`
-      create trigger audit_events_no_update
-      before update or delete on audit_events
-      for each row execute function prevent_audit_event_mutation();
+      create trigger audit_events_no_delete
+      before delete on audit_events
+      for each row
+      signal sqlstate '45000' set message_text = 'audit_events is append-only'
     `);
 
     const legacyUsers = await trx('admin_users').select('*').orderBy('id');
@@ -154,15 +154,15 @@ export async function up(knex: Knex): Promise<void> {
       await trx('posts').where('author_id', legacyId).update({ author_user_id: authId });
     }
     await trx.schema.alterTable('posts', (table) => {
+      table.dropForeign('author_id');
       table.dropColumn('author_id');
       table.index('author_user_id');
     });
     await trx.schema.dropTable('admin_users');
-  });
 }
 
 export async function down(knex: Knex): Promise<void> {
-  await knex.transaction(async (trx) => {
+  const trx = knex;
     await trx.schema.createTable('admin_users', (table) => {
       table.increments('id').primary();
       table.string('email').notNullable().unique();
@@ -192,7 +192,7 @@ export async function down(knex: Knex): Promise<void> {
 
     const authToLegacy = new Map<string, number>();
     for (const user of staff) {
-      const [legacy] = await trx('admin_users')
+      const [legacyId] = await trx('admin_users')
         .insert({
           email: user.email,
           password_hash: user.password ?? 'ACCOUNT_REQUIRES_PASSWORD_RESET',
@@ -201,21 +201,23 @@ export async function down(knex: Knex): Promise<void> {
           last_login_at: user.last_login_at,
           created_at: user.created_at,
           updated_at: user.updated_at,
-        })
-        .returning('id');
-      authToLegacy.set(user.user_id, typeof legacy === 'number' ? legacy : legacy.id);
+        });
+      authToLegacy.set(user.user_id, legacyId);
     }
 
     await trx.schema.alterTable('posts', (table) => {
-      table.integer('author_id').references('id').inTable('admin_users').onDelete('SET NULL');
+      table.integer('author_id').unsigned().references('id').inTable('admin_users').onDelete('SET NULL');
     });
     for (const [authId, legacyId] of authToLegacy) {
       await trx('posts').where('author_user_id', authId).update({ author_id: legacyId });
     }
-    await trx.schema.alterTable('posts', (table) => table.dropColumn('author_user_id'));
+    await trx.schema.alterTable('posts', (table) => {
+      table.dropForeign('author_user_id');
+      table.dropColumn('author_user_id');
+    });
 
-    await trx.raw('drop trigger if exists audit_events_no_update on audit_events');
-    await trx.raw('drop function if exists prevent_audit_event_mutation()');
+    await trx.raw('drop trigger if exists audit_events_no_delete');
+    await trx.raw('drop trigger if exists audit_events_no_update');
     await trx.schema.dropTable('audit_events');
     await trx.schema.dropTable('user_consents');
     await trx.schema.dropTable('user_profiles');
@@ -223,5 +225,4 @@ export async function down(knex: Knex): Promise<void> {
     await trx.schema.dropTable('auth_accounts');
     await trx.schema.dropTable('auth_sessions');
     await trx.schema.dropTable('auth_users');
-  });
 }

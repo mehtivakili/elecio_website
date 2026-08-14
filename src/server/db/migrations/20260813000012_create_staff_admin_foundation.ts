@@ -1,7 +1,7 @@
 import type { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
-  await knex.transaction(async (trx) => {
+  const trx = knex;
     await trx.schema.alterTable('auth_users', (table) => {
       table.boolean('two_factor_enabled').notNullable().defaultTo(false);
     });
@@ -34,15 +34,19 @@ export async function up(knex: Knex): Promise<void> {
     await trx.schema.alterTable('download_requests', (table) => {
       table.uuid('assigned_to').references('id').inTable('auth_users').onDelete('SET NULL').index();
     });
-  });
 }
 
 export async function down(knex: Knex): Promise<void> {
-  await knex.transaction(async (trx) => {
-    await trx.schema.alterTable('download_requests', (table) => table.dropColumn('assigned_to'));
-    await trx.schema.alterTable('contact_submissions', (table) => table.dropColumn('assigned_to'));
+  const trx = knex;
+    await trx.schema.alterTable('download_requests', (table) => {
+      table.dropForeign('assigned_to');
+      table.dropColumn('assigned_to');
+    });
+    await trx.schema.alterTable('contact_submissions', (table) => {
+      table.dropForeign('assigned_to');
+      table.dropColumn('assigned_to');
+    });
     await trx.schema.dropTable('staff_invitations');
     await trx.schema.dropTable('auth_two_factors');
     await trx.schema.alterTable('auth_users', (table) => table.dropColumn('two_factor_enabled'));
-  });
 }

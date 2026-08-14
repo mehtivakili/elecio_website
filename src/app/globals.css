@@ -54,6 +54,8 @@
   --glass-blur: blur(20px) saturate(180%);
   --glass-bg: rgba(16, 20, 27, 0.72);
   --glass-border: rgba(238, 242, 247, 0.12);
+  --scrollbar-thumb: #7c19ff;
+  --scrollbar-track: #080a0e;
   color-scheme: dark;
 }
 
@@ -76,11 +78,57 @@
   --background: #f5f7fa;
   --glass-bg: rgba(255, 255, 255, 0.78);
   --glass-border: rgba(13, 20, 32, 0.1);
+  --scrollbar-thumb: #20d9e8;
+  --scrollbar-track: #eef3f7;
   color-scheme: light;
 }
 
 html {
   height: 100%;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.custom-scrollbar {
+  position: fixed;
+  z-index: 10001;
+  inset: 0 0 0 auto;
+  width: 12px;
+  background: var(--scrollbar-track);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.custom-scrollbar[data-visible='true'] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.custom-scrollbar__thumb {
+  position: absolute;
+  inset: 0 0 auto;
+  width: 12px;
+  height: min(160px, calc(100vh - 8px));
+  background: var(--scrollbar-thumb);
+  border: 3px solid var(--scrollbar-track);
+  border-radius: 999px;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  will-change: transform;
+}
+
+.custom-scrollbar__thumb:hover {
+  filter: brightness(1.12);
+}
+
+.custom-scrollbar__thumb:active {
+  cursor: grabbing;
 }
 
 html,
@@ -94,6 +142,7 @@ body {
 }
 
 body {
+  margin: 0;
   min-height: 100%;
   display: flex;
   flex-direction: column;
@@ -102,6 +151,33 @@ body {
   font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Persona pages use a fixed dark photographic hero in both themes. Paint the page canvas dark
+   too, so the SiteHeader's normal-flow area can never reveal the light-theme body behind it. */
+body:has([data-persona-page]) {
+  background: #090d13;
+}
+
+body:has([data-persona-page][data-tone='owner']) {
+  background-image: url('/images/persona-background/for-boss.webp');
+  background-position: top center;
+  background-size: 100vw auto;
+  background-repeat: no-repeat;
+}
+
+body:has([data-persona-page][data-tone='programmer']) {
+  background-image: url('/images/persona-background/for-programmer.webp');
+  background-position: top center;
+  background-size: 100vw auto;
+  background-repeat: no-repeat;
+}
+
+body:has([data-persona-page][data-tone='operator']) {
+  background-image: url('/images/persona-background/for-operator.webp');
+  background-position: top center;
+  background-size: 100vw auto;
+  background-repeat: no-repeat;
 }
 
 * {

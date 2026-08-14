@@ -76,31 +76,6 @@
   align-items: center;
   justify-content: center;
 }
-.accountLink {
-  width: 34px;
-  height: 34px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-}
-.adminLink {
-  min-height: 34px;
-  padding: 0 12px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid color-mix(in srgb, var(--signal) 38%, var(--border));
-  border-radius: 999px;
-  color: var(--signal);
-  background: color-mix(in srgb, var(--signal) 8%, transparent);
-  font-size: 12px;
-  font-weight: 800;
-  white-space: nowrap;
-}
-.adminLink:hover { background: color-mix(in srgb, var(--signal) 15%, transparent); }
-
 .mobileMenuButton {
   display: none !important;
 }
@@ -191,7 +166,6 @@
   .themeToggle {
     display: none !important;
   }
-  .accountLink, .adminLink { display: none; }
 }
 
 @media (max-width: 360px) {
