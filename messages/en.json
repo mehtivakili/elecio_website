@@ -98,28 +98,44 @@
     "title": "Three roles. One experience for each.",
     "intro": "ElecIO gives every person around the machine a clearer, simpler way to work—from management decisions to technical preparation and daily operation.",
     "viewFullPage": "Explore this experience",
-    "steps": ["See & improve", "Prepare & send", "Receive & run"],
+    "steps": [
+      "See & improve",
+      "Prepare & send",
+      "Receive & run"
+    ],
     "items": [
       {
         "title": "Business Owner",
         "description": "Less downtime, a clearer ROI — without adding headcount.",
         "brief": "See which machines actually ran and which sat idle — precise uptime/downtime reporting per device, without needing extra staff to track it.",
         "href": "/for/business-owners",
-        "highlights": ["Precise uptime/downtime reporting per machine", "No extra staff needed to track it", "A measurable, defensible ROI"]
+        "highlights": [
+          "Precise uptime/downtime reporting per machine",
+          "No extra staff needed to track it",
+          "A measurable, defensible ROI"
+        ]
       },
       {
         "title": "Programmer / Technical Office",
         "description": "Real controller compatibility and protocol-level detail, stated precisely.",
         "brief": "A controller compatibility matrix (FANUC, SIEMENS, HEIDENHAIN, and more), serial-protocol detail, and LSV2 support — no guessing.",
         "href": "/for/programmers",
-        "highlights": ["Compatible with FANUC, SIEMENS, HEIDENHAIN & more", "LSV2 support for Heidenhain", "Simultaneous send via dual-core processor"]
+        "highlights": [
+          "Compatible with FANUC, SIEMENS, HEIDENHAIN & more",
+          "LSV2 support for Heidenhain",
+          "Simultaneous send via dual-core processor"
+        ]
       },
       {
         "title": "CNC Operator",
         "description": "No added complexity — receive the file, run the file.",
         "brief": "One screen, three buttons. Receive the file and run it — no confusing menus, no complicated training.",
         "href": "/for/operators",
-        "highlights": ["One screen, three buttons — no training needed", "Isolated serial-port protection", "Automatic repeat for serial production"]
+        "highlights": [
+          "One screen, three buttons — no training needed",
+          "Isolated serial-port protection",
+          "Automatic repeat for serial production"
+        ]
       }
     ]
   },
@@ -244,19 +260,31 @@
             "label": "STEP 01 — SEE THE REAL PICTURE",
             "title": "Runtime and downtime stop being a blind spot.",
             "body": "Every program run is timestamped. That means you can see which machine was productive and where time was lost without relying on verbal updates or assigning another person to track it.",
-            "points": ["An aggregate management view", "Per-machine and per-shift detail", "Traceable program runs with timestamps"]
+            "points": [
+              "An aggregate management view",
+              "Per-machine and per-shift detail",
+              "Traceable program runs with timestamps"
+            ]
           },
           {
             "label": "STEP 02 — SIMPLIFY THE INFRASTRUCTURE",
             "title": "Management becomes central; the machine side becomes lighter.",
             "body": "Instead of a PC, serial card, and long cable at every control, one ElecIO unit sits beside each machine while files are distributed from a central station over the workshop network.",
-            "points": ["Central access from one PC or phone", "A short, fixed serial cable at the control", "Fewer failure points and fewer trips across the floor"]
+            "points": [
+              "Central access from one PC or phone",
+              "A short, fixed serial cable at the control",
+              "Fewer failure points and fewer trips across the floor"
+            ]
           },
           {
             "label": "STEP 03 — PROTECT THE PRODUCTION FLOW",
             "title": "A network interruption should not stop machining.",
             "body": "Every unit has its own internal storage. The program remains at the machine, so a temporary network issue does not make the control completely dependent on a central connection.",
-            "points": ["8 GB of internal storage", "Keep working with the locally stored file", "Return to central management when connectivity resumes"]
+            "points": [
+              "8 GB of internal storage",
+              "Keep working with the locally stored file",
+              "Return to central management when connectivity resumes"
+            ]
           }
         ]
       },
@@ -265,10 +293,22 @@
         "title": "Guess less. Invest with better evidence.",
         "body": "ElecIO is more than wireless transfer. It gives management a more orderly view of infrastructure, production activity, and the areas worth improving next.",
         "items": [
-          { "title": "Lower infrastructure burden", "body": "Machine-side PCs, serial cards, and long cable runs are removed from the workshop architecture." },
-          { "title": "Defensible reporting", "body": "Runtime and downtime become reviewable inputs for production meetings and planning." },
-          { "title": "Simpler scaling", "body": "Adding another machine does not turn file management back into another scattered workstation." },
-          { "title": "Lower operational risk", "body": "Independent storage at every unit reduces complete dependence on the central connection." }
+          {
+            "title": "Lower infrastructure burden",
+            "body": "Machine-side PCs, serial cards, and long cable runs are removed from the workshop architecture."
+          },
+          {
+            "title": "Defensible reporting",
+            "body": "Runtime and downtime become reviewable inputs for production meetings and planning."
+          },
+          {
+            "title": "Simpler scaling",
+            "body": "Adding another machine does not turn file management back into another scattered workstation."
+          },
+          {
+            "title": "Lower operational risk",
+            "body": "Independent storage at every unit reduces complete dependence on the central connection."
+          }
         ]
       }
     },
@@ -297,19 +337,31 @@
             "label": "STEP 01 — IDENTIFY THE CONTROL",
             "title": "Match the model, port, and transfer method before deployment.",
             "body": "Final compatibility is more specific than a controller brand. The control model, port condition, and existing parameters are reviewed so the right connection method is established for that machine.",
-            "points": ["Evaluate FANUC, SIEMENS, HEIDENHAIN, and other controls", "Match port type and machine condition", "No blanket compatibility claim without verification"]
+            "points": [
+              "Evaluate FANUC, SIEMENS, HEIDENHAIN, and other controls",
+              "Match port type and machine condition",
+              "No blanket compatibility claim without verification"
+            ]
           },
           {
             "label": "STEP 02 — CONFIGURE THE PROTOCOL",
             "title": "Serial parameters follow the logic of your control.",
             "body": "Software and hardware flow control, serial transfer, and the LSV2 route are selected around the control—so deployment follows technical requirements instead of unlimited trial and error.",
-            "points": ["XON/XOFF support", "RTS/CTS support", "LSV2 and TNC Server for compatible use cases"]
+            "points": [
+              "XON/XOFF support",
+              "RTS/CTS support",
+              "LSV2 and TNC Server for compatible use cases"
+            ]
           },
           {
             "label": "STEP 03 — TRANSFER AND OBSERVE",
             "title": "The right file reaches the right machine with visible status.",
             "body": "ElecIO Manager organizes programs and exposes transfer state. Each unit also has independent internal storage, keeping the program close to the control that consumes it.",
-            "points": ["Central organization for NC programs", "Visible send and receive status", "Independent storage beside every control"]
+            "points": [
+              "Central organization for NC programs",
+              "Visible send and receive status",
+              "Independent storage beside every control"
+            ]
           }
         ]
       },
@@ -318,10 +370,22 @@
         "title": "More predictable deployment. More precise support.",
         "body": "Clear communication details and an independent unit at each machine help the new system enter production without creating another central point of failure.",
         "items": [
-          { "title": "A defined communication profile", "body": "Flow control and transfer method are selected around the control's real parameters." },
-          { "title": "Port protection", "body": "An isolated circuit between the control and communication equipment reduces risk from electrical potential differences and noise." },
-          { "title": "Organized programs", "body": "NC files are managed centrally instead of being scattered across multiple PCs." },
-          { "title": "Faster troubleshooting", "body": "Transfer state and connection details give the technical team a shorter path to the source of a fault." }
+          {
+            "title": "A defined communication profile",
+            "body": "Flow control and transfer method are selected around the control's real parameters."
+          },
+          {
+            "title": "Port protection",
+            "body": "An isolated circuit between the control and communication equipment reduces risk from electrical potential differences and noise."
+          },
+          {
+            "title": "Organized programs",
+            "body": "NC files are managed centrally instead of being scattered across multiple PCs."
+          },
+          {
+            "title": "Faster troubleshooting",
+            "body": "Transfer state and connection details give the technical team a shorter path to the source of a fault."
+          }
         ]
       }
     },
@@ -350,19 +414,31 @@
             "label": "STEP 01 — RECEIVE THE PROGRAM",
             "title": "The technical office sends the file directly to the machine.",
             "body": "The operator does not need to carry flash drives between systems or hunt for the latest program revision. The file is sent from the central flow to the unit beside that control.",
-            "points": ["Fewer trips across the shop floor", "The file is available where the job runs", "Receive status shown on the unit"]
+            "points": [
+              "Fewer trips across the shop floor",
+              "The file is available where the job runs",
+              "Receive status shown on the unit"
+            ]
           },
           {
             "label": "STEP 02 — MAKE A CLEAR SELECTION",
             "title": "Three buttons for a task that should stay fast.",
             "body": "The compact display and physical Enter, Up, and Down buttons are built for selection and confirmation—without layers of menus or a touch interface that gets in the way at the machine.",
-            "points": ["Move between options simply", "Confirm the operation directly", "Readable feedback on the display"]
+            "points": [
+              "Move between options simply",
+              "Confirm the operation directly",
+              "Readable feedback on the display"
+            ]
           },
           {
             "label": "STEP 03 — KEEP MOVING",
             "title": "The program stays beside the machine during a temporary outage.",
             "body": "Internal storage keeps the file local. A brief network interruption does not force the operator to restart preparation from scratch or wait for a specialist to arrive.",
-            "points": ["8 GB of internal storage", "Less dependence on the network during daily work", "Automatic reconnection after service returns"]
+            "points": [
+              "8 GB of internal storage",
+              "Less dependence on the network during daily work",
+              "Automatic reconnection after service returns"
+            ]
           }
         ]
       },
@@ -371,16 +447,32 @@
         "title": "Less time transferring. More attention on machining.",
         "body": "ElecIO's focused interface lets operators receive and prepare files without a major change to their established shop-floor routine.",
         "items": [
-          { "title": "A short learning curve", "body": "The main workflow is concentrated on one display and three physical controls." },
-          { "title": "The right file revision", "body": "Programs arrive through a central path, reducing versions scattered across flash drives and PCs." },
-          { "title": "Less cable handling", "body": "A short, fixed serial cable replaces long and disruptive runs across the workshop floor." },
-          { "title": "Understandable status", "body": "The operator can follow receiving, selection, and file readiness right at the machine." }
+          {
+            "title": "A short learning curve",
+            "body": "The main workflow is concentrated on one display and three physical controls."
+          },
+          {
+            "title": "The right file revision",
+            "body": "Programs arrive through a central path, reducing versions scattered across flash drives and PCs."
+          },
+          {
+            "title": "Less cable handling",
+            "body": "A short, fixed serial cable replaces long and disruptive runs across the workshop floor."
+          },
+          {
+            "title": "Understandable status",
+            "body": "The operator can follow receiving, selection, and file readiness right at the machine."
+          }
         ]
       }
     }
   },
   "trust": {
-    "items": ["12-month warranty", "Free software updates", "Technical support"]
+    "items": [
+      "12-month warranty",
+      "Free software updates",
+      "Technical support"
+    ]
   },
   "roi": {
     "eyebrow": "Reporting",
@@ -415,9 +507,18 @@
     "cta": "Visit the blog",
     "comingSoon": "Coming soon",
     "items": [
-      { "tag": "Setup", "title": "How to install ElecIO next to a FANUC machine" },
-      { "tag": "Troubleshooting", "title": "Fixing common serial-connection errors" },
-      { "tag": "Productivity", "title": "Reading runtime reports to cut production downtime" }
+      {
+        "tag": "Setup",
+        "title": "How to install ElecIO next to a FANUC machine"
+      },
+      {
+        "tag": "Troubleshooting",
+        "title": "Fixing common serial-connection errors"
+      },
+      {
+        "tag": "Productivity",
+        "title": "Reading runtime reports to cut production downtime"
+      }
     ]
   },
   "learning": {
@@ -479,6 +580,9 @@
     "contactTitle": "Contact",
     "socialTitle": "Follow Us",
     "address": "Tehran, Shahr-e Qods, 30-Metri Shohada Blvd, Sahel St, Ashkan Alley, No. 25",
-    "rights": "All rights reserved — ElecIO."
+    "rights": "All rights reserved — ElecIO.",
+    "legalTitle": "Legal",
+    "privacy": "Privacy Notice",
+    "terms": "Terms of Service"
   }
 }

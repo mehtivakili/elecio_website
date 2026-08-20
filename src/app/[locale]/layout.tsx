@@ -13,6 +13,7 @@ import { SiteHeader } from '@/components/layout/SiteHeader';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import '../globals.css';
 import { SITE_URL } from '@/lib/seo';
+import { organizationJsonLd, websiteJsonLd, jsonLdScript } from '@/lib/structured-data';
 
 // Runs before hydration so a returning visitor who chose light mode never sees a dark->light
 // flash — reads the same localStorage key theme-context.tsx writes to, and sets the same
@@ -40,6 +41,13 @@ export async function generateMetadata({
     alternates: { canonical: `/${locale}`, languages: { fa: '/fa', en: '/en', 'x-default': '/fa' } },
     openGraph: { siteName: 'Elecio', type: 'website', locale: locale === 'fa' ? 'fa_IR' : 'en_US', images: [{ url: '/images/hero-slide-en-1.webp', width: 1920, height: 1080, alt: 'Elecio Smart DNC' }] },
     twitter: { card: 'summary_large_image' },
+    verification: {
+      google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
+      other: {
+        ...(process.env.BING_SITE_VERIFICATION ? { 'msvalidate.01': process.env.BING_SITE_VERIFICATION } : {}),
+        ...(process.env.YANDEX_SITE_VERIFICATION ? { 'yandex-verification': process.env.YANDEX_SITE_VERIFICATION } : {}),
+      },
+    },
   };
 }
 
@@ -68,6 +76,14 @@ export default async function LocaleLayout({
     <html lang={locale} dir={dir} suppressHydrationWarning>
       <head>
         <InlineScript html={THEME_INIT_SCRIPT} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLdScript(organizationJsonLd()) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLdScript(websiteJsonLd(locale)) }}
+        />
       </head>
       <body>
         <CustomScrollbar />

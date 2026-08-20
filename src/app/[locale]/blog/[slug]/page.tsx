@@ -6,6 +6,8 @@ import { getPublishedPost, getSlugRedirect } from '@/server/content/post-reposit
 import { extractFaq } from '@/server/content/document';
 import { RichContent } from '@/components/blog/RichContent';
 import styles from '@/components/blog/Blog.module.css';
+import { SITE_URL } from '@/lib/seo';
+import { breadcrumbJsonLd, jsonLdScript } from '@/lib/structured-data';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
   const { locale, slug } = await params;
@@ -40,7 +42,12 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
     if (moved) permanentRedirect(`/${locale}/blog/${moved.slug}`);
     notFound();
   }
-  const origin = process.env.BETTER_AUTH_URL ?? 'https://elecio.ir';
+  const origin = SITE_URL;
+  const breadcrumb = breadcrumbJsonLd([
+    { name: en ? 'Home' : 'خانه', path: `/${locale}` },
+    { name: en ? 'Blog' : 'وبلاگ', path: `/${locale}/blog` },
+    { name: post.title, path: `/${locale}/blog/${slug}` },
+  ]);
   const articleJsonLd = {
     '@context': 'https://schema.org', '@type': post.schemaType, headline: post.title,
     description: post.seoDescription, datePublished: post.publishedAt, dateModified: post.updatedAt,
@@ -59,5 +66,5 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
     <header className={`${styles.articleHead} ${styles.articleWrap}`}><span className={styles.eyebrow}>{post.categoryName ?? (en ? 'Elecio guide' : 'راهنمای Elecio')}</span><h1>{post.title}</h1><p className={styles.muted}>{post.excerpt}</p><div className={styles.meta}><span>{post.authorName}</span><time dateTime={post.publishedAt}>{new Intl.DateTimeFormat(locale, { dateStyle: 'long' }).format(new Date(post.publishedAt))}</time></div></header>
     {post.coverImagePath && <figure className={styles.articleCover}><Image src={post.coverImagePath} alt={post.coverAlt} width={1600} height={900} priority />{post.coverCaption && <figcaption>{post.coverCaption}</figcaption>}</figure>}
     <div className={`${styles.articleWrap} ${styles.prose}`}><RichContent document={post.body} /><div className={styles.tags}>{post.tags.map((tag) => <span key={tag.slug}>{tag.name}</span>)}</div><p><Link href="/blog">← {en ? 'All guides' : 'همه راهنماها'}</Link></p></div>
-  </article><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json(articleJsonLd) }} />{faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json(faqJsonLd) }} />}</main>;
+  </article><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json(articleJsonLd) }} />{faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json(faqJsonLd) }} />}<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumb) }} /></main>;
 }

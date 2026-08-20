@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { MailOutlined, PhoneOutlined, LinkedinOutlined, InstagramOutlined, SendOutlined } from '@ant-design/icons';
 import { CONTACT, SOCIAL_LINKS } from '@/lib/site-constants';
 import styles from './SiteFooter.module.css';
-import { usePathname } from '@/i18n/navigation';
+import { usePathname, Link } from '@/i18n/navigation';
 import { PrivacyPreferences } from './PrivacyPreferences';
 
 export function SiteFooter() {
@@ -52,6 +52,18 @@ export function SiteFooter() {
               <a href={SOCIAL_LINKS.telegram} target="_blank" rel="noopener noreferrer">
                 <SendOutlined /> Telegram
               </a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 className={styles.heading}>{t('legalTitle')}</h3>
+          <ul className={styles.list}>
+            <li>
+              <Link href="/privacy">{t('privacy')}</Link>
+            </li>
+            <li>
+              <Link href="/terms">{t('terms')}</Link>
             </li>
           </ul>
         </div>
