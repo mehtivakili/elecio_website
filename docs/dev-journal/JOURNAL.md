@@ -47,3 +47,28 @@ Close every technical-SEO gap that was findable from inside the repo (structured
 - A real repo-wide search for `elecio.co` (flagged as a critical domain-confusion bug in the 15 Aug plan) found zero code references — the value is either CMS-stored data, a hosting-panel artifact, or already resolved; needs checking directly in the CMS site settings and hosting panel, not in source.
 - Verified via `tsc --noEmit`, `eslint`, `next build` (all clean, `/privacy` and `/terms` now statically prerendered in all locales), and a Playwright screenshot pass (footer 3-column layout, `/en/privacy`, `/fa/terms`, `/fa/blog` — all render correctly in both languages, no visual regressions).
 - Full findings, the updated 30/60/90 roadmap, and the English-market strategy live in `deliverables/Elecio_SEO_Master_Plan.pdf` — read that alongside this entry for the complete picture; this journal entry covers the code-level "why," the PDF covers the strategic "what's next."
+
+---
+
+## [2026-08-21.01] Keep WebGL and hero media off the critical rendering path
+- **Type:** performance
+- **When:** 2026-08-21 03:35
+- **Trigger:** The production PageSpeed result and iPhone feedback reported severe freezing, while a review suggested the embedded shop-floor story was both blocking the main thread and hiding important copy from the parent page.
+- **Scope:** `src/components/marketing/{Hero,ShopFloorStory}*`, `src/components/marketing/shop-floor-story-copy.ts`, `src/components/marketing/hero3d/index.tsx`, `public/3d/story/index.html`, `next.config.ts`, `src/lib/seo.ts`, `.env.example`, `src/components/layout/PrivacyPreferences.module.css`, `ecosystem.config.js`
+- **Status:** active
+
+### Change
+- Removed the hero-readiness event and unconditional 12-second fallback that mounted the WebGL iframe even when the visitor never reached it. Constrained clients now get a static preview plus an explicit 3D opt-in; desktop loads only after real interaction and near-viewport intersection.
+- Moved all seven bilingual story stages into parent-page renderable data and HTML. The iframe hides its duplicate copy in embedded mode, pauses its animation loop outside the viewport, uses a mobile DPR cap of 1, and disables mobile antialiasing.
+- Hero videos now use `preload="none"` and do not autoplay or rotate until real interaction. The initial hero image is eager/high-priority. The separate Three.js product experience now has the same interaction-plus-proximity loading gate.
+- Added explicit public-asset cache headers, corrected the canonical fallback to `https://elecio.co` without coupling it to the authentication origin, fixed the privacy accept-button contrast, and added a production-default PM2 ecosystem config.
+
+### Evidence and reasoning
+- Production Lighthouse before the change: mobile Performance 34, TBT 11.73 s, main-thread work 19.0 s, and about 7.5 MiB transferred. The 3D iframe alone accounted for roughly 14.5 s CPU. Desktop Performance was 54.
+- Controlled production-build Lighthouse after the change: mobile Performance 84, TBT 70 ms, 502 KiB transferred, no media bytes, and one document (no iframe); desktop Performance 99 with 0 ms TBT. Accessibility and Best Practices reached 100.
+- Direct production-server inspection found deployment commit `8024ff9` (behind local `d25812f`), HTTP/1.1 only, public 3D/video responses still at `max-age=0`, and PM2 running with non-standard `NODE_ENV=development`. No production files or services were changed during the audit.
+
+### Verification and follow-up
+- `npm run typecheck`, `npm run lint`, and repeated `npm run build` passes completed successfully.
+- The generated FA HTML contains the parent story copy, canonical/hreflang values on `elecio.co`, an eager initial LCP image, and no initial iframe.
+- Deployment remains intentional follow-up work: reconcile the server-only staged `ecosystem.config.js`, deploy the newer Git revision plus these working-tree changes, start PM2 with production environment, enable HTTP/2 in the Nginx TLS vhosts, and re-run public Lighthouse/CrUX monitoring.

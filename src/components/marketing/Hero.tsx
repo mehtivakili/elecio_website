@@ -45,7 +45,8 @@ type Slide = {
  * backdrop: 5 real product photos per locale — media/landings(1-20).png for English,
  * media/fa_landing(1-11).png for Persian (a distinct set, not a translation of the same images) —
  * one per audience, each with its own headline/CTA/link so "the topic changes with the image".
- * Photos advance after six seconds; videos advance on completion. Arrow controls share that order.
+ * After the first real user interaction, photos advance after six seconds and videos advance on
+ * completion. Arrow controls share that order.
  *
  * Full-bleed: the media band fills the entire viewport (`100svh`) and is pulled up behind the
  * floating header via negative margin (Hero.module.css) rather than starting below it — a plain
@@ -65,6 +66,7 @@ export function Hero() {
   const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
   const [onscreen, setOnscreen] = useState(true);
   const [reduceMotion, setReduceMotion] = useState(false);
+  const [engaged, setEngaged] = useState(false);
   const [readyVideos, setReadyVideos] = useState<ReadonlySet<number>>(() => new Set());
   // Light mode has three approved photos, so its fourth photo wraps cleanly to the first.
   const mediaItem = HERO_MEDIA_SEQUENCE[active];
@@ -89,6 +91,21 @@ export function Hero() {
     return () => query.removeEventListener('change', update);
   }, []);
 
+  useEffect(() => {
+    const engage = () => setEngaged(true);
+    const options = { passive: true, once: true } as const;
+    window.addEventListener('pointerdown', engage, options);
+    window.addEventListener('touchstart', engage, options);
+    window.addEventListener('wheel', engage, options);
+    window.addEventListener('keydown', engage, { once: true });
+    return () => {
+      window.removeEventListener('pointerdown', engage);
+      window.removeEventListener('touchstart', engage);
+      window.removeEventListener('wheel', engage);
+      window.removeEventListener('keydown', engage);
+    };
+  }, []);
+
   const goPrevious = useCallback(
     () => setActive((index) => (index - 1 + HERO_MEDIA_SEQUENCE.length) % HERO_MEDIA_SEQUENCE.length),
     [],
@@ -98,18 +115,18 @@ export function Hero() {
     [],
   );
 
-  // Photos remain visible for six seconds. Videos advance only when playback really ends.
+  // Do not start the carousel or fetch video bytes until the visitor actually interacts.
   useEffect(() => {
-    if (!onscreen || reduceMotion || mediaItem.type !== 'image') return;
+    if (!engaged || !onscreen || reduceMotion || mediaItem.type !== 'image') return;
     const timeout = window.setTimeout(goNext, PHOTO_DURATION_MS);
     return () => window.clearTimeout(timeout);
-  }, [active, goNext, mediaItem.type, onscreen, reduceMotion]);
+  }, [active, engaged, goNext, mediaItem.type, onscreen, reduceMotion]);
 
-  // Preloaded video elements remain mounted. Only the video belonging to the current item plays.
+  // Video elements remain mounted with preload=none. Only the current item is allowed to fetch/play.
   useEffect(() => {
     videoRefs.current.forEach((video, videoIndex) => {
       if (!video) return;
-      if (videoIndex === activeVideoIndex && onscreen && !reduceMotion) {
+      if (engaged && videoIndex === activeVideoIndex && onscreen && !reduceMotion) {
         video.currentTime = 0;
         void video.play().catch(() => {
           // Keep the poster visible if the browser temporarily rejects autoplay.
@@ -118,7 +135,7 @@ export function Hero() {
         video.pause();
       }
     });
-  }, [active, activeVideoIndex, onscreen, reduceMotion]);
+  }, [active, activeVideoIndex, engaged, onscreen, reduceMotion]);
 
   const markVideoReady = useCallback((videoIndex: number) => {
     setReadyVideos((current) => {
@@ -128,12 +145,6 @@ export function Hero() {
       return next;
     });
   }, []);
-
-  useEffect(() => {
-    if (readyVideos.size < HERO_VIDEOS.length) return;
-    document.documentElement.dataset.elecioHeroVideosReady = 'true';
-    window.dispatchEvent(new Event('elecio-hero-videos-ready'));
-  }, [readyVideos]);
 
   const slide = slides[mediaItem.contentIndex % slides.length];
   const target = HERO_SLIDES[mediaItem.contentIndex % HERO_SLIDES.length];
@@ -149,12 +160,13 @@ export function Hero() {
           src={posterSrc}
           alt=""
           fill
-          priority={active === 0}
+          fetchPriority={active === 0 ? 'high' : 'auto'}
+          loading={active === 0 ? 'eager' : 'lazy'}
           sizes="100vw"
           className={`${styles.slideImg} ${styles.slideImgActive}`}
         />
         {HERO_VIDEOS.map((videoSrc, videoIndex) => {
-          const isActive = activeVideoIndex === videoIndex && !reduceMotion;
+          const isActive = engaged && activeVideoIndex === videoIndex && !reduceMotion;
           const videoItem = HERO_MEDIA_SEQUENCE.find(
             (item) => item.type === 'video' && item.videoIndex === videoIndex,
           );
@@ -168,12 +180,14 @@ export function Hero() {
               className={`${styles.slideVideo} ${isActive && readyVideos.has(videoIndex) ? styles.slideVideoActive : ''}`}
               muted
               playsInline
-              preload="auto"
-              poster={videoPoster}
+              preload="none"
+              poster={isActive ? videoPoster : undefined}
               aria-hidden="true"
               onCanPlay={() => {
                 markVideoReady(videoIndex);
-                if (activeVideoIndex === videoIndex && onscreen) void videoRefs.current[videoIndex]?.play();
+                if (engaged && activeVideoIndex === videoIndex && onscreen) {
+                  void videoRefs.current[videoIndex]?.play();
+                }
               }}
               onEnded={() => {
                 if (activeVideoIndex === videoIndex) goNext();
@@ -191,7 +205,10 @@ export function Hero() {
         <button
           type="button"
           className={`${styles.heroArrow} ${styles.heroArrowPrevious}`}
-          onClick={goPrevious}
+          onClick={() => {
+            setEngaged(true);
+            goPrevious();
+          }}
           aria-label={locale === 'fa' ? 'اسلاید قبلی' : 'Previous slide'}
         >
           <LeftOutlined />
@@ -199,7 +216,10 @@ export function Hero() {
         <button
           type="button"
           className={`${styles.heroArrow} ${styles.heroArrowNext}`}
-          onClick={goNext}
+          onClick={() => {
+            setEngaged(true);
+            goNext();
+          }}
           aria-label={locale === 'fa' ? 'اسلاید بعدی' : 'Next slide'}
         >
           <RightOutlined />

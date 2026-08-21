@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || process.env.BETTER_AUTH_URL || 'https://elecio.ir').replace(/\/$/, '');
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://elecio.co').replace(/\/$/, '');
 export const SITE_NAME = 'Elecio';
 
 export function localizedPageMetadata(

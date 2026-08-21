@@ -2,7 +2,7 @@
 .banner p { margin: 0 0 12px; color: var(--muted); font-size: .88rem; line-height: 1.7; }
 .banner div { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
 .banner button { min-height: 44px; padding: 8px 14px; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: 12px; cursor: pointer; }
-.banner .accept { color: #fff; background: var(--signal); border-color: var(--signal); }
+.banner .accept { color: #fff; background: #0759c7; border-color: #0759c7; }
 @media (max-width: 480px) { .banner { inset-inline: 10px; inset-block-end: max(10px, env(safe-area-inset-bottom)); } .banner div, .banner button { width: 100%; } }
 @media (prefers-reduced-transparency: reduce) { .banner { backdrop-filter: none; } }
 .manage { display: block; min-height: 44px; margin-block-end: 20px; padding: 0; color: var(--text-60); background: none; border: 0; text-decoration: underline; cursor: pointer; }

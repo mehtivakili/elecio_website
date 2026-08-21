@@ -128,6 +128,7 @@
     .hint{display:none}
   }
   @media (prefers-reduced-motion:reduce){ .copy{transition:none} }
+  html.embedded .copy,html.embedded .hint{display:none}
   html[lang="fa"] .copy,html[lang="fa"] .rail,html[lang="fa"] .win,
   html[lang="fa"] .hint,html[lang="fa"] #boot{direction:rtl}
   html[lang="fa"] body{font-family:var(--sans);font-feature-settings:'ss01' 1;font-variant-numeric:tabular-nums}
@@ -223,7 +224,11 @@
 <script>
 (function(){
 "use strict";
-const FA=new URLSearchParams(location.search).get('lang')==='fa';
+const PARAMS=new URLSearchParams(location.search);
+const FA=PARAMS.get('lang')==='fa';
+const EMBEDDED=PARAMS.get('embedded')==='1';
+const MOBILE=matchMedia('(max-width: 900px)').matches;
+if(EMBEDDED) document.documentElement.classList.add('embedded');
 const tr=(en,fa)=>FA?fa:en;
 if(FA){
   document.documentElement.lang='fa';
@@ -269,9 +274,9 @@ const TAU=Math.PI*2;
    renderer
    ============================================================ */
 const canvas=document.getElementById('c');
-const renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true,
-  powerPreference:'high-performance'});
-let DPR_CAP=Math.min(devicePixelRatio||1,2);
+const renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:!MOBILE,alpha:true,
+  powerPreference:MOBILE?'default':'high-performance'});
+let DPR_CAP=Math.min(devicePixelRatio||1,MOBILE?1:2);
 if(innerWidth*innerHeight>2600000) DPR_CAP=Math.min(DPR_CAP,1.5);
 let dpr=DPR_CAP;
 renderer.setPixelRatio(dpr);
@@ -957,6 +962,10 @@ addEventListener('resize',resize);
    scroll
    ============================================================ */
 let p=0;
+let parentActive=true;
+let bootComplete=false;
+let running=false;
+let frameId=0;
 const copies=[].slice.call(document.querySelectorAll('.copy'));
 let activeCopy=-1;
 function spec(el,t,c){ el.textContent=t; el.className=c||''; }
@@ -990,10 +999,19 @@ function onScroll(){
 }
 addEventListener('scroll',onScroll,{passive:true});
 addEventListener('message',function(event){
-  if(event.origin!==location.origin || !event.data || event.data.type!=='elecio-story-progress') return;
+  if(event.origin!==location.origin || !event.data) return;
+  if(event.data.type==='elecio-story-active'){
+    parentActive=Boolean(event.data.active);
+    setRenderingActive(parentActive&&!document.hidden);
+    return;
+  }
+  if(event.data.type!=='elecio-story-progress') return;
   const progress=Math.max(0,Math.min(1,Number(event.data.progress)||0));
   const max=Math.max(1,document.body.scrollHeight-innerHeight);
   scrollTo(0,progress*max);
+});
+document.addEventListener('visibilitychange',function(){
+  setRenderingActive(parentActive&&!document.hidden);
 });
 
 const dbg={az:0,el:0,r:0,drag:false,x:0,y:0};
@@ -1033,8 +1051,23 @@ function drawPane(r,cam){
   renderer.setScissorTest(false);
 }
 
+function setRenderingActive(active){
+  if(!bootComplete) return;
+  if(active===running) return;
+  running=active;
+  if(running){
+    clock.getDelta();
+    frameId=requestAnimationFrame(frame);
+  }else if(frameId){
+    cancelAnimationFrame(frameId);
+    frameId=0;
+  }
+}
+
 function frame(){
-  requestAnimationFrame(frame);
+  frameId=0;
+  if(!running) return;
+  frameId=requestAnimationFrame(frame);
   const dt=clock.getDelta(), t=clock.elapsedTime;
 
   /* adaptive resolution: if frames run long, drop pixel ratio a step */
@@ -1322,7 +1355,9 @@ function bootStep(){
   }
   if(DEBUG){ window.__scene=scene; window.__devs=devs; window.__cables=cables;
              window.__totals=[TOTAL_LONG,TOTAL_SHORT]; }
-  onScroll(); frame();
+  onScroll();
+  bootComplete=true;
+  setRenderingActive(parentActive&&!document.hidden);
   setTimeout(function(){ bootEl.classList.add('done'); },220);
 }
 function startStory(){ resize(); bootStep(); }
