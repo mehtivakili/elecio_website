@@ -4,88 +4,30 @@ import Image from 'next/image';
 import { useLocale } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import styles from './ShopFloorStory.module.css';
-import { SHOP_FLOOR_STORY_COPY, type StoryLocale } from './shop-floor-story-copy';
 
 const STORY_STAGE_COUNT = 7;
 const STAGE_LOCK_MS = 900;
 
-type NavigatorWithHints = Navigator & {
-  connection?: { saveData?: boolean };
-  deviceMemory?: number;
-};
-
 export function ShopFloorStory() {
-  const requestedLocale = useLocale();
-  const locale: StoryLocale = requestedLocale === 'en' ? 'en' : 'fa';
-  const copy = SHOP_FLOOR_STORY_COPY[locale];
+  const locale = useLocale();
   const hostRef = useRef<HTMLElement>(null);
   const frameRef = useRef<HTMLIFrameElement>(null);
-  const [mounted, setMounted] = useState(false);
-  const [requiresOptIn, setRequiresOptIn] = useState(true);
-  const [activeStage, setActiveStage] = useState(0);
+  const [started, setStarted] = useState(false);
 
   useEffect(() => {
-    const host = hostRef.current;
-    if (!host) return;
+    if (!started) return;
 
-    const navigatorWithHints = navigator as NavigatorWithHints;
-    const constrained =
-      window.matchMedia('(max-width: 900px)').matches ||
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
-      navigatorWithHints.connection?.saveData === true ||
-      (navigatorWithHints.deviceMemory !== undefined && navigatorWithHints.deviceMemory <= 4);
-
-    setRequiresOptIn(constrained);
-    if (constrained) return;
-
-    let nearViewport = false;
-    let userEngaged = false;
-    const maybeMount = () => {
-      if (!nearViewport || !userEngaged) return;
-      setMounted(true);
-      observer.disconnect();
-      removeEngagementListeners();
-    };
-    const onEngagement = () => {
-      userEngaged = true;
-      maybeMount();
-    };
-    const removeEngagementListeners = () => {
-      window.removeEventListener('pointerdown', onEngagement);
-      window.removeEventListener('touchstart', onEngagement);
-      window.removeEventListener('wheel', onEngagement);
-      window.removeEventListener('keydown', onEngagement);
-    };
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        nearViewport = entry.isIntersecting;
-        maybeMount();
-      },
-      { rootMargin: '300px 0px' },
-    );
-    observer.observe(host);
-    window.addEventListener('pointerdown', onEngagement, { passive: true });
-    window.addEventListener('touchstart', onEngagement, { passive: true });
-    window.addEventListener('wheel', onEngagement, { passive: true });
-    window.addEventListener('keydown', onEngagement);
-    return () => {
-      observer.disconnect();
-      removeEngagementListeners();
-    };
-  }, []);
-
-  useEffect(() => {
     let frame = 0;
     const sync = () => {
       frame = 0;
       const host = hostRef.current;
-      if (!host) return;
+      const target = frameRef.current?.contentWindow;
+      if (!host || !target) return;
 
       const rect = host.getBoundingClientRect();
       const range = Math.max(1, rect.height - window.innerHeight);
       const progress = Math.min(1, Math.max(0, -rect.top / range));
-      setActiveStage(Math.round(progress * (STORY_STAGE_COUNT - 1)));
-      frameRef.current?.contentWindow?.postMessage(
+      target.postMessage(
         { type: 'elecio-story-progress', progress },
         window.location.origin,
       );
@@ -102,38 +44,10 @@ export function ShopFloorStory() {
       window.removeEventListener('scroll', requestSync);
       window.removeEventListener('resize', requestSync);
     };
-  }, [mounted]);
+  }, [started]);
 
   useEffect(() => {
-    if (!mounted) return;
-    const host = hostRef.current;
-    if (!host) return;
-
-    let intersecting = false;
-    const sendVisibility = (active: boolean) => {
-      frameRef.current?.contentWindow?.postMessage(
-        { type: 'elecio-story-active', active },
-        window.location.origin,
-      );
-    };
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        intersecting = entry.isIntersecting;
-        sendVisibility(intersecting && !document.hidden);
-      },
-      { rootMargin: '100px 0px' },
-    );
-    const onVisibilityChange = () => sendVisibility(intersecting && !document.hidden);
-    observer.observe(host);
-    document.addEventListener('visibilitychange', onVisibilityChange);
-    return () => {
-      observer.disconnect();
-      document.removeEventListener('visibilitychange', onVisibilityChange);
-    };
-  }, [mounted]);
-
-  useEffect(() => {
-    if (!mounted || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!started || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const host = hostRef.current;
     if (!host) return;
 
@@ -174,55 +88,51 @@ export function ShopFloorStory() {
       window.clearTimeout(unlockTimer);
       host.removeEventListener('wheel', onWheel);
     };
-  }, [mounted]);
+  }, [started]);
 
   const en = locale === 'en';
+  const startStory = () => {
+    setStarted(true);
+    requestAnimationFrame(() => {
+      const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? 'auto'
+        : 'smooth';
+      hostRef.current?.scrollIntoView({ behavior, block: 'start' });
+    });
+  };
+
   return (
     <section
       ref={hostRef}
       id="shop-floor-story"
-      className={styles.section}
-      aria-label={en ? 'Elecio product journey' : 'داستان سه‌بعدی مسیر محصول السیو'}
+      className={`${styles.section} ${started ? styles.active : styles.gated}`}
+      aria-label={en ? 'Interactive Smart DNC shop-floor story' : 'داستان سه‌بعدی Smart DNC در کارگاه'}
     >
-      <div className={styles.visual}>
-        <Image
-          className={styles.poster}
-          src="/images/tech-pair.webp"
-          alt=""
-          fill
-          sizes="100vw"
+      {started ? (
+        <iframe
+          ref={frameRef}
+          className={styles.frame}
+          src={`/3d/story/index.html?lang=${locale}&v=20260814-fonts`}
+          title={en ? 'Interactive Smart DNC shop-floor story' : 'داستان تعاملی سه‌بعدی Smart DNC'}
+          loading="eager"
+          onLoad={() => window.dispatchEvent(new Event('scroll'))}
         />
-        {mounted ? (
-          <iframe
-            ref={frameRef}
-            className={styles.frame}
-            src={`/3d/story/index.html?lang=${locale}&embedded=1&v=20260821-performance`}
-            title={en ? 'Interactive Elecio product journey' : 'داستان تعاملی سه‌بعدی مسیر محصول السیو'}
-            loading="lazy"
-            onLoad={() => window.dispatchEvent(new Event('scroll'))}
+      ) : (
+        <div className={styles.gate}>
+          <Image
+            className={styles.poster}
+            src="/images/tech-pair.webp"
+            alt=""
+            fill
+            sizes="100vw"
           />
-        ) : null}
-        {!mounted && requiresOptIn ? (
-          <button className={styles.loadButton} type="button" onClick={() => setMounted(true)}>
-            {en ? 'Load interactive 3D' : 'نمایش تجربه سه‌بعدی'}
+          <div className={styles.scrim} />
+          <button className={styles.startButton} type="button" onClick={startStory}>
+            <span className={styles.playIcon} aria-hidden="true" />
+            {en ? 'Start the 3D story' : 'شروع داستان سه‌بعدی'}
           </button>
-        ) : null}
-      </div>
-
-      <ol className={styles.copyLayer}>
-        {copy.map((stage, index) => (
-          <li
-            className={styles.copy}
-            data-active={index === activeStage}
-            key={stage.title}
-            aria-current={index === activeStage ? 'step' : undefined}
-          >
-            <span>{stage.eyebrow}</span>
-            <h2>{stage.title}</h2>
-            <p>{stage.body}</p>
-          </li>
-        ))}
-      </ol>
+        </div>
+      )}
     </section>
   );
 }

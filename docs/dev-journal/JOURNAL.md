@@ -72,3 +72,24 @@ Close every technical-SEO gap that was findable from inside the repo (structured
 - `npm run typecheck`, `npm run lint`, and repeated `npm run build` passes completed successfully.
 - The generated FA HTML contains the parent story copy, canonical/hreflang values on `elecio.co`, an eager initial LCP image, and no initial iframe.
 - Deployment remains intentional follow-up work: reconcile the server-only staged `ecosystem.config.js`, deploy the newer Git revision plus these working-tree changes, start PM2 with production environment, enable HTTP/2 in the Nginx TLS vhosts, and re-run public Lighthouse/CrUX monitoring.
+
+---
+
+## [2026-08-21.02] Preserve the original 3D story behind an explicit start gate
+- **Type:** correction
+- **When:** 2026-08-21 04:15
+- **Supersedes:** [2026-08-21.01]
+- **Trigger:** The user rejected moving the story copy into the parent page and any visual/runtime edits inside the authored 3D experience. The intended boundary is strict: performance work may control when the story loads, but must not rewrite the story itself.
+- **Scope:** `public/3d/story/index.html`, `src/components/marketing/hero3d/index.tsx`, `src/components/marketing/ShopFloorStory.tsx`, `src/components/marketing/ShopFloorStory.module.css`, removal of `src/components/marketing/shop-floor-story-copy.ts`
+- **Status:** active
+
+### Correction
+- Restored `public/3d/story/index.html` and the separate `hero3d/index.tsx` byte-for-byte from commit `8024ff9`; no camera, model, text, shader, DPR, animation-loop, or internal presentation changes remain.
+- Removed all duplicated bilingual stage copy from the parent Next.js HTML and deleted the shared copy module.
+- Replaced automatic mounting with a single full-viewport poster and “Start the 3D story” button on desktop and mobile. Before activation the section is one viewport tall and no iframe, Three.js document, or media is requested. Clicking expands the original scroll range and mounts the original iframe unchanged.
+- Retained only infrastructure-level improvements outside the authored experience: HTTP/2, production PM2 mode, cache headers, hero-video deferral, canonical fixes, and the accessibility contrast correction.
+
+### Verification
+- Git blob comparison confirms the restored story hash `b22d008b9b76602b76787c573bdeb741a5d0f7d1` exactly matches `8024ff9:public/3d/story/index.html`; the separate hero3d loader also matches its original blob.
+- Mobile screenshots verified both the pre-start gate and the original Persian stage-one WebGL composition.
+- Generated HTML contains the start button, contains no iframe, and contains none of the previously duplicated story copy. `npm run typecheck`, `npm run lint`, and `npm run build` all pass.
