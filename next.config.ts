@@ -37,6 +37,66 @@ const nextConfig: NextConfig = {
         destination: '/fa',
         permanent: true,
       },
+      // Every other public page is reachable at a bare, locale-less path too (old links,
+      // typed URLs, historical sitemap entries). Without these, next-intl's proxy still
+      // 307s them to /fa/... on every request — Search Console reports each as a page
+      // whose only content is a redirect. Listing literal sources (rather than an
+      // open-ended regex) keeps /api, /_next, and static assets out of scope.
+      {
+        source: '/product',
+        destination: '/fa/product',
+        permanent: true,
+      },
+      {
+        source: '/software',
+        destination: '/fa/software',
+        permanent: true,
+      },
+      {
+        source: '/about',
+        destination: '/fa/about',
+        permanent: true,
+      },
+      {
+        source: '/contact',
+        destination: '/fa/contact',
+        permanent: true,
+      },
+      {
+        source: '/blog',
+        destination: '/fa/blog',
+        permanent: true,
+      },
+      {
+        source: '/blog/:slug',
+        destination: '/fa/blog/:slug',
+        permanent: true,
+      },
+      {
+        source: '/for/business-owners',
+        destination: '/fa/for/business-owners',
+        permanent: true,
+      },
+      {
+        source: '/for/operators',
+        destination: '/fa/for/operators',
+        permanent: true,
+      },
+      {
+        source: '/for/programmers',
+        destination: '/fa/for/programmers',
+        permanent: true,
+      },
+      {
+        source: '/privacy',
+        destination: '/fa/privacy',
+        permanent: true,
+      },
+      {
+        source: '/terms',
+        destination: '/fa/terms',
+        permanent: true,
+      },
     ];
   },
   async headers() {
