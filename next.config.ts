@@ -14,6 +14,31 @@ const nextConfig: NextConfig = {
     // Phase 7 rehosts them ourselves — see src/server/db/models/DownloadRequest.ts.
     remotePatterns: [{ protocol: 'https', hostname: 'storage.webprohost.ir' }],
   },
+  async redirects() {
+    return [
+      // Keep exactly one crawlable origin. Serving the full site on both hosts creates a
+      // duplicate URL for every page and makes Google choose a canonical on our behalf.
+      {
+        source: '/',
+        has: [{ type: 'host', value: 'www.elecio.co' }],
+        destination: 'https://elecio.co/fa',
+        permanent: true,
+      },
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.elecio.co' }],
+        destination: 'https://elecio.co/:path*',
+        permanent: true,
+      },
+      // The root is a language-selection alias, not a separate page. A permanent redirect
+      // agrees with the x-default canonical target and gives crawlers a stable signal.
+      {
+        source: '/',
+        destination: '/fa',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

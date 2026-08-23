@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   if (!post) return {};
   const other = locale === 'fa' ? 'en' : 'fa';
   const languages = post.translationStatus === 'complete'
-    ? { fa: `/fa/blog/${post.slug}`, en: `/en/blog/${post.slug}` }
+    ? { fa: `/fa/blog/${post.slug}`, en: `/en/blog/${post.slug}`, 'x-default': `/fa/blog/${post.slug}` }
     : { [locale]: `/${locale}/blog/${post.slug}` };
   return {
     title: post.seoTitle,

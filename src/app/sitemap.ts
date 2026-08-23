@@ -12,7 +12,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: contentUpdatedAt,
     changeFrequency: path === '/blog' ? 'daily' as const : 'monthly' as const,
     priority: path === '' ? 1 : path === '/product' ? 0.9 : path === '/privacy' || path === '/terms' ? 0.3 : 0.7,
-    alternates: { languages: { fa: `${SITE_URL}/fa${path}`, en: `${SITE_URL}/en${path}` } },
+    alternates: { languages: { fa: `${SITE_URL}/fa${path}`, en: `${SITE_URL}/en${path}`, 'x-default': `${SITE_URL}/fa${path}` } },
   })));
 
   try {
@@ -30,7 +30,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: 'monthly' as const,
         priority: 0.75,
         alternates: post.translation_status === 'complete'
-          ? { languages: { fa: `${SITE_URL}/fa/blog/${post.slug}`, en: `${SITE_URL}/en/blog/${post.slug}` } }
+          ? { languages: { fa: `${SITE_URL}/fa/blog/${post.slug}`, en: `${SITE_URL}/en/blog/${post.slug}`, 'x-default': `${SITE_URL}/fa/blog/${post.slug}` } }
           : undefined,
       }));
     });
