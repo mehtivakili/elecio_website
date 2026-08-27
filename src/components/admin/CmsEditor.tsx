@@ -81,7 +81,8 @@ function RichEditor({ value, onChange, direction, slug, onMessage }: {
     </div>
     <div className={styles.toolbar}>
       <button type="button" onClick={() => editor.chain().focus().toggleBold().run()}>B</button><button type="button" onClick={() => editor.chain().focus().toggleItalic().run()}>I</button>
-      <button type="button" onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>H2</button><button type="button" onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}>H3</button>
+      <span title={direction === 'rtl' ? 'H1 همان عنوان اصلی مقاله است' : 'H1 is the article title'}>H1 = {direction === 'rtl' ? 'عنوان' : 'Title'}</span>
+      <button type="button" onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>H2</button><button type="button" onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}>H3</button><button type="button" onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}>H4</button><button type="button" onClick={() => editor.chain().focus().setParagraph().run()}>P</button>
       <button type="button" onClick={() => editor.chain().focus().toggleBulletList().run()}>•</button><button type="button" onClick={() => editor.chain().focus().toggleOrderedList().run()}>1.</button>
       <button type="button" onClick={() => editor.chain().focus().toggleBlockquote().run()}>“</button><button type="button" onClick={setLink}>↗</button><button type="button" onClick={() => editor.chain().focus().undo().run()}>↶</button><button type="button" onClick={() => editor.chain().focus().redo().run()}>↷</button>
     </div>

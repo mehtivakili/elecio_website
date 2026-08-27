@@ -82,12 +82,12 @@ M30
   }
 
   insertAfterHeading(document, 'ساختار یک برنامه G-code چگونه است؟', imageNode(
-    '/uploads/جی-کد-چیست-body-coordinate-toolpath.webp',
+    '/uploads/جی-کد-چیست-body-coordinate-toolpath-hd.webp',
     'نمایش محورهای X و Y و Z و مسیر حرکت ابزار در برنامه جی کد CNC',
     'رابطه محورهای مختصات، ابزار و مسیر تعریف‌شده در G-code',
   ));
   insertAfterHeading(document, 'چگونه فایل G-code را امن‌تر به دستگاه CNC منتقل کنیم؟', imageNode(
-    '/uploads/جی-کد-چیست-body-safe-review.webp',
+    '/uploads/جی-کد-چیست-body-safe-review-hd.webp',
     'اپراتور CNC در حال شبیه‌سازی و بازبینی امن برنامه جی کد پیش از اجرا',
     'بازبینی مسیر ابزار با حفاظ بسته پیش از اجرای برنامه CNC',
   ));
@@ -95,9 +95,9 @@ M30
 }
 
 const media = [
-  { file: 'جی-کد-چیست-cover.webp', kind: 'cover', alt: 'کنترلر و دستگاه فرز CNC برای اجرای برنامه جی کد', caption: 'کنترلر CNC، مسیر ابزار و قطعه ماشین‌کاری‌شده در گردش‌کار G-code' },
-  { file: 'جی-کد-چیست-body-coordinate-toolpath.webp', kind: 'body', alt: 'نمایش محورهای X و Y و Z و مسیر حرکت ابزار در برنامه جی کد CNC', caption: 'رابطه محورهای مختصات، ابزار و مسیر تعریف‌شده در G-code' },
-  { file: 'جی-کد-چیست-body-safe-review.webp', kind: 'body', alt: 'اپراتور CNC در حال شبیه‌سازی و بازبینی امن برنامه جی کد پیش از اجرا', caption: 'بازبینی مسیر ابزار با حفاظ بسته پیش از اجرای برنامه CNC' },
+  { file: 'جی-کد-چیست-cover-hd.webp', kind: 'cover', alt: 'کنترلر و دستگاه فرز CNC برای اجرای برنامه جی کد', caption: 'کنترلر CNC، مسیر ابزار و قطعه ماشین‌کاری‌شده در گردش‌کار G-code' },
+  { file: 'جی-کد-چیست-body-coordinate-toolpath-hd.webp', kind: 'body', alt: 'نمایش محورهای X و Y و Z و مسیر حرکت ابزار در برنامه جی کد CNC', caption: 'رابطه محورهای مختصات، ابزار و مسیر تعریف‌شده در G-code' },
+  { file: 'جی-کد-چیست-body-safe-review-hd.webp', kind: 'body', alt: 'اپراتور CNC در حال شبیه‌سازی و بازبینی امن برنامه جی کد پیش از اجرا', caption: 'بازبینی مسیر ابزار با حفاظ بسته پیش از اجرای برنامه CNC' },
 ];
 
 async function main() {
@@ -132,7 +132,7 @@ async function main() {
       const storageKey = `generated/${slug}/${asset.kind}/${asset.file}`;
       await trx('media_assets').insert({
         id: randomUUID(), storage_key: storageKey, public_path: `/uploads/${asset.file}`, mime_type: 'image/webp',
-        byte_size: bytes.length, width: 600, height: 400, checksum_sha256: createHash('sha256').update(bytes).digest('hex'),
+        byte_size: bytes.length, width: 1536, height: 1024, checksum_sha256: createHash('sha256').update(bytes).digest('hex'),
         alt_fa: asset.alt, alt_en: null, caption_fa: asset.caption, caption_en: null, uploaded_by: author.id,
       }).onConflict('storage_key').ignore();
     }
@@ -144,7 +144,7 @@ async function main() {
       title_fa: 'جی کد چیست؟ راهنمای کامل G-code برای دستگاه CNC', title_en: '',
       excerpt_fa: 'جی کد زبان فرمان دستگاه CNC است. در این راهنمای کاربردی با ساختار G-code، کدهای G و M، نمونه برنامه، خطاهای رایج و روش اجرای امن آشنا شوید.', excerpt_en: '',
       body_fa: serializedBody, body_en: JSON.stringify(emptyDocument),
-      cover_image_path: '/uploads/جی-کد-چیست-cover.webp',
+      cover_image_path: '/uploads/جی-کد-چیست-cover-hd.webp',
       cover_alt_fa: media[0].alt, cover_alt_en: '', cover_caption_fa: media[0].caption, cover_caption_en: '',
       seo_title_fa: 'جی کد چیست؟ آموزش G-code و کدهای پرکاربرد CNC', seo_title_en: '',
       seo_description_fa: 'جی کد زبان فرمان دستگاه CNC است. با ساختار G-code، کدهای G و M، نمونه برنامه، خطاهای رایج، شبیه‌سازی و روش انتقال و اجرای امن فایل آشنا شوید.', seo_description_en: '',

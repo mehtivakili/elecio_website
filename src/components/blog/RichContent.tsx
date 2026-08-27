@@ -2,6 +2,7 @@
 import type { ReactNode } from 'react';
 import type { RichDocument, RichNode } from '@/server/content/document';
 import { brandedImagePath } from '@/lib/branded-image';
+import { articleOutline, storedTocNodeIndexes } from '@/lib/article-outline';
 
 function renderChildren(node: RichNode, key: string): ReactNode {
   return (node.content ?? []).map((child, index) => renderNode(child, `${key}-${index}`));
@@ -18,16 +19,16 @@ function renderText(node: RichNode, key: string): ReactNode {
   return <span key={key}>{value}</span>;
 }
 
-function renderNode(node: RichNode, key: string): ReactNode {
+function renderNode(node: RichNode, key: string, headingId?: string): ReactNode {
   if (node.type === 'text') return renderText(node, key);
   const content = renderChildren(node, key);
   switch (node.type) {
     case 'paragraph': return <p key={key}>{content}</p>;
     case 'heading': {
       const level = Number(node.attrs?.level) || 2;
-      if (level === 3) return <h3 key={key}>{content}</h3>;
-      if (level === 4) return <h4 key={key}>{content}</h4>;
-      return <h2 key={key}>{content}</h2>;
+      if (level === 3) return <h3 id={headingId} key={key}>{content}</h3>;
+      if (level === 4) return <h4 id={headingId} key={key}>{content}</h4>;
+      return <h2 id={headingId} key={key}>{content}</h2>;
     }
     case 'bulletList': return <ul key={key}>{content}</ul>;
     case 'orderedList': return <ol key={key}>{content}</ol>;
@@ -48,6 +49,16 @@ function renderNode(node: RichNode, key: string): ReactNode {
   }
 }
 
-export function RichContent({ document }: { document: RichDocument }) {
-  return <>{(document.content ?? []).map((node, index) => renderNode(node, String(index)))}</>;
+export function RichContent({ document, locale = 'fa' }: { document: RichDocument; locale?: string }) {
+  const outline = articleOutline(document);
+  const headingIds = new Map(outline.map((item) => [item.index, item.id]));
+  const hiddenIndexes = storedTocNodeIndexes(document);
+  const label = locale === 'en' ? 'In this article' : 'در این مقاله می‌خوانید';
+  return <>
+    {outline.length >= 2 && <nav className="rich-toc" aria-label={label}>
+      <strong>{label}</strong>
+      <ol>{outline.map((item) => <li key={`${item.index}-${item.id}`} data-level={item.level}><a href={`#${item.id}`}>{item.text}</a></li>)}</ol>
+    </nav>}
+    {(document.content ?? []).map((node, index) => hiddenIndexes.has(index) ? null : renderNode(node, String(index), headingIds.get(index)))}
+  </>;
 }

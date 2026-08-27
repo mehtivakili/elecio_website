@@ -52,11 +52,12 @@ export async function GET(request: NextRequest) {
       if (width < 160 || height < 100 || width > 8000 || height > 8000) {
         return new Response('Unsupported image dimensions', { status: 422 });
       }
-      const logoWidth = Math.min(480, Math.max(110, Math.round(width * 0.24)));
-      const logo = await sharp(logoPath).resize({ width: logoWidth, withoutEnlargement: true }).png().toBuffer({ resolveWithObject: true });
-      const margin = Math.max(12, Math.round(width * 0.025));
-      const top = Math.max(margin, height - logo.info.height - margin);
-      const branded = await sharp(sourcePath).rotate().composite([{ input: logo.data, left: margin, top }]).webp({ quality: 88, effort: 5 }).toBuffer();
+      const logoWidth = Math.min(520, Math.max(120, Math.round(width * 0.22)));
+      const logo = await sharp(logoPath).resize({ width: logoWidth, kernel: sharp.kernel.lanczos3, withoutEnlargement: true }).png().toBuffer({ resolveWithObject: true });
+      const left = Math.max(20, Math.round(width * 0.04));
+      const bottom = Math.max(18, Math.round(height * 0.045));
+      const top = Math.max(bottom, height - logo.info.height - bottom);
+      const branded = await sharp(sourcePath).rotate().composite([{ input: logo.data, left, top }]).webp({ quality: 94, effort: 6, smartSubsample: true }).toBuffer();
       output = new Uint8Array(branded);
       if (outputCache.size >= MAX_CACHE_ENTRIES) outputCache.delete(outputCache.keys().next().value!);
       outputCache.set(cacheKey, output);
