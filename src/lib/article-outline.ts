@@ -32,6 +32,7 @@ export function articleOutline(document: RichDocument): ArticleOutlineItem[] {
   (document.content ?? []).forEach((node, index) => {
     if (node.type !== 'heading' || isStoredTocHeading(node)) return;
     const rawLevel = Number(node.attrs?.level) || 2;
+    if (rawLevel !== 2) return;
     const level = Math.min(4, Math.max(2, rawLevel)) as 2 | 3 | 4;
     const text = richNodeText(node).replace(/\s+/gu, ' ').trim();
     if (!text) return;

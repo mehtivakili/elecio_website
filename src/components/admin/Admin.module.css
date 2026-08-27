@@ -42,13 +42,19 @@
 .actions { display: flex; align-items: center; gap: .65rem; flex-wrap: wrap; }
 .queueHeader { display: grid; grid-template-columns: minmax(0,1fr) minmax(420px,.85fr); gap: 1rem; align-items: end; }
 .queueHeader h2 { margin: .35rem 0; }
-.queueControls { display: grid; grid-template-columns: .8fr 1.2fr auto; gap: .65rem; align-items: end; }
+.queueControls { display: grid; grid-template-columns: .9fr 1fr .75fr auto; gap: .65rem; align-items: end; }
 .queueMissing { display: block; margin-top: .4rem; color: #f79009; line-height: 1.5; }
 .switchLabel { display: inline-flex; align-items: center; gap: .45rem; white-space: nowrap; }
 .switchLabel input { width: 1.15rem; height: 1.15rem; accent-color: var(--signal); }
-@media(max-width:1100px){.queueHeader{grid-template-columns:1fr}.queueControls{grid-template-columns:1fr 1fr auto}}
+@media(max-width:1100px){.queueHeader{grid-template-columns:1fr}.queueControls{grid-template-columns:1fr 1fr}}
 @media(max-width:700px){.queueControls{grid-template-columns:1fr}}
 @media(max-width:900px){.libraryGrid{grid-template-columns:1fr}}
+.contentSections { display: grid; gap: 1.5rem; }
+.sectionHead { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin-bottom: .75rem; }
+.sectionHead h2 { margin: .25rem 0; }
+.countBadge { display: inline-grid; min-width: 2.4rem; height: 2.4rem; padding: 0 .65rem; place-items: center; border-radius: 999px; color: #fff; background: var(--signal); font-weight: 900; }
+.publishedStatus { color: #067647; background: #ecfdf3; }
+.emptyState { margin: 0; padding: 1.2rem; color: var(--text-60); }
 .mediaGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; margin-top: 1rem; }
 .mediaGrid article { display: grid; gap: .65rem; }
 .mediaGrid code { overflow: hidden; text-overflow: ellipsis; direction: ltr; }

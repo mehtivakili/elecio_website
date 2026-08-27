@@ -16,6 +16,7 @@ async function settleDueItems(trx: typeof knex) {
 }
 
 async function reflowQueue(trx: typeof knex, cadenceDays: 2 | 3 | 4, requestedStart?: Date | null) {
+  if (requestedStart && requestedStart <= new Date()) throw new Error('FIRST_PUBLICATION_MUST_BE_FUTURE');
   const queued = await trx('posts')
     .select('id', 'scheduled_for')
     .where({ publication_queue_active: true })
@@ -24,7 +25,7 @@ async function reflowQueue(trx: typeof knex, cadenceDays: 2 | 3 | 4, requestedSt
     .orderBy('queued_at', 'asc')
     .orderBy('id', 'asc');
   if (!queued.length) {
-    await trx('publication_queue_settings').where({ id: 1 }).update({ first_publish_at: null, cadence_days: cadenceDays, updated_at: trx.fn.now() });
+    await trx('publication_queue_settings').where({ id: 1 }).update({ first_publish_at: requestedStart ?? null, cadence_days: cadenceDays, updated_at: trx.fn.now() });
     return;
   }
   const minimum = new Date(Date.now() + 5 * 60 * 1000);
@@ -55,10 +56,10 @@ export async function PATCH(request: NextRequest) {
     const result = await knex.transaction(async (trx) => {
       await settleDueItems(trx as typeof knex);
       const settings = await trx('publication_queue_settings').where({ id: 1 }).first();
-      const cadenceDays = settingsOnly ? Number(body.cadenceDays) : Number(settings?.cadence_days ?? 3);
+      const cadenceDays = Number(body.cadenceDays ?? settings?.cadence_days ?? 3);
       if (!isPublicationCadence(cadenceDays)) throw new Error('INVALID_CADENCE');
       let requestedStart: Date | null | undefined;
-      if (settingsOnly) {
+      if (settingsOnly || body.firstPublishAt !== undefined) {
         requestedStart = new Date(String(body.firstPublishAt ?? ''));
         if (Number.isNaN(requestedStart.getTime())) throw new Error('INVALID_FIRST_PUBLICATION');
       } else {
