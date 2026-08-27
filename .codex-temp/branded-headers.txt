@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+vary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch
+cache-control: public, max-age=0, must-revalidate
+content-disposition: inline; filename="elecio-branded-image.webp"
+content-type: image/webp
+etag: "adUVxxbATXIgniaOJsiiZj9GbPsp_crIESZBQvwAIZ8"
+x-content-type-options: nosniff
+Date: Thu, 27 Aug 2026 23:16:20 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+Transfer-Encoding: chunked
+
