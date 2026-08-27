@@ -7,7 +7,10 @@ function safeUrl(value: unknown, image = false): string | null { if (typeof valu
 function clean(node: unknown, depth = 0): RichNode | null { if (!node || typeof node !== 'object' || depth > 20) return null; const raw=node as RichNode;if(raw.type==='text'){if(typeof raw.text!=='string')return null;return{type:'text',text:raw.text.slice(0,20000),marks:(raw.marks??[]).filter(mark=>marks.has(mark.type)).map(mark=>mark.type==='link'?{type:'link' as const,attrs:{href:safeUrl(mark.attrs?.href)??'#'}}:{type:mark.type})};}if(!blocks.has(raw.type)&&raw.type!=='doc')return null;const attrs:Record<string,unknown>={};if(raw.type==='heading')attrs.level=Math.min(4,Math.max(2,Number(raw.attrs?.level)||2));if(raw.type==='image'){const src=safeUrl(raw.attrs?.src,true);if(!src)return null;attrs.src=src;attrs.alt=typeof raw.attrs?.alt==='string'?raw.attrs.alt.slice(0,500):'';attrs.title=typeof raw.attrs?.title==='string'?raw.attrs.title.slice(0,500):'';}return{type:raw.type,...(Object.keys(attrs).length?{attrs}:{}),content:(raw.content??[]).slice(0,1000).map(child=>clean(child,depth+1)).filter((child):child is RichNode=>Boolean(child))};}
 export function sanitizeDocument(value: unknown): RichDocument { const parsed=typeof value==='string'?JSON.parse(value):value;const root=clean(parsed);if(!root||root.type!=='doc')throw new Error('INVALID_DOCUMENT');const serialized=JSON.stringify(root);if(serialized.length>500000)throw new Error('DOCUMENT_TOO_LARGE');return root as RichDocument; }
 export function plainText(document: RichDocument): string { const collect=(node:RichNode):string=>node.type==='text'?node.text??'':`${(node.content??[]).map(collect).join(' ')}${node.type==='paragraph'||node.type==='heading'?' ':''}`;return collect(document).replace(/\s+/g,' ').trim(); }
-export function isValidSlug(value:string){return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value)&&value.length<=180;}
+export function isValidSlug(value:string){
+  if(!value||value.length>180||value!==value.normalize('NFC')||value!==value.toLowerCase()) return false;
+  return /^[\p{L}\p{N}]+(?:-[\p{L}\p{N}]+)*$/u.test(value);
+}
 
 function nodeText(node: RichNode): string {
   return node.type === 'text' ? node.text ?? '' : (node.content ?? []).map(nodeText).join('');

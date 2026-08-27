@@ -1,2 +1,43 @@
-import { requireStaffPermission } from '@/server/auth/staff-flow';import { knex } from '@/server/db/knex';import { Link } from '@/i18n/navigation';import styles from '@/components/admin/Admin.module.css';
-export default async function Content({params}:{params:Promise<{locale:string}>}){const{locale}=await params;const en=locale==='en';await requireStaffPermission('content','read');const[posts,categories,tags,partners,testimonials]=await Promise.all([knex('posts').select('id','slug','title_fa','title_en','status','translation_status','current_revision_number','scheduled_for','updated_at').orderBy('updated_at','desc').limit(100),knex('categories').count<{count:string}[]>('* as count').first(),knex('tags').count<{count:string}[]>('* as count').first(),knex('partners').count<{count:string}[]>('* as count').first(),knex('testimonials').count<{count:string}[]>('* as count').first()]);return <><header className={styles.head}><span className={styles.eyebrow}>Editorial</span><h1>{en?'Content operations':'عملیات محتوا'}</h1><p className={styles.muted}>{en?'Structured bilingual drafts, immutable revisions, previews, schedules, and explicit publishing.':'پیش‌نویس ساختاریافته دوزبانه، نسخه‌های تغییرناپذیر، پیش‌نمایش، زمان‌بندی و انتشار شفاف.'}</p><Link className={styles.button} href="/admin/content/new">{en?'New article':'مقاله جدید'}</Link></header><div className={styles.grid}>{[[en?'Categories':'دسته‌ها',categories?.count],[en?'Tags':'برچسب‌ها',tags?.count],[en?'Partners':'همکاران',partners?.count],[en?'Testimonials':'نظرات مشتریان',testimonials?.count]].map(([label,value])=><article className={styles.card} key={label}><span>{label}</span><strong className={styles.metric}>{value??0}</strong></article>)}</div><div className={styles.tableWrap} style={{marginTop:'1rem'}}><table className={styles.table}><thead><tr><th>#</th><th>{en?'Title':'عنوان'}</th><th>Slug</th><th>{en?'Revision':'نسخه'}</th><th>{en?'Publication':'انتشار'}</th><th></th></tr></thead><tbody>{posts.map(post=><tr key={post.id}><td>{post.id}</td><td><strong>{en?post.title_en:post.title_fa}</strong><br/><small>{post.translation_status}</small></td><td dir="ltr">{post.slug}</td><td>{post.current_revision_number}</td><td><span className={styles.status}>{post.status}{post.scheduled_for?' · scheduled':''}</span></td><td><Link className={`${styles.button} ${styles.secondary}`} href={`/admin/content/${post.id}`}>{en?'Edit':'ویرایش'}</Link></td></tr>)}</tbody></table>{posts.length===0&&<p className={styles.card}>{en?'No posts yet.':'هنوز نوشته‌ای وجود ندارد.'}</p>}</div></>}
+import { Link } from '@/i18n/navigation';
+import { PublicationQueue } from '@/components/admin/PublicationQueue';
+import styles from '@/components/admin/Admin.module.css';
+import { requireStaffPermission } from '@/server/auth/staff-flow';
+import { persianQueueReadiness } from '@/server/content/publication-queue';
+import { knex } from '@/server/db/knex';
+
+export default async function Content({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const en = locale === 'en';
+  await requireStaffPermission('content', 'read');
+  const [rows, settings, categories, tags, partners, testimonials] = await Promise.all([
+    knex('posts').select(
+      'id', 'slug', 'title_fa', 'title_en', 'body_fa', 'status', 'translation_status',
+      'current_revision_number', 'scheduled_for', 'publication_queue_active', 'focus_keyword_fa',
+      'seo_title_fa', 'seo_description_fa', 'category_id', 'cover_image_path', 'cover_alt_fa', 'robots_index',
+    ).orderBy('updated_at', 'desc').limit(100),
+    knex('publication_queue_settings').where({ id: 1 }).first(),
+    knex('categories').count<{ count: string }[]>('* as count').first(),
+    knex('tags').count<{ count: string }[]>('* as count').first(),
+    knex('partners').count<{ count: string }[]>('* as count').first(),
+    knex('testimonials').count<{ count: string }[]>('* as count').first(),
+  ]);
+  const now = new Date();
+  const posts = rows.map((post) => {
+    const queueActive = Boolean(post.publication_queue_active && post.scheduled_for && new Date(post.scheduled_for) > now);
+    return {
+      id: post.id, slug: post.slug, title: en ? post.title_en : post.title_fa, status: post.status,
+      revision: post.current_revision_number, translationStatus: post.translation_status,
+      scheduledFor: post.scheduled_for ? new Date(post.scheduled_for).toISOString() : null,
+      queueActive, canQueue: queueActive || post.status === 'draft', missing: persianQueueReadiness(post),
+    };
+  });
+  const firstQueued = posts.filter((post) => post.queueActive && post.scheduledFor).sort((a, b) => String(a.scheduledFor).localeCompare(String(b.scheduledFor)))[0];
+  const cadence = [2, 3, 4].includes(Number(settings?.cadence_days)) ? Number(settings.cadence_days) as 2 | 3 | 4 : 3;
+  const firstPublishAt = firstQueued?.scheduledFor ?? (settings?.first_publish_at ? new Date(settings.first_publish_at).toISOString() : null);
+
+  return <>
+    <header className={styles.head}><span className={styles.eyebrow}>Editorial</span><h1>{en ? 'Content operations' : 'عملیات محتوا'}</h1><p className={styles.muted}>{en ? 'Draft, review, queue, and publish articles with explicit SEO controls.' : 'پیش‌نویس، بازبینی، صف‌بندی و انتشار مقاله با کنترل شفاف سئو.'}</p><Link className={styles.button} href="/admin/content/new">{en ? 'New article' : 'مقاله جدید'}</Link></header>
+    <div className={styles.grid}>{[[en ? 'Categories' : 'دسته‌ها', categories?.count], [en ? 'Tags' : 'برچسب‌ها', tags?.count], [en ? 'Partners' : 'همکاران', partners?.count], [en ? 'Testimonials' : 'نظرات مشتریان', testimonials?.count]].map(([label, value]) => <article className={styles.card} key={label}><span>{label}</span><strong className={styles.metric}>{value ?? 0}</strong></article>)}</div>
+    <div style={{ marginTop: '1rem' }}><PublicationQueue locale={locale} posts={posts} cadenceDays={cadence} firstPublishAt={firstPublishAt} /></div>
+  </>;
+}

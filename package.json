@@ -10,7 +10,7 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "story:build-standalone": "node scripts/build-standalone-story.mjs",
-    "test": "tsx --test tests/phone.test.ts tests/rbac.test.ts tests/staff-policy.test.ts tests/content-document.test.ts tests/telemetry.test.ts",
+    "test": "tsx --test tests/phone.test.ts tests/rbac.test.ts tests/staff-policy.test.ts tests/content-document.test.ts tests/telemetry.test.ts tests/publication-queue.test.ts",
     "db:migrate": "node -r dotenv/config -r tsx/cjs ./node_modules/knex/bin/cli.js --knexfile src/server/db/knexfile.ts migrate:latest",
     "db:migrate:rollback": "node -r dotenv/config -r tsx/cjs ./node_modules/knex/bin/cli.js --knexfile src/server/db/knexfile.ts migrate:rollback",
     "db:migrate:make": "node -r dotenv/config -r tsx/cjs ./node_modules/knex/bin/cli.js --knexfile src/server/db/knexfile.ts migrate:make",

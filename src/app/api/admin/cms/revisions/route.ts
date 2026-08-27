@@ -64,6 +64,8 @@ export async function POST(request: NextRequest) {
         translation_status: snap.translationStatus ?? 'complete',
         scheduled_for: null,
         published_at: null,
+        publication_queue_active: false,
+        queued_at: null,
         updated_by: principal.userId,
         current_revision_number: next,
         updated_at: trx.fn.now(),

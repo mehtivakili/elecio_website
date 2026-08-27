@@ -25,12 +25,16 @@ export async function POST(request: NextRequest) {
     const probe = sharp(input, { limitInputPixels: 40_000_000, failOn: 'warning' }); const meta = await probe.metadata();
     if (!meta.width || !meta.height || !['jpeg', 'png', 'webp', 'avif'].includes(meta.format ?? '')) return NextResponse.json({ error: 'invalid_image' }, { status: 400 });
     const id = randomUUID();
+    const requestedSlug = String(form.get('slug') ?? '').normalize('NFC').toLowerCase().trim();
+    const safeSlug = /^[\p{L}\p{N}]+(?:-[\p{L}\p{N}]+)*$/u.test(requestedSlug) ? requestedSlug.slice(0, 120) : 'article-image';
+    const kind = form.get('kind') === 'body' ? 'body' : 'cover';
+    const filename = `${safeSlug}-${kind}-${id.slice(0, 8)}.webp`;
     const output = await probe.rotate().resize({ width: 2400, height: 2400, fit: 'inside', withoutEnlargement: true }).webp({ quality: 82, effort: 5 }).toBuffer({ resolveWithObject: true });
-    const relative = `/uploads/${id}.webp`; const directory = path.resolve(process.cwd(), 'public', 'uploads'); const target = path.resolve(directory, `${id}.webp`);
+    const relative = `/uploads/${filename}`; const directory = path.resolve(process.cwd(), 'public', 'uploads'); const target = path.resolve(directory, filename);
     if (!target.startsWith(`${directory}${path.sep}`)) throw new Error('INVALID_PATH');
     await mkdir(directory, { recursive: true }); await writeFile(target, output.data, { flag: 'wx' });
     const checksum = createHash('sha256').update(output.data).digest('hex');
-    await knex('media_assets').insert({ id, storage_key: `local:${id}.webp`, public_path: relative, mime_type: 'image/webp', byte_size: output.data.length, width: output.info.width, height: output.info.height, checksum_sha256: checksum, alt_fa: String(form.get('altFa') ?? '').trim().slice(0, 500) || null, alt_en: String(form.get('altEn') ?? '').trim().slice(0, 500) || null, caption_fa: String(form.get('captionFa') ?? '').trim().slice(0, 2000) || null, caption_en: String(form.get('captionEn') ?? '').trim().slice(0, 2000) || null, uploaded_by: principal.userId });
+    await knex('media_assets').insert({ id, storage_key: `local:${filename}`, public_path: relative, mime_type: 'image/webp', byte_size: output.data.length, width: output.info.width, height: output.info.height, checksum_sha256: checksum, alt_fa: String(form.get('altFa') ?? '').trim().slice(0, 500) || null, alt_en: String(form.get('altEn') ?? '').trim().slice(0, 500) || null, caption_fa: String(form.get('captionFa') ?? '').trim().slice(0, 2000) || null, caption_en: String(form.get('captionEn') ?? '').trim().slice(0, 2000) || null, uploaded_by: principal.userId });
     await writeAuditEvent({ actorUserId: principal.userId, actorRole: principal.role, action: 'media.created', resource: 'media_asset', resourceId: id, outcome: 'success', metadata: { mime: 'image/webp', bytes: output.data.length, width: output.info.width, height: output.info.height } });
     return NextResponse.json({ id, path: relative, width: output.info.width, height: output.info.height }, { status: 201 });
   } catch { return NextResponse.json({ error: 'invalid_image' }, { status: 400 }); }

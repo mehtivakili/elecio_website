@@ -284,6 +284,8 @@ export async function PATCH(request: NextRequest) {
             targetStatus === "published"
               ? (current.published_at ?? trx.fn.now())
               : null,
+          publication_queue_active: false,
+          queued_at: null,
           current_revision_number: next,
           updated_at: trx.fn.now(),
         });
