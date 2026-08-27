@@ -31,6 +31,10 @@ function renderNode(node: RichNode, key: string): ReactNode {
     case 'bulletList': return <ul key={key}>{content}</ul>;
     case 'orderedList': return <ol key={key}>{content}</ol>;
     case 'listItem': return <li key={key}>{content}</li>;
+    case 'table': return <div key={key} className="rich-table-scroll"><table><tbody>{content}</tbody></table></div>;
+    case 'tableRow': return <tr key={key}>{content}</tr>;
+    case 'tableHeader': return <th key={key} scope="col">{content}</th>;
+    case 'tableCell': return <td key={key}>{content}</td>;
     case 'blockquote': return <blockquote key={key}>{content}</blockquote>;
     case 'codeBlock': return <pre key={key}><code>{content}</code></pre>;
     case 'horizontalRule': return <hr key={key} />;

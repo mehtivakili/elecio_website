@@ -5,6 +5,7 @@ import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import LinkExtension from '@tiptap/extension-link';
 import ImageExtension from '@tiptap/extension-image';
+import { TableKit } from '@tiptap/extension-table';
 import { useRouter } from '@/i18n/navigation';
 import { PERSIAN_SEO_KEYWORDS } from '@/lib/persian-seo-keywords';
 import styles from './CmsEditor.module.css';
@@ -51,7 +52,7 @@ function RichEditor({ value, onChange, direction, slug, onMessage }: {
 }) {
   const editor = useEditor({
     immediatelyRender: false,
-    extensions: [StarterKit, LinkExtension.configure({ openOnClick: false, HTMLAttributes: { rel: 'noopener noreferrer' } }), ImageExtension],
+    extensions: [StarterKit, LinkExtension.configure({ openOnClick: false, HTMLAttributes: { rel: 'noopener noreferrer' } }), ImageExtension, TableKit],
     content: value, onUpdate: ({ editor: current }) => onChange(current.getJSON()),
     editorProps: { attributes: { class: styles.editor, dir: direction } },
   });
@@ -70,6 +71,14 @@ function RichEditor({ value, onChange, direction, slug, onMessage }: {
     } else onMessage(direction === 'rtl' ? 'بارگذاری تصویر ناموفق بود.' : 'Image upload failed.');
   }
   return <div className={styles.panel}>
+    <div className={styles.tableToolbar} aria-label={direction === 'rtl' ? 'ابزارهای جدول' : 'Table tools'}>
+      <button type="button" onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}>{direction === 'rtl' ? 'درج جدول' : 'Insert table'}</button>
+      <button type="button" disabled={!editor.can().addRowAfter()} onClick={() => editor.chain().focus().addRowAfter().run()}>{direction === 'rtl' ? '+ ردیف' : '+ Row'}</button>
+      <button type="button" disabled={!editor.can().addColumnAfter()} onClick={() => editor.chain().focus().addColumnAfter().run()}>{direction === 'rtl' ? '+ ستون' : '+ Column'}</button>
+      <button type="button" disabled={!editor.can().deleteRow()} onClick={() => editor.chain().focus().deleteRow().run()}>{direction === 'rtl' ? 'حذف ردیف' : 'Delete row'}</button>
+      <button type="button" disabled={!editor.can().deleteColumn()} onClick={() => editor.chain().focus().deleteColumn().run()}>{direction === 'rtl' ? 'حذف ستون' : 'Delete column'}</button>
+      <button type="button" disabled={!editor.can().deleteTable()} onClick={() => editor.chain().focus().deleteTable().run()}>{direction === 'rtl' ? 'حذف جدول' : 'Delete table'}</button>
+    </div>
     <div className={styles.toolbar}>
       <button type="button" onClick={() => editor.chain().focus().toggleBold().run()}>B</button><button type="button" onClick={() => editor.chain().focus().toggleItalic().run()}>I</button>
       <button type="button" onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>H2</button><button type="button" onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}>H3</button>

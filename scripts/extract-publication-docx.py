@@ -1,7 +1,7 @@
 """Convert the article portion of an editorial DOCX to the CMS rich-document JSON format.
 
-Editorial metadata before the first Heading 1 is intentionally excluded. Word tables are converted
-to accessible heading/list blocks because the current TipTap configuration has no table extension.
+Editorial metadata before the first Heading 1 is intentionally excluded. Word tables are preserved
+as native TipTap table nodes so authors can edit their rows and columns in the CMS.
 """
 from __future__ import annotations
 
@@ -57,20 +57,17 @@ def table_blocks(table: ET.Element) -> list[dict]:
     rows = table_rows(table)
     if len(rows) < 2:
         return []
-    headers = rows[0]
-    blocks: list[dict] = []
-    for number, row in enumerate(rows[1:], 1):
-        primary = row[0].strip() if row else f"Item {number}"
-        blocks.append({"type": "heading", "attrs": {"level": 3}, "content": [{"type": "text", "text": primary}]})
-        items = []
-        for index, value in enumerate(row[1:], 1):
-            if not value.strip():
-                continue
-            label = headers[index].strip() if index < len(headers) else f"Detail {index}"
-            items.append({"type": "listItem", "content": [{"type": "paragraph", "content": [{"type": "text", "text": f"{label}: {value.strip()}"}]}]})
-        if items:
-            blocks.append({"type": "bulletList", "content": items})
-    return blocks
+    column_count = max(len(row) for row in rows)
+    table_rows_nodes: list[dict] = []
+    for row_index, row in enumerate(rows):
+        cell_type = "tableHeader" if row_index == 0 else "tableCell"
+        cells = []
+        for column_index in range(column_count):
+            value = row[column_index].strip() if column_index < len(row) else ""
+            content = [{"type": "text", "text": value}] if value else []
+            cells.append({"type": cell_type, "content": [{"type": "paragraph", "content": content}]})
+        table_rows_nodes.append({"type": "tableRow", "content": cells})
+    return [{"type": "table", "content": table_rows_nodes}]
 
 
 def main() -> None:
