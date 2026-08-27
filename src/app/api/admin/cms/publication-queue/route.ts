@@ -5,6 +5,7 @@ import { requireStaffPermission } from '@/server/auth/staff-flow';
 import { writeAuditEvent } from '@/server/audit/write-audit-event';
 import { isPublicationCadence, persianQueueReadiness, scheduleQueueSlots } from '@/server/content/publication-queue';
 import { knex } from '@/server/db/knex';
+import { publicationQueueSchemaReady } from '@/server/db/publication-queue-schema';
 
 async function settleDueItems(trx: typeof knex) {
   await trx('posts')
@@ -45,6 +46,9 @@ export async function PATCH(request: NextRequest) {
   if (!hasTrustedRequestOrigin(request)) return NextResponse.json({ error: 'forbidden' }, { status: 403 });
   try {
     const principal = await requireStaffPermission('content', 'publish');
+    if (!await publicationQueueSchemaReady(knex)) {
+      return NextResponse.json({ error: 'publication_queue_migration_required' }, { status: 503 });
+    }
     const body = await request.json().catch(() => null);
     if (!body || typeof body !== 'object') return NextResponse.json({ error: 'invalid_request' }, { status: 400 });
     const settingsOnly = body.id === undefined;

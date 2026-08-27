@@ -29,25 +29,26 @@ Phase 3). Full rationale in `doc/plan.md` §2–3.
    GRANT ALL PRIVILEGES ON elecio_dev.* TO 'elecio_migrator'@'localhost';
    ```
 
-3. Copy the env template and fill in the password you used above. Keep `timezone=Z` and
-   `charset=utf8mb4` in the connection URL:
+3. Copy the env template and fill in both passwords. `DATABASE_URL` must use the restricted
+   `elecio_app` account; `DATABASE_MIGRATION_URL` must use `elecio_migrator`. Keep `timezone=Z`
+   and `charset=utf8mb4` in both connection URLs:
 
    ```
    cp .env.example .env
    ```
 
-4. Install dependencies and run migrations with the migration credential:
+4. Install dependencies and run migrations. The migration script reads the separate privileged
+   connection and never grants schema privileges to the runtime application account:
 
    ```sh
    npm install
-   DATABASE_URL='mysql://elecio_migrator:PASSWORD@localhost:3306/elecio_dev?timezone=Z&charset=utf8mb4' npm run db:migrate
+   npm run db:migrate
    ```
 
    Migration `20260813000010` creates append-only audit triggers. On MySQL servers with binary
    logging enabled, an administrator may also need to grant the migrator global `SUPER` temporarily.
-   Revoke it immediately afterward, reduce the migrator to `TRIGGER` on `elecio_dev.*`, and lock the
-   account. Do not grant global `SUPER` access to the runtime application user. Restore
-   `DATABASE_URL` to the application credential before running the app.
+   Revoke it immediately afterward and reduce the migrator to the required schema privileges.
+   Do not grant global `SUPER` access to the runtime application user.
 
 5. For a local or staging test environment, seed all bundled demo content:
 
@@ -83,7 +84,7 @@ Phase 3). Full rationale in `doc/plan.md` §2–3.
 | `npm run build` / `npm run start` | Production build / serve |
 | `npm run lint` | ESLint |
 | `npm run typecheck` | `tsc --noEmit` |
-| `npm run db:migrate` | Run pending Knex migrations (`src/server/db/migrations`) |
+| `npm run db:migrate` | Run pending Knex migrations with `DATABASE_MIGRATION_URL` (`src/server/db/migrations`) |
 | `npm run db:migrate:rollback` | Roll back the last migration batch |
 | `npm run db:migrate:make <name>` | Scaffold a new migration file |
 | `npm run db:verify:mysql` | Verify MySQL connectivity, schema counts, UUID defaults, and audit triggers |
