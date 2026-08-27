@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'deliverables'
 BOOK = OUT / 'Elecio_SEO_Content_Planner_FA.xlsx'
 REVISED_BOOK = OUT / 'Elecio_SEO_Content_Planner_FA_Revised.xlsx'
+FINAL_BOOK = OUT / 'Elecio_SEO_Content_Planner_FA_FINAL.xlsx'
 HTML = OUT / 'Elecio_SEO_Persian_URL_and_Image_Plan.html'
 QUEUE = OUT / 'Persian_SEO_Publication_Queue'
 BASE_PROMPT = 'تصویر افقی جنرال و حرفه‌ای برای مقاله صنعتی، واقع‌گرایانه، نور تمیز، ترکیب‌بندی خلوت، بدون نوشته، لوگو و واترمارک، نسبت ۳:۲، خروجی دقیق ۶۰۰×۴۰۰ پیکسل'
@@ -71,8 +72,106 @@ def operation_sheet(wb):
     for c,w in enumerate([18,14,23,60,42,24],1): ws.column_dimensions[ws.cell(1,c).column_letter].width=w
     ws.freeze_panes='A2'; ws.auto_filter.ref='A1:F9'
 
+def finish_all_sheets(wb):
+    """Remove every stale 60-topic artifact and synchronize all operational sheets."""
+    lists=wb['_lists']
+    statuses=['ایده','در انتظار بریف','آماده نگارش','در حال نگارش','در حال ویرایش','آماده انتشار','زمان‌بندی‌شده','منتشرشده','نیازمند به‌روزرسانی']
+    intents=['اطلاعاتی','تجاری','خرید','پشتیبانی','برند/خرید','اطلاعاتی/تجاری']
+    funnels=['آگاهی','بررسی','تصمیم','پس از خرید']
+    formats=['راهنمای جامع','راهنمای فنی','آموزش فنی','راهنمای خرید','راهنمای نرم‌افزار','کاربرد صنعتی']
+    for col,values in [(1,statuses),(3,intents),(4,funnels),(7,formats)]:
+        for row in range(1,max(lists.max_row,len(values))+1): lists.cell(row,col).value=values[row-1] if row<=len(values) else None
+
+    calendar=wb['تقویم محتوا']
+    calendar['A2']='۱۰ موضوع فارسی منتخب از seo_keywords.txt؛ برنامه اجرایی، URL، تصویر و مسیر تحویل همگی با همین ۱۰ موضوع همگام شده‌اند.'
+    if calendar.max_row>13: calendar.delete_rows(14,calendar.max_row-13)
+    for dv in calendar.data_validations.dataValidation:
+        formula=str(dv.formula1 or '')
+        if '$C$' in formula: dv.sqref='H4:H13'
+        elif '$D$' in formula: dv.sqref='I4:I13'
+        elif '$G$' in formula: dv.sqref='J4:J13'
+        elif '$A$' in formula: dv.sqref='Z4:Z13'
+        elif '$B$' in formula: dv.sqref='AA4:AA13'
+    calendar.auto_filter.ref='A3:AK13'; calendar.freeze_panes='A4'
+
+    keyword=wb['نقشه کیورد']; keyword['A2']='فقط ۱۰ seed تأییدشده کاربر؛ داده‌های Volume، KD، Click، Impression و CTR تا ورود منبع واقعی عمداً خالی‌اند.'
+    if keyword.max_row>13: keyword.delete_rows(14,keyword.max_row-13)
+    keyword.auto_filter.ref='A3:U13'; keyword.freeze_panes='A4'
+    for dv in keyword.data_validations.dataValidation: dv.sqref=str(dv.sqref).replace('250','13')
+
+    dashboard=wb['داشبورد']; dashboard['A2']='نمای ۱۰ موضوع فارسی تأییدشده؛ وضعیت، اولویت و خوشه‌ها مستقیماً از تقویم محتوای نهایی خوانده می‌شوند.'
+    for cell in ['C4','F4','I4','C7','F7','I7']:
+        dashboard[cell]=str(dashboard[cell].value).replace('200','13').replace('250','13')
+    for row in range(12,21):
+        dashboard.cell(row,2).value=statuses[row-12]; dashboard.cell(row,3).value=f'=COUNTIF(\'تقویم محتوا\'!$Z$4:$Z$13,B{row})'
+    clusters=[]
+    for x in ITEMS:
+        if x['cluster'] not in clusters: clusters.append(x['cluster'])
+    for row in range(24,42):
+        index=row-24; dashboard.cell(row,2).value=clusters[index] if index<len(clusters) else None
+        dashboard.cell(row,3).value=f'=COUNTIF(\'تقویم محتوا\'!$D$4:$D$13,B{row})' if index<len(clusters) else None
+    for chart in dashboard._charts:
+        if chart.__class__.__name__=='BarChart' and chart.ser:
+            chart.ser[0].val.numRef.f="'داشبورد'!$C$24:$C$32"
+            if chart.ser[0].cat and chart.ser[0].cat.strRef: chart.ser[0].cat.strRef.f="'داشبورد'!$B$24:$B$32"
+
+    links=wb['لینک‌سازی داخلی']; links['A2']='برای هر مقاله دقیقاً سه مقصد ثبت شده است: یک Pillar و دو مقاله مرتبط. URLها همگی با نسخه فارسی نهایی هماهنگ‌اند.'; clear(links)
+    pillar_names={'/fa/product':'محصول Smart DNC','/fa/software':'نرم‌افزار ElecIO','/fa/blog':'مجله ElecIO','/fa/contact':'تماس و مشاوره','/fa/for/programmers':'صفحه برنامه‌نویسان CNC'}
+    related={1:[2,8],2:[3,6],3:[2,10],4:[5,2],5:[4,1],6:[2,7],7:[3,6],8:[1,9],9:[8,7],10:[3,2]}
+    rows=[]
+    for i,x in enumerate(ITEMS,1):
+        rows.append([f"{x['id']} | {x['cluster']}",pillar_names.get(x['pillar'],'صفحه اصلی مرتبط'),f"https://elecio.co{x['pillar']}",x['cluster'],f"راهنمای {x['keyword']}",'پس از مقدمه یا بخش کاربرد','انتقال اعتبار به Pillar','بررسی نشده'])
+        for target_index in related[i]:
+            y=ITEMS[target_index-1]; rows.append([f"{x['id']} | {x['cluster']}",y['title'],y['url'],y['keyword'],f"راهنمای {y['keyword']}",'در نزدیک‌ترین بخش مرتبط','عمق موضوعی و مسیر مطالعه','بررسی نشده'])
+    for index,values in enumerate(rows,4):
+        clone_row(links,4,index)
+        for col,value in enumerate(values,1): links.cell(index,col).value=value
+    if links.max_row>33: links.delete_rows(34,links.max_row-33)
+    links.auto_filter.ref='A3:H33'; links.freeze_panes='A4'
+
+    brief=wb['بریف مقاله']; brief['A2']='شناسه EC-001 تا EC-010 را انتخاب کنید؛ متن، URL فارسی و تمام مشخصات تصویر از تقویم نهایی خوانده می‌شوند.'
+    extra=[('URL نهایی',31),('عنوان تصویر شاخص',32),('پرامپت تصویر',33),('ابعاد/فرمت',34),('نام فایل تصویر',35),('متن جایگزین (alt)',36),('مسیر پوشه تحویل',37)]
+    for row,(label,column) in enumerate(extra,26):
+        clone(brief.cell(25,1),brief.cell(row,1)); clone(brief.cell(25,2),brief.cell(row,2)); brief.cell(row,1).value=label
+        letter=calendar.cell(3,column).column_letter; brief.cell(row,2).value=f'=IFERROR(INDEX(\'تقویم محتوا\'!${letter}:${letter},MATCH($B$3,\'تقویم محتوا\'!$A:$A,0)),"")'
+    for dv in brief.data_validations.dataValidation: dv.sqref='B3'; dv.formula1="'تقویم محتوا'!$A$4:$A$13"
+
+    targets=wb['صفحات هدف']
+    target_updates={
+        '/fa/product':('دستگاه CNC، فرز CNC، تراش CNC، خرید فرز CNC','دستگاه، فرز، تراش، ماشین‌کاری و خرید'),
+        '/fa/software':('اتوماسیون صنعتی، PLC، نرم‌افزار صنعتی','اتوماسیون صنعتی و کنترل PLC'),
+        '/fa/blog':('جی کد، دستگاه CNC، فرز CNC، اتوماسیون صنعتی، PLC، تراش CNC، ماشین‌کاری، مسترکم، پاورمیل، خرید فرز','همه ۱۰ خوشه محتوایی'),
+        '/fa/for/programmers':('جی کد، مسترکم، پاورمیل، برنامه‌نویسی CNC','جی کد و نرم‌افزارهای CAM'),
+        '/fa/contact':('خرید فرز CNC، مشاوره دستگاه و اتوماسیون','راهنمای خرید و موضوعات تصمیم‌محور')}
+    for row in range(4,targets.max_row+1):
+        url=targets.cell(row,3).value
+        if url in target_updates: targets.cell(row,5).value,targets.cell(row,7).value=target_updates[url]
+
+    quality=wb['کنترل کیفیت']; quality['A2']='چک‌لیست نهایی هماهنگ با URL فارسی، تصویر ۶۰۰×۴۰۰ و صف انتشار خودکار؛ ردیف‌های قدیمی و تکراری حذف شده‌اند.'
+    quality.cell(20,4).value='فارسی یا لاتین، کوتاه، معنادار، دارای خط فاصله و پس از انتشار پایدار است'
+    clean_checks=[
+        ('تصویر','تصویر شاخص ۶۰۰×۴۰۰','یک تصویر جنرال و مرتبط، دقیقاً ۶۰۰×۴۰۰، نسبت ۳:۲، WebP و بدون نوشته/لوگو',5),
+        ('تصویر','تصاویر داخل متن','فقط تصویر، دیاگرام یا اسکرین‌شاتی که فهم فنی را افزایش دهد؛ تعداد اجباری نیست',3),
+        ('تصویر','نام فایل و alt','نام توصیفی و دارای خط فاصله؛ alt مشاهدات واقعی تصویر را بدون تکرار مصنوعی keyword بیان کند',5),
+        ('سئو','URL فارسی نهایی','مطابق ستون URL نهایی اکسل، پاسخ ۲۰۰، canonical خودارجاع، بدون تاریخ و پارامتر',5),
+        ('انتشار','صف خودکار','متن، keyword، Title، Meta، دسته، تصویر، alt و index کامل؛ سپس Active Queue روشن شود',5)]
+    for row,values in enumerate(clean_checks,32):
+        for col,value in enumerate([row-3,*values,'بررسی نشده',None,None],1): quality.cell(row,col).value=value
+    if quality.max_row>36: quality.delete_rows(37,quality.max_row-36)
+    quality.auto_filter.ref='A3:H36'; quality.freeze_panes='A4'
+
+    prompt=wb['پرامپت محتوا']; prompt['A2']='قالب نهایی برای ۱۰ مقاله فارسی؛ مقادیر متن، URL، لینک و تصویر از شیت بریف مقاله برداشته شوند.'
+    prompt['B5']='کلمه کلیدی اصلی: {{کلمه کلیدی اصلی}}\nکلمات فرعی: {{کلمات فرعی}}\nعنوان: {{عنوان}}\nنیت: {{نیت}}\nURL فارسی نهایی: {{URL نهایی}}\nمخاطب: {{مخاطب}}\nCTA: {{CTA}}\nمنابع تأییدشده: {{منابع}}'
+    prompt['B10']='در ابتدای خروجی بده: SEO Title، Meta Description، Slug فارسی نهایی، Focus Keyword، Secondary Keywords، دسته و برچسب‌های محدود.'
+    prompt['A12']='برنامه تصویر'; prompt['B12']='تصویر را داخل متن تولید نکن؛ اما عنوان تصویر شاخص، پرامپت، ابعاد دقیق ۶۰۰×۴۰۰، نام فایل WebP و alt را عیناً از بریف مقاله در بخش برنامه تصویر درج کن.'
+    prompt['B14']='پیش از تحویل بررسی کن: پاسخ کامل به نیت، ساختار، استفاده طبیعی keyword، منابع، FAQ، جمع‌بندی، سه لینک داخلی، CTA، URL فارسی، تصویر ۶۰۰×۴۰۰، نام فایل و alt.'
+    prompt['B15']='۱) متادیتای SEO و URL فارسی\n۲) H1 و مقدمه\n۳) بدنه با H2/H3\n۴) جدول/چک‌لیست مفید\n۵) FAQ\n۶) جمع‌بندی و CTA\n۷) سه لینک داخلی پیشنهادی\n۸) برنامه تصویر شاخص ۶۰۰×۴۰۰'
+
+    guide=wb['راهنما']; guide['A2']='این نسخه نهایی، تمام شیت‌های برنامه‌ریزی، تقویم، داشبورد، بریف، لینک‌سازی، کنترل کیفیت، پرامپت و تصاویر را با ۱۰ موضوع فارسی هماهنگ می‌کند.'
+
 def workbook():
-    wb=load_workbook(BOOK); source='فهرست منتخب کاربر از جست‌وجوی دستی Google — seo_keywords.txt — بدون ادعای حجم یا سختی'
+    source_book=REVISED_BOOK if REVISED_BOOK.exists() else BOOK
+    wb=load_workbook(source_book); source='فهرست منتخب کاربر از جست‌وجوی دستی Google — seo_keywords.txt — بدون ادعای حجم یا سختی'
     ws=wb['نقشه کیورد']; clear(ws)
     for i,x in enumerate(ITEMS,1):
         r=i+3; clone_row(ws,4,r); vals=[f'KW-{i:03}',x['keyword'],x['cluster'],x['related'],x['intent'],x['funnel'],x['format'],x['pillar'],x['priority'],source,None,None,None,10,None,None,None,'نامشخص',x['id'],date(2026,8,28),'Volume، KD و رتبه فقط با داده واقعی GSC/Keyword Planner تکمیل شود.']
@@ -95,9 +194,11 @@ def workbook():
         r=existing.get(control) or ws.max_row+1; clone_row(ws,4,r)
         for c,v in enumerate([r-3,stage,control,criterion,weight,'بررسی نشده',None,None],1): ws.cell(r,c).value=v
     wb['راهنما']['A11']='منبع کیوردها و قاعده URL'; wb['راهنما']['B11']='۱۰ seed فایل seo_keywords.txt وارد شده‌اند. URL فارسی کوتاه و پایدار است؛ اجزای اصلی با خط فاصله می‌آیند و کلمات کم‌ارزش حذف می‌شوند. Volume/KD فقط با داده واقعی تکمیل شود.'
-    operation_sheet(wb); wb.calculation.fullCalcOnLoad=True; wb.calculation.forceFullCalc=True
-    try: wb.save(BOOK)
-    except PermissionError: wb.save(REVISED_BOOK)
+    operation_sheet(wb); finish_all_sheets(wb); wb.calculation.fullCalcOnLoad=True; wb.calculation.forceFullCalc=True
+    wb.save(FINAL_BOOK)
+    for target in (REVISED_BOOK,BOOK):
+        try: wb.save(target)
+        except PermissionError: pass
 
 def p(text,style=None):
     s=f'<w:pStyle w:val="{style}"/>' if style else ''
