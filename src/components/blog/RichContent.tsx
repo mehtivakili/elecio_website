@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element -- sanitized CMS images may be responsive inline content, not fixed-layout covers */
 import type { ReactNode } from 'react';
 import type { RichDocument, RichNode } from '@/server/content/document';
+import { brandedImagePath } from '@/lib/branded-image';
 
 function renderChildren(node: RichNode, key: string): ReactNode {
   return (node.content ?? []).map((child, index) => renderNode(child, `${key}-${index}`));
@@ -41,7 +42,7 @@ function renderNode(node: RichNode, key: string): ReactNode {
     case 'hardBreak': return <br key={key} />;
     case 'image': {
       const title = typeof node.attrs?.title === 'string' ? node.attrs.title : '';
-      return <figure key={key}><img src={String(node.attrs?.src ?? '')} alt={String(node.attrs?.alt ?? '')} loading="lazy" decoding="async" />{title && <figcaption>{title}</figcaption>}</figure>;
+      return <figure key={key}><img src={brandedImagePath(String(node.attrs?.src ?? ''))} alt={String(node.attrs?.alt ?? '')} loading="lazy" decoding="async" />{title && <figcaption>{title}</figcaption>}</figure>;
     }
     default: return null;
   }

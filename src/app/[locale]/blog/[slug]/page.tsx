@@ -8,6 +8,7 @@ import { RichContent } from '@/components/blog/RichContent';
 import styles from '@/components/blog/Blog.module.css';
 import { SITE_URL } from '@/lib/seo';
 import { breadcrumbJsonLd, jsonLdScript } from '@/lib/structured-data';
+import { brandedImagePath } from '@/lib/branded-image';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
   const { locale, slug } = await params;
@@ -27,9 +28,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       publishedTime: post.publishedAt, modifiedTime: post.updatedAt,
       locale: locale === 'fa' ? 'fa_IR' : 'en_US',
       alternateLocale: post.translationStatus === 'complete' ? [other === 'fa' ? 'fa_IR' : 'en_US'] : undefined,
-      images: post.coverImagePath ? [{ url: post.coverImagePath, alt: post.coverAlt }] : [],
+      images: post.coverImagePath ? [{ url: brandedImagePath(post.coverImagePath), alt: post.coverAlt }] : [],
     },
-    twitter: { card: 'summary_large_image', title: post.ogTitle, description: post.ogDescription, images: post.coverImagePath ? [post.coverImagePath] : [] },
+    twitter: { card: 'summary_large_image', title: post.ogTitle, description: post.ogDescription, images: post.coverImagePath ? [brandedImagePath(post.coverImagePath)] : [] },
   };
 }
 
@@ -53,7 +54,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
     description: post.seoDescription, datePublished: post.publishedAt, dateModified: post.updatedAt,
     author: post.authorName ? { '@type': 'Person', name: post.authorName } : undefined,
     publisher: { '@type': 'Organization', name: 'ElecIO', url: origin },
-    image: post.coverImagePath ? new URL(post.coverImagePath, origin).href : undefined,
+    image: post.coverImagePath ? new URL(brandedImagePath(post.coverImagePath), origin).href : undefined,
     mainEntityOfPage: new URL(post.canonicalUrl ?? `/${locale}/blog/${post.slug}`, origin).href,
   };
   const faq = extractFaq(post.body);
@@ -64,7 +65,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
   const json = (value: unknown) => JSON.stringify(value).replace(/</g, '\\u003c');
   return <main className={styles.article}><article>
     <header className={`${styles.articleHead} ${styles.articleWrap}`}><span className={styles.eyebrow}>{post.categoryName ?? (en ? 'Elecio guide' : 'راهنمای Elecio')}</span><h1>{post.title}</h1><p className={styles.muted}>{post.excerpt}</p><div className={styles.meta}><span>{post.authorName}</span><time dateTime={post.publishedAt}>{new Intl.DateTimeFormat(locale, { dateStyle: 'long' }).format(new Date(post.publishedAt))}</time></div></header>
-    {post.coverImagePath && <figure className={styles.articleCover}><Image src={post.coverImagePath} alt={post.coverAlt} width={1600} height={900} priority />{post.coverCaption && <figcaption>{post.coverCaption}</figcaption>}</figure>}
+    {post.coverImagePath && <figure className={styles.articleCover}><Image src={brandedImagePath(post.coverImagePath)} alt={post.coverAlt} width={1600} height={900} priority unoptimized />{post.coverCaption && <figcaption>{post.coverCaption}</figcaption>}</figure>}
     <div className={`${styles.articleWrap} ${styles.prose}`}><RichContent document={post.body} /><div className={styles.tags}>{post.tags.map((tag) => <span key={tag.slug}>{tag.name}</span>)}</div><p><Link href="/blog">← {en ? 'All guides' : 'همه راهنماها'}</Link></p></div>
   </article><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json(articleJsonLd) }} />{faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json(faqJsonLd) }} />}<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumb) }} /></main>;
 }

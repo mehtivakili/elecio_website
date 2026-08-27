@@ -9,6 +9,7 @@ import {
 } from "@/server/content/document";
 import { knex } from "@/server/db/knex";
 import { writeAuditEvent } from "@/server/audit/write-audit-event";
+import { documentImageStats } from "@/server/content/publication-queue";
 const statuses = ["draft", "published"];
 const translations = ["fa_only", "en_only", "complete"];
 function value(
@@ -29,6 +30,19 @@ function safeCanonical(value: unknown) {
   const parsed = new URL(raw);
   if (!['http:', 'https:'].includes(parsed.protocol)) throw new Error('INVALID_CANONICAL');
   return parsed.href;
+}
+function publicationImageError(status: string, translationStatus: string, bodyFa: unknown, bodyEn: unknown) {
+  if (status !== 'published') return null;
+  for (const [locale, enabled, document] of [
+    ['fa', translationStatus !== 'en_only', bodyFa],
+    ['en', translationStatus !== 'fa_only', bodyEn],
+  ] as const) {
+    if (!enabled) continue;
+    const stats = documentImageStats(document);
+    if (stats.count < 2) return `insufficient_body_images_${locale}`;
+    if (stats.missingAlt > 0) return `missing_body_image_alt_${locale}`;
+  }
+  return null;
 }
 async function snapshot(trx: typeof knex, id: number) {
   const post = await trx("posts").where({ id }).first();
@@ -97,6 +111,8 @@ export async function POST(request: NextRequest) {
         { status: 400 },
       );
     }
+    const imageError = publicationImageError(targetStatus, translationStatus, bodyFa, bodyEn);
+    if (imageError) return NextResponse.json({ error: imageError }, { status: 400 });
     const scheduledFor = body.scheduledFor ? new Date(body.scheduledFor) : null;
     if (scheduledFor && Number.isNaN(scheduledFor.getTime())) {
       return NextResponse.json({ error: "invalid_schedule" }, { status: 400 });
@@ -224,6 +240,8 @@ export async function PATCH(request: NextRequest) {
         { error: "incomplete_translation" },
         { status: 400 },
       );
+    const imageError = publicationImageError(targetStatus, translationStatus, bodyFa, bodyEn);
+    if (imageError) return NextResponse.json({ error: imageError }, { status: 400 });
     const scheduledFor = body.scheduledFor ? new Date(body.scheduledFor) : null;
     if (scheduledFor && Number.isNaN(scheduledFor.getTime()))
       return NextResponse.json({ error: "invalid_schedule" }, { status: 400 });

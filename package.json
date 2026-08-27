@@ -22,7 +22,8 @@
     "content:seed-initial": "tsx scripts/seed-initial-blogs.ts",
     "content:import-en-ec-001": "tsx scripts/import-en-ec-001.ts",
     "content:import-fa-ec-001": "tsx scripts/import-fa-ec-001.ts",
-    "content:import-fa-g-code": "tsx scripts/import-fa-g-code-draft.ts"
+    "content:import-fa-g-code": "tsx scripts/import-fa-g-code-draft.ts",
+    "content:backfill-blog-images": "tsx scripts/backfill-blog-image-plan.ts"
   },
   "dependencies": {
     "@ant-design/icons": "^6.3.2",

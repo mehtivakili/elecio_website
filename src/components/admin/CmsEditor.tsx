@@ -121,7 +121,6 @@ export function CmsEditor({ locale, initial, categories, tags }: { locale: strin
   const previewTitle = seoTitle || (localized ? state.titleFa : state.titleEn) || (en ? 'Article title' : 'عنوان مقاله');
   const previewDescription = seoDescription || (localized ? state.excerptFa : state.excerptEn) || (en ? 'Search description will appear here.' : 'توضیح نتیجه جست‌وجو اینجا نمایش داده می‌شود.');
   const focusKeyword = localized ? state.focusKeywordFa : state.focusKeywordEn; const coverAlt = localized ? state.coverAltFa : state.coverAltEn;
-  const suggestedBodyImages = Math.max(1, Math.ceil(stats.words / 700));
   const seoChecks = [
     { ok: Boolean(state.slug), label: localized ? 'آدرس کوتاه و معنادار مقاله' : 'Article slug' },
     { ok: Boolean(focusKeyword), label: localized ? 'کلمه کلیدی اصلی' : 'Focus keyword' },
@@ -130,6 +129,7 @@ export function CmsEditor({ locale, initial, categories, tags }: { locale: strin
     { ok: Boolean(state.categoryId), label: localized ? 'دسته‌بندی' : 'Category' },
     { ok: Boolean(state.coverImagePath && coverAlt), label: localized ? 'تصویر شاخص و متن جایگزین' : 'Cover image and alt text' },
     { ok: stats.missingAlt === 0, label: localized ? 'متن جایگزین تصاویر داخل مقاله' : 'Alt text for body images' },
+    { ok: stats.images >= 2, label: localized ? 'دو تصویر داخل متن (سه تصویر با تصویر شاخص)' : 'Two body images (three including cover)' },
   ];
 
   return <div className={styles.layout}><div className={styles.main}>
@@ -147,7 +147,7 @@ export function CmsEditor({ locale, initial, categories, tags }: { locale: strin
       <details className={styles.advanced}><summary>{localized ? 'Canonical سفارشی (به‌ندرت لازم است)' : 'Custom canonical (rarely needed)'}</summary><label className={styles.label}>Canonical URL<input className={styles.input} dir="ltr" value={localized ? state.canonicalUrlFa : state.canonicalUrlEn} onChange={(event) => field(localized ? 'canonicalUrlFa' : 'canonicalUrlEn', event.target.value)} placeholder={`/${active}/blog/${state.slug || 'article-slug'}`}/></label></details>
       <details className={styles.advanced}><summary>{localized ? 'شبکه‌های اجتماعی و تنظیمات پیشرفته' : 'Social and advanced settings'}</summary><label className={styles.label}>Open Graph title<input className={styles.input} value={localized ? state.ogTitleFa : state.ogTitleEn} onChange={(event) => field(localized ? 'ogTitleFa' : 'ogTitleEn', event.target.value)} placeholder={previewTitle}/></label><label className={styles.label}>Open Graph description<textarea className={styles.textarea} value={localized ? state.ogDescriptionFa : state.ogDescriptionEn} onChange={(event) => field(localized ? 'ogDescriptionFa' : 'ogDescriptionEn', event.target.value)} placeholder={previewDescription}/></label></details>
       <div className={styles.serpPreview} dir={localized ? 'rtl' : 'ltr'}><small>elecio.co › {active} › blog › {state.slug || 'article-slug'}</small><strong>{previewTitle}</strong><p>{previewDescription}</p></div>
-      <div className={styles.imagePlan} dir={localized ? 'rtl' : 'ltr'}><strong>{localized ? 'برنامه تصویر مقاله' : 'Article image plan'}</strong><span>{localized ? `۱ تصویر شاخص + حدود ${suggestedBodyImages.toLocaleString('fa-IR')} تصویر مفید داخل متن` : `1 cover + about ${suggestedBodyImages} useful body image(s)`}</span><small>{localized ? `فعلی: ${stats.images.toLocaleString('fa-IR')} تصویر؛ ${stats.missingAlt.toLocaleString('fa-IR')} بدون alt. این عدد راهنمای تحریریه است، نه قانون رتبه‌بندی گوگل.` : `Current: ${stats.images}; ${stats.missingAlt} missing alt. This is an editorial heuristic, not a Google rule.`}</small></div>
+      <div className={styles.imagePlan} dir={localized ? 'rtl' : 'ltr'}><strong>{localized ? 'برنامه تصویر مقاله' : 'Article image plan'}</strong><span>{localized ? '۱ تصویر شاخص + ۲ تصویر مفید داخل متن' : '1 cover + 2 useful body images'}</span><small>{localized ? `فعلی: ${stats.images.toLocaleString('fa-IR')} تصویر داخل متن؛ ${stats.missingAlt.toLocaleString('fa-IR')} بدون alt. فایل اصلی بدون لوگو می‌ماند و لوگو هنگام نمایش و دانلود توسط سایت اضافه می‌شود.` : `Current: ${stats.images} body images; ${stats.missingAlt} missing alt. Originals stay clean; the site applies the current logo for display and download.`}</small></div>
       <div className={styles.seoChecklist} dir={localized ? 'rtl' : 'ltr'}><strong>{localized ? 'آمادگی سئو' : 'SEO readiness'} · {seoChecks.filter((item) => item.ok).length}/{seoChecks.length}</strong>{seoChecks.map((item) => <span className={item.ok ? styles.checkOk : styles.checkMissing} key={item.label}>{item.ok ? '✓' : '○'} {item.label}</span>)}</div>
     </section>
   </div><aside className={styles.side}><section className={styles.panel}>

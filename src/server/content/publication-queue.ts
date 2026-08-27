@@ -61,6 +61,9 @@ export function persianQueueReadiness(post: QueueReadyPost): string[] {
   if (!post.category_id) missing.push('category_id');
   if (!post.cover_image_path?.trim()) missing.push('cover_image_path');
   if (!post.cover_alt_fa?.trim()) missing.push('cover_alt_fa');
+  const imageStats = document ? documentImageStats(document) : { count: 0, missingAlt: 0 };
+  if (imageStats.count < 2) missing.push('body_images');
+  if (imageStats.missingAlt > 0) missing.push('body_image_alt');
   if (post.robots_index === false || post.robots_index === 0) missing.push('robots_index');
   if (post.translation_status === 'en_only') missing.push('translation_status');
   return missing;

@@ -12,7 +12,7 @@ type QueuePost = {
 const missingLabels: Record<string, string> = {
   slug: 'آدرس', title_fa: 'عنوان فارسی', body_fa: 'متن فارسی', focus_keyword_fa: 'کیورد اصلی',
   seo_title_fa: 'عنوان سئو', seo_description_fa: 'توضیح سئو', category_id: 'دسته‌بندی',
-  cover_image_path: 'تصویر شاخص', cover_alt_fa: 'متن جایگزین تصویر', robots_index: 'اجازه ایندکس', translation_status: 'نسخه فارسی',
+  cover_image_path: 'تصویر شاخص', cover_alt_fa: 'متن جایگزین تصویر', body_images: 'دو تصویر داخل متن', body_image_alt: 'متن جایگزین تصاویر متن', robots_index: 'اجازه ایندکس', translation_status: 'نسخه فارسی',
 };
 
 function localInputValue(value: string | null) {
