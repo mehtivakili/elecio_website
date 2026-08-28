@@ -23,6 +23,16 @@ function value(
   if (required && !result) throw new Error(`INVALID_${key}`);
   return result || null;
 }
+function titleValue(
+  body: Record<string, unknown>,
+  key: string,
+  required: boolean,
+) {
+  // The original posts schema keeps both localized title columns NOT NULL.
+  // A missing title is valid for a single-language post, so persist an empty
+  // string for the disabled locale while retaining validation for the active one.
+  return value(body, key, 240, required) ?? "";
+}
 function safeCanonical(value: unknown) {
   if (typeof value !== 'string' || !value.trim()) return null;
   const raw = value.trim().slice(0, 2048);
@@ -124,16 +134,14 @@ export async function POST(request: NextRequest) {
           category_id: Number(body.categoryId) || null,
           author_user_id: principal.userId,
           updated_by: principal.userId,
-          title_fa: value(
+          title_fa: titleValue(
             body,
             "titleFa",
-            240,
             translationStatus !== "en_only",
           ),
-          title_en: value(
+          title_en: titleValue(
             body,
             "titleEn",
-            240,
             translationStatus !== "fa_only",
           ),
           excerpt_fa: value(body, "excerptFa", 1000),
@@ -258,16 +266,14 @@ export async function PATCH(request: NextRequest) {
           slug,
           category_id: Number(body.categoryId) || null,
           updated_by: principal.userId,
-          title_fa: value(
+          title_fa: titleValue(
             body,
             "titleFa",
-            240,
             translationStatus !== "en_only",
           ),
-          title_en: value(
+          title_en: titleValue(
             body,
             "titleEn",
-            240,
             translationStatus !== "fa_only",
           ),
           excerpt_fa: value(body, "excerptFa", 1000),
