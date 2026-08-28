@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { Link } from '@/i18n/navigation';
-import { getPublishedPost, getSlugRedirect } from '@/server/content/post-repository';
+import { getPublishedPost, getPublishedPostOnlyLocale, getSlugRedirect } from '@/server/content/post-repository';
 import { extractFaq } from '@/server/content/document';
 import { RichContent } from '@/components/blog/RichContent';
 import styles from '@/components/blog/Blog.module.css';
@@ -39,6 +39,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
   const en = locale === 'en';
   const post = await getPublishedPost(locale, slug);
   if (!post) {
+    const onlyLocale = await getPublishedPostOnlyLocale(slug);
+    if (onlyLocale && onlyLocale !== locale) permanentRedirect(`/${onlyLocale}/blog/${slug}`);
     const moved = await getSlugRedirect(slug);
     if (moved) permanentRedirect(`/${locale}/blog/${moved.slug}`);
     notFound();
