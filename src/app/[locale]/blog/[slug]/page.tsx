@@ -10,8 +10,17 @@ import { SITE_URL } from '@/lib/seo';
 import { breadcrumbJsonLd, jsonLdScript } from '@/lib/structured-data';
 import { brandedImagePath } from '@/lib/branded-image';
 
+function normalizeRouteSlug(value: string) {
+  try {
+    return decodeURIComponent(value).normalize('NFC');
+  } catch {
+    return value.normalize('NFC');
+  }
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
-  const { locale, slug } = await params;
+  const { locale, slug: routeSlug } = await params;
+  const slug = normalizeRouteSlug(routeSlug);
   const post = await getPublishedPost(locale, slug);
   if (!post) return {};
   const other = locale === 'fa' ? 'en' : 'fa';
@@ -35,7 +44,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 }
 
 export default async function ArticlePage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
-  const { locale, slug } = await params;
+  const { locale, slug: routeSlug } = await params;
+  const slug = normalizeRouteSlug(routeSlug);
   const en = locale === 'en';
   const post = await getPublishedPost(locale, slug);
   if (!post) {
