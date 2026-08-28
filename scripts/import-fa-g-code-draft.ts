@@ -8,6 +8,7 @@ import { plainText, sanitizeDocument, type RichDocument, type RichNode } from '.
 
 const slug = 'جی-کد-چیست';
 const source = path.resolve('deliverables/Persian_SEO_Publication_Queue/EC-001-جی-کد-چیست/EC-001-جی-کد-چیست.docx');
+const python = process.env.PYTHON_BIN ?? (process.platform === 'win32' ? 'python' : 'python3');
 const emptyDocument: RichDocument = { type: 'doc', content: [{ type: 'paragraph' }] };
 
 const textOf = (node: RichNode): string => node.type === 'text' ? node.text ?? '' : (node.content ?? []).map(textOf).join('');
@@ -101,7 +102,7 @@ const media = [
 ];
 
 async function main() {
-  const extracted = execFileSync('python', ['scripts/extract-publication-docx.py', source], {
+  const extracted = execFileSync(python, ['scripts/extract-publication-docx.py', source], {
     encoding: 'utf8', maxBuffer: 4_000_000, env: { ...process.env, PYTHONIOENCODING: 'utf-8' },
   });
   const bodyFa = prepareDocument(sanitizeDocument(JSON.parse(extracted)));
