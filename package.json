@@ -24,6 +24,12 @@
     "content:import-fa-ec-001": "tsx scripts/import-fa-ec-001.ts",
     "content:import-fa-g-code": "tsx scripts/import-fa-g-code-draft.ts",
     "content:import-fa-cnc-machine": "tsx scripts/import-fa-cnc-machine-draft.ts",
+    "content:import-fa-ec-004-007": "tsx scripts/import-fa-publication-drafts.ts",
+    "content:import-fa-ec-004": "tsx scripts/import-fa-publication-drafts.ts EC-004",
+    "content:import-fa-ec-005": "tsx scripts/import-fa-publication-drafts.ts EC-005",
+    "content:import-fa-ec-006": "tsx scripts/import-fa-publication-drafts.ts EC-006",
+    "content:import-fa-ec-007": "tsx scripts/import-fa-publication-drafts.ts EC-007",
+    "content:validate-fa-ec-004-007": "tsx scripts/import-fa-publication-drafts.ts --dry-run",
     "content:backfill-blog-images": "tsx scripts/backfill-blog-image-plan.ts"
   },
   "dependencies": {
