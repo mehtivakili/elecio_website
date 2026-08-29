@@ -112,7 +112,7 @@ export function ShopFloorStory() {
         <iframe
           ref={frameRef}
           className={styles.frame}
-          src={`/3d/story/index.html?lang=${locale}&v=20260814-fonts`}
+          src={`/3d/story/index.html?lang=${locale}&v=20260829-mobile-layout`}
           title={en ? 'Interactive Smart DNC shop-floor story' : 'داستان تعاملی سه‌بعدی Smart DNC'}
           loading="eager"
           onLoad={() => window.dispatchEvent(new Event('scroll'))}
@@ -127,10 +127,43 @@ export function ShopFloorStory() {
             sizes="100vw"
           />
           <div className={styles.scrim} />
-          <button className={styles.startButton} type="button" onClick={startStory}>
-            <span className={styles.playIcon} aria-hidden="true" />
-            {en ? 'Start the 3D story' : 'شروع داستان سه‌بعدی'}
-          </button>
+          <div className={styles.ambientGlow} aria-hidden="true" />
+          <div className={styles.particles} aria-hidden="true">
+            {Array.from({ length: 12 }, (_, index) => <span key={index} />)}
+          </div>
+          <div className={styles.orbit} aria-hidden="true">
+            <span />
+          </div>
+          <div className={styles.orbitAlt} aria-hidden="true">
+            <span />
+          </div>
+
+          <div className={styles.gateContent}>
+            <p className={styles.eyebrow}>
+              {en ? 'ELECIO INTERACTIVE EXPERIENCE' : 'تجربه تعاملی ELECIO'}
+            </p>
+            <h2 className={styles.title}>
+              {en ? 'See ElecIO at work on the shop floor' : 'عملکرد ElecIO را در خط تولید ببینید'}
+            </h2>
+            <p className={styles.description}>
+              {en
+                ? 'Explore how CNC machines connect, programs move, and production status becomes visible in an interactive 3D environment.'
+                : 'اتصال ماشین‌های CNC، انتقال برنامه و نمایش وضعیت تولید را در یک محیط سه‌بعدی تعاملی تجربه کنید.'}
+            </p>
+            <button className={styles.startButton} type="button" onClick={startStory}>
+              <span className={styles.playDisc} aria-hidden="true">
+                <span className={styles.playIcon} />
+              </span>
+              <span>{en ? 'View interactive demo' : 'مشاهده دموی تعاملی'}</span>
+              <span className={styles.buttonBadge} aria-hidden="true">3D</span>
+            </button>
+            <p className={styles.loadNote}>
+              <span aria-hidden="true" />
+              {en
+                ? 'The 3D experience loads after you click to keep this page fast.'
+                : 'برای حفظ سرعت صفحه، نمایش سه‌بعدی پس از کلیک بارگذاری می‌شود.'}
+            </p>
+          </div>
         </div>
       )}
     </section>
