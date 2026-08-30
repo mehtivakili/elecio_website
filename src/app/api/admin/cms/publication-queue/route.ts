@@ -62,9 +62,13 @@ export async function PATCH(request: NextRequest) {
       if (settingsOnly || body.firstPublishAt !== undefined) {
         requestedStart = new Date(String(body.firstPublishAt ?? ''));
         if (Number.isNaN(requestedStart.getTime())) throw new Error('INVALID_FIRST_PUBLICATION');
-      } else {
+      }
+      // A queue-toggle request also carries firstPublishAt so the whole queue can be reflowed
+      // from the date currently visible in the UI. This must be independent from processing the
+      // post itself: the former `else` made every toggle request silently update settings only.
+      if (!settingsOnly) {
         const id = Number(body.id);
-        if (!Number.isInteger(id)) throw new Error('INVALID_POST');
+        if (!Number.isInteger(id) || typeof body.active !== 'boolean') throw new Error('INVALID_POST');
         const post = await trx('posts').where({ id }).first();
         if (!post) throw new Error('POST_NOT_FOUND');
         if (body.active === true) {

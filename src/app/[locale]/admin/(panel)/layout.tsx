@@ -15,6 +15,7 @@ export default async function PanelLayout({children,params}:{children:React.Reac
     ['/admin/content',en?'Content':'محتوا',can(staff.role,'content','read')],
     ['/admin/content/library',en?'Content library':'کتابخانه محتوا',can(staff.role,'content','manage')],
     ['/admin/media',en?'Media':'رسانه',can(staff.role,'media','read')],
+    ['/admin/social/instagram',en?'Instagram studio':'استودیو اینستاگرام',can(staff.role,'social','read')],
     ['/admin/customers',en?'Customers':'مشتریان',can(staff.role,'users','read')],
     ['/admin/staff',en?'Staff':'کارکنان',can(staff.role,'staff','read')],
     ['/admin/integrations',en?'Systems':'سامانه‌ها',can(staff.role,'integrations','read')],

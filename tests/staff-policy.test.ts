@@ -20,5 +20,6 @@ test('the permission matrix has explicit entries for every role and never grants
 test('support assignment and editor publishing boundaries are exact', () => {
   assert.equal(can('support','leads','read','assigned'),true); assert.equal(can('support','leads','read','all'),false);
   assert.equal(can('support','content','update'),false); assert.equal(can('editor','content','publish'),true);
+  assert.equal(can('editor','social','publish'),true); assert.equal(can('support','social','read'),false);
   assert.equal(can('editor','leads','read'),false); assert.equal(can('admin','integrations','manage'),false);
 });

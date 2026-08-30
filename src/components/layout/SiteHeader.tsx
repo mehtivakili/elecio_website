@@ -18,6 +18,8 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const { mode, toggle } = useThemeMode();
 
+  if (pathname.startsWith('/admin/social/instagram')) return null;
+
   const items = [
     { key: '/', label: t('home') },
     { key: '/product', label: t('product') },

@@ -7,6 +7,7 @@ export const resources = [
   'downloads',
   'content',
   'media',
+  'social',
   'leads',
   'users',
   'staff',
@@ -38,6 +39,7 @@ export const permissionMatrix: Record<AppRole, Partial<Record<AppResource, Grant
   editor: {
     content: { actions: ['read', 'create', 'update', 'publish'], scope: 'all' },
     media: { actions: ['read', 'create', 'update', 'delete'], scope: 'all' },
+    social: { actions: ['read', 'create', 'update', 'publish'], scope: 'all' },
   },
   admin: {
     profile: { actions: ['read', 'update'], scope: 'all' },
@@ -45,6 +47,7 @@ export const permissionMatrix: Record<AppRole, Partial<Record<AppResource, Grant
     downloads: { actions: ['read', 'manage'], scope: 'all' },
     content: { actions: allActions, scope: 'all' },
     media: { actions: allActions, scope: 'all' },
+    social: { actions: allActions, scope: 'all' },
     leads: { actions: ['read', 'update', 'manage'], scope: 'all' },
     users: { actions: ['read', 'update', 'manage'], scope: 'all' },
     audit: { actions: ['read'], scope: 'all' },
