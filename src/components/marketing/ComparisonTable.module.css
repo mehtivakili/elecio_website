@@ -106,6 +106,9 @@
 .tableShell {
   max-width: 1480px;
   margin: 0 auto;
+  /* Scale the complete comparison artifact as one unit so typography, cells, icons,
+     spacing, borders and radii retain the exact proportions of the reference. */
+  zoom: 0.85;
   overflow: auto;
   border: 1px solid color-mix(in srgb, var(--border) 76%, #536cff 24%);
   border-radius: 22px;
