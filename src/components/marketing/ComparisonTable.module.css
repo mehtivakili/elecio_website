@@ -1,0 +1,338 @@
+.section {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 118px max(20px, calc((100vw - 1480px) / 2)) 104px;
+  color: var(--foreground);
+  background:
+    linear-gradient(180deg, var(--ink) 0%, color-mix(in srgb, var(--surface) 78%, var(--ink)) 48%, var(--ink) 100%);
+}
+
+.orbA,
+.orbB {
+  position: absolute;
+  z-index: -1;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+.orbA {
+  inset: 4% auto auto -210px;
+  background: radial-gradient(circle, rgba(30, 101, 255, 0.16), transparent 68%);
+}
+
+.orbB {
+  inset: auto -190px 5% auto;
+  background: radial-gradient(circle, rgba(126, 20, 255, 0.17), transparent 68%);
+}
+
+.heading {
+  max-width: 1240px;
+  margin: 0 auto 42px;
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0 0 14px;
+  color: var(--signal-glow);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.heading h2 {
+  max-width: 1180px;
+  margin: 0 auto;
+  font-size: clamp(30px, 4.5vw, 64px);
+  font-weight: 900;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.heading h2 span {
+  color: transparent;
+  background: linear-gradient(100deg, #0078ff 5%, #6547ff 55%, #a400ff 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.subheading {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: var(--text-60);
+  font-size: clamp(14px, 1.6vw, 18px);
+  font-weight: 700;
+}
+
+.subheading i {
+  position: relative;
+  width: min(16vw, 190px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #496bff);
+}
+
+.subheading i:last-child {
+  transform: scaleX(-1);
+}
+
+.subheading i::after {
+  position: absolute;
+  content: '';
+  width: 7px;
+  height: 7px;
+  inset-block-start: -3px;
+  inset-inline-end: -1px;
+  border-radius: 50%;
+  background: #496bff;
+  box-shadow: 0 0 16px #6744ff;
+}
+
+.scrollHint {
+  display: none;
+  margin: 0 0 10px;
+  color: var(--text-40);
+  font-size: 12px;
+  text-align: start;
+}
+
+.tableShell {
+  max-width: 1480px;
+  margin: 0 auto;
+  overflow: auto;
+  border: 1px solid color-mix(in srgb, var(--border) 76%, #536cff 24%);
+  border-radius: 22px;
+  background: color-mix(in srgb, var(--surface) 93%, transparent);
+  box-shadow: 0 38px 100px -55px rgba(0, 0, 0, 0.92), 0 0 70px -55px #6047ff;
+  scrollbar-color: #6550f5 transparent;
+  scrollbar-width: thin;
+}
+
+.tableShell:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 5px;
+}
+
+.table {
+  width: 100%;
+  min-width: 1320px;
+  border-spacing: 0;
+  border-collapse: separate;
+  table-layout: fixed;
+  font-size: 13px;
+}
+
+.table th,
+.table td {
+  height: 61px;
+  padding: 9px 11px;
+  vertical-align: middle;
+  text-align: center;
+  border-inline-end: 1px solid var(--border);
+  border-block-end: 1px solid var(--border);
+}
+
+.table tr:last-child th,
+.table tr:last-child td {
+  border-block-end: 0;
+}
+
+.table th:last-child,
+.table td:last-child {
+  border-inline-end: 0;
+}
+
+.table thead th {
+  height: 54px;
+  padding: 10px;
+  color: #f5f7ff;
+  background: linear-gradient(180deg, #0f2345, #08152a);
+  font-size: 13px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.table thead th:first-child {
+  border-start-start-radius: 20px;
+}
+
+.table thead th:last-child {
+  border-start-end-radius: 20px;
+}
+
+.table .capabilityHead,
+.table .elecioHead {
+  background: linear-gradient(105deg, #123cff 0%, #6900ea 56%, #a200f1 100%);
+}
+
+.capabilityHead,
+.featureCell {
+  width: 230px;
+}
+
+.table tbody tr {
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  transition: background-color 0.18s ease;
+}
+
+.table tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--surface-2) 72%, transparent);
+}
+
+.table tbody tr:hover {
+  background: color-mix(in srgb, var(--signal) 8%, var(--surface));
+}
+
+.featureCell {
+  position: sticky;
+  z-index: 2;
+  inset-inline-start: 0;
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--surface) 96%, var(--ink));
+  font-weight: 700;
+  text-align: start !important;
+  box-shadow: 9px 0 22px -22px rgba(0, 0, 0, 0.9);
+}
+
+[dir='rtl'] .featureCell {
+  box-shadow: -9px 0 22px -22px rgba(0, 0, 0, 0.9);
+}
+
+.featureCell > * {
+  vertical-align: middle;
+}
+
+.rowNumber {
+  width: 23px;
+  height: 23px;
+  margin-inline-end: 8px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: linear-gradient(135deg, #174dff, #8500df);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.featureIcon {
+  width: 25px;
+  margin-inline-end: 8px;
+  display: inline-block;
+  color: var(--text-60);
+  font: 900 20px/1 'Vazirmatn', sans-serif;
+  text-align: center;
+}
+
+.elecioCell {
+  position: relative;
+  background: linear-gradient(180deg, rgba(89, 39, 255, 0.09), rgba(120, 32, 255, 0.035));
+  border-inline: 1px solid rgba(132, 76, 255, 0.5) !important;
+}
+
+.result {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  line-height: 1.35;
+}
+
+.status {
+  width: 19px;
+  height: 19px;
+  flex: 0 0 19px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  color: white;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1;
+  box-shadow: 0 5px 14px -7px currentColor;
+}
+
+.yes { background: #079c39; }
+.no { background: #ff2117; }
+
+.source {
+  margin: 24px auto 0;
+  color: var(--text-60);
+  font-size: 13px;
+  text-align: center;
+}
+
+.source::before,
+.source::after {
+  content: '•';
+  margin: 0 12px;
+  color: #5c4dff;
+}
+
+.source strong {
+  color: var(--signal-glow);
+}
+
+@media (max-width: 760px) {
+  .section {
+    padding: 82px 16px 76px;
+  }
+
+  .heading {
+    margin-bottom: 30px;
+  }
+
+  .heading h2 {
+    font-size: clamp(28px, 9vw, 42px);
+  }
+
+  .subheading {
+    gap: 8px;
+    line-height: 1.5;
+  }
+
+  .subheading i {
+    width: 32px;
+  }
+
+  .scrollHint {
+    display: block;
+  }
+
+  .tableShell {
+    border-radius: 16px;
+  }
+
+  .table {
+    min-width: 1180px;
+    font-size: 12px;
+  }
+
+  .table th,
+  .table td {
+    height: 56px;
+    padding: 8px;
+  }
+
+  .capabilityHead,
+  .featureCell {
+    width: 190px;
+  }
+
+  .source::before,
+  .source::after {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .table tbody tr { transition: none; }
+}

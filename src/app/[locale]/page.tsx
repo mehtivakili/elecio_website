@@ -13,6 +13,8 @@ import { FinalCta } from '@/components/marketing/FinalCta';
 import { ProductSectionDock } from '@/components/product/ProductSectionDock';
 import { ShopFloorStory } from '@/components/marketing/ShopFloorStory';
 import { HomeReturnScrollReset } from '@/components/marketing/HomeReturnScrollReset';
+import { ComparisonTable } from '@/components/marketing/ComparisonTable';
+import type { AppLocale } from '@/i18n/routing';
 
 export default async function HomePage({
   params,
@@ -39,7 +41,7 @@ export default async function HomePage({
           not at the top (doc/journey.md 2026-08-07). */}
       <div id="home-start"><Hero /></div>
       <ShopFloorStory />
-      <div id="home-solutions"><PersonaGrid /><AboutProduct /><FeatureList /></div>
+      <div id="home-solutions"><PersonaGrid /><AboutProduct /><ComparisonTable locale={locale as AppLocale} /><FeatureList /></div>
       <div id="home-proof"><StatsSection /><SupportedMachines /><VideoTestimonials /></div>
       <div id="home-learning"><LearningSection /><BlogPreview /><PartnerStrip /></div>
       <div id="home-contact"><FinalCta /></div>
