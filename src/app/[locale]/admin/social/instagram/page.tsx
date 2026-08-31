@@ -17,7 +17,7 @@ export default async function InstagramStudioPage({ params }: { params: Promise<
   }
   const [profileRow, postRows, mediaRows] = await Promise.all([
     knex('social_instagram_profiles').where({ id: 1 }).first(),
-    knex('social_instagram_posts').where({ profile_id: 1 }).orderBy('id', 'desc'),
+    knex('social_instagram_posts').where({ profile_id: 1 }).orderBy('display_order', 'asc').orderBy('id', 'asc'),
     knex('social_instagram_post_media').orderBy(['post_id', 'sort_order']),
   ]);
   if (!profileRow) throw new Error('INSTAGRAM_PROFILE_NOT_FOUND');
@@ -32,7 +32,7 @@ export default async function InstagramStudioPage({ params }: { params: Promise<
     followers: Number(profileRow.followers_count), following: Number(profileRow.following_count),
   };
   const posts: InstagramPost[] = postRows.map((row) => ({
-    id: Number(row.id), caption: row.caption, status: row.status,
+    id: Number(row.id), caption: row.caption, likes: Number(row.like_count), status: row.status,
     scheduledFor: row.scheduled_for ? new Date(row.scheduled_for).toISOString() : null,
     publishedAt: row.published_at ? new Date(row.published_at).toISOString() : null,
     createdAt: new Date(row.created_at).toISOString(), media: mediaByPost.get(Number(row.id)) ?? [],

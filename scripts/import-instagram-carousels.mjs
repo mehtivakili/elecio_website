@@ -6,7 +6,12 @@ const sourceDirectory = path.resolve(process.cwd(), 'media', 'carousel');
 const outputDirectory = path.resolve(process.cwd(), 'public', 'images', 'instagram', 'carousels');
 const files = (await readdir(sourceDirectory))
   .filter((file) => file.toLowerCase().endsWith('.png'))
-  .sort((first, second) => first.localeCompare(second, 'en'));
+  .sort((first, second) => {
+    const firstNumber = Number.parseInt(path.parse(first).name, 10);
+    const secondNumber = Number.parseInt(path.parse(second).name, 10);
+    if (Number.isFinite(firstNumber) && Number.isFinite(secondNumber)) return firstNumber - secondNumber;
+    return first.localeCompare(second, 'en', { numeric: true });
+  });
 
 await mkdir(outputDirectory, { recursive: true });
 

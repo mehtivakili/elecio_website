@@ -1,3 +1,4 @@
+import { randomInt } from 'node:crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { hasTrustedRequestOrigin } from '@/server/auth/customer-flow';
 import { requireStaffPermission } from '@/server/auth/staff-flow';
@@ -44,10 +45,16 @@ export async function POST(request: NextRequest) {
     const media = mediaOf(body?.mediaPaths);
     const scheduledFor = scheduleOf(body?.scheduledFor);
     const postId = await knex.transaction(async (trx) => {
+      const highestOrder = await trx('social_instagram_posts')
+        .where({ profile_id: 1 })
+        .max<{ maxOrder: string | number | null }>('display_order as maxOrder')
+        .first();
       const [id] = await trx('social_instagram_posts').insert({
         profile_id: 1,
         caption,
         status: scheduledFor ? 'scheduled' : 'draft',
+        display_order: Number(highestOrder?.maxOrder ?? 0) + 1,
+        like_count: randomInt(900, 3_501),
         scheduled_for: scheduledFor,
         created_by: principal.userId,
         updated_by: principal.userId,
@@ -70,7 +77,8 @@ export async function POST(request: NextRequest) {
       outcome: 'success',
       metadata: { mediaCount: media.length, scheduled: Boolean(scheduledFor) },
     });
-    return NextResponse.json({ id: postId, status: scheduledFor ? 'scheduled' : 'draft', scheduledFor: scheduledFor?.toISOString() ?? null }, { status: 201 });
+    const created = await knex('social_instagram_posts').select('like_count').where({ id: postId }).first();
+    return NextResponse.json({ id: postId, likes: Number(created?.like_count ?? 900), status: scheduledFor ? 'scheduled' : 'draft', scheduledFor: scheduledFor?.toISOString() ?? null }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: error instanceof Error ? error.message : 'create_failed' }, { status: 400 });
   }
