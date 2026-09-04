@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import Image from 'next/image';
 import {
   ArrowLeftOutlined,
@@ -66,6 +66,7 @@ export function InstagramStudio({ locale, profile, initialPosts }: { locale: str
   const [posts, setPosts] = useState(initialPosts);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [slide, setSlide] = useState(0);
+  const [mediaAspect, setMediaAspect] = useState('4 / 5');
   const [liked, setLiked] = useState(false);
   const [schedulePostId, setSchedulePostId] = useState<number | null>(null);
   const [scheduleValue, setScheduleValue] = useState(localDateTime(null));
@@ -83,6 +84,7 @@ export function InstagramStudio({ locale, profile, initialPosts }: { locale: str
 
   function openPost(postId: number) {
     setSlide(0);
+    setMediaAspect('4 / 5');
     setLiked(false);
     setSelectedId(postId);
   }
@@ -194,8 +196,8 @@ export function InstagramStudio({ locale, profile, initialPosts }: { locale: str
       <button className={styles.viewerClose} onClick={() => setSelectedId(null)} aria-label={copy.close}><CloseOutlined /></button>
       <article className={styles.viewer}>
         <header className={styles.mobilePostAuthor}><Image src={profile.avatarPath} alt="" width={38} height={38} /><strong>{profile.username}</strong><MoreOutlined /></header>
-        <div className={styles.mediaPane} onTouchStart={(event) => { touchStart.current = event.touches[0].clientX; }} onTouchCancel={() => { touchStart.current = null; }} onTouchEnd={(event) => { if (touchStart.current === null) return; const delta = event.changedTouches[0].clientX - touchStart.current; if (Math.abs(delta) > 45) moveSlide(delta < 0 ? 1 : -1); touchStart.current = null; }}>
-          <Image src={selectedPost.media[slide].path} alt={selectedPost.media[slide].alt} fill sizes="(max-width: 760px) 100vw, 68vw" priority />
+        <div className={styles.mediaPane} style={{ '--mobile-media-ratio': mediaAspect } as CSSProperties} onTouchStart={(event) => { touchStart.current = event.touches[0].clientX; }} onTouchCancel={() => { touchStart.current = null; }} onTouchEnd={(event) => { if (touchStart.current === null) return; const delta = event.changedTouches[0].clientX - touchStart.current; if (Math.abs(delta) > 45) moveSlide(delta < 0 ? 1 : -1); touchStart.current = null; }}>
+          <Image src={selectedPost.media[slide].path} alt={selectedPost.media[slide].alt} fill sizes="(max-width: 760px) 100vw, 68vw" priority onLoad={(event) => { const { naturalWidth, naturalHeight } = event.currentTarget; if (naturalWidth > 0 && naturalHeight > 0) setMediaAspect(`${naturalWidth} / ${naturalHeight}`); }} />
           <span className={styles.slideCount}>{slide + 1}/{selectedPost.media.length}</span>
           {slide > 0 && <button className={`${styles.slideArrow} ${styles.previous}`} onClick={() => moveSlide(-1)} aria-label="Previous slide"><LeftOutlined /></button>}
           {slide < selectedPost.media.length - 1 && <button className={`${styles.slideArrow} ${styles.next}`} onClick={() => moveSlide(1)} aria-label="Next slide"><RightOutlined /></button>}
