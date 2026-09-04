@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from '@/i18n/navigation';
 import type { PublicationCadence } from '@/server/content/publication-queue';
 import styles from './Admin.module.css';
@@ -46,12 +46,14 @@ function initialSchedule(value: string | null) {
   return { date: local.slice(0, 10), time: local.slice(11, 16) };
 }
 
-export function PublicationQueue({ locale, publishedPosts, draftPosts, cadenceDays, firstPublishAt }: {
+export function PublicationQueue({ locale, publishedPosts, draftPosts, cadenceDays, firstPublishAt, serverNow, serverTimeZone }: {
   locale: string;
   publishedPosts: QueuePost[];
   draftPosts: QueuePost[];
   cadenceDays: PublicationCadence;
   firstPublishAt: string | null;
+  serverNow: string;
+  serverTimeZone: string;
 }) {
   const en = locale === 'en';
   const router = useRouter();
@@ -61,6 +63,16 @@ export function PublicationQueue({ locale, publishedPosts, draftPosts, cadenceDa
   const [firstTime, setFirstTime] = useState(initial.time);
   const [busy, setBusy] = useState<number | 'settings' | null>(null);
   const [message, setMessage] = useState('');
+  const [serverClock, setServerClock] = useState(() => new Date(serverNow));
+
+  useEffect(() => {
+    const serverStartedAt = new Date(serverNow).getTime();
+    const clientStartedAt = Date.now();
+    const timer = window.setInterval(() => {
+      setServerClock(new Date(serverStartedAt + Date.now() - clientStartedAt));
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [serverNow]);
 
   function selectedFirstPublishAt() {
     return new Date(`${firstDate}T${firstTime}`).toISOString();
@@ -94,6 +106,17 @@ export function PublicationQueue({ locale, publishedPosts, draftPosts, cadenceDa
   const formatDate = (value: string | null) => value
     ? new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value))
     : '—';
+  const serverDateFormatter = new Intl.DateTimeFormat(locale, {
+    dateStyle: 'full', timeStyle: 'medium', timeZone: serverTimeZone,
+  });
+  const serverZoneFormatter = new Intl.DateTimeFormat(locale, {
+    timeZone: serverTimeZone, timeZoneName: 'longOffset',
+  });
+  const selectedDate = firstDate && firstTime ? new Date(`${firstDate}T${firstTime}`) : null;
+  const selectedOnServer = selectedDate && !Number.isNaN(selectedDate.getTime())
+    ? serverDateFormatter.format(selectedDate)
+    : '—';
+  const serverZoneOffset = serverZoneFormatter.formatToParts(serverClock).find((part) => part.type === 'timeZoneName')?.value;
 
   return <div className={styles.contentSections}>
     <section>
@@ -108,7 +131,13 @@ export function PublicationQueue({ locale, publishedPosts, draftPosts, cadenceDa
 
     <section className={styles.card}>
       <div className={styles.queueHeader}>
-        <div><span className={styles.eyebrow}>Publication automation</span><h2>{en ? 'Queue schedule' : 'تنظیمات صف انتشار'}</h2><p className={styles.muted}>{en ? 'Choose the first date and time. Every active draft is published automatically at the selected interval.' : 'تاریخ و ساعت اولین انتشار را مشخص کنید؛ هر پیش‌نویسی که تاگل صف آن روشن باشد با فاصله انتخاب‌شده خودکار منتشر می‌شود.'}</p></div>
+        <div><span className={styles.eyebrow}>Publication automation</span><h2>{en ? 'Queue schedule' : 'تنظیمات صف انتشار'}</h2><p className={styles.muted}>{en ? 'Choose the first date and time. Every active draft is published automatically at the selected interval.' : 'تاریخ و ساعت اولین انتشار را مشخص کنید؛ هر پیش‌نویسی که تاگل صف آن روشن باشد با فاصله انتخاب‌شده خودکار منتشر می‌شود.'}</p>
+          <div className={styles.serverClock} aria-live="polite">
+            <div><span>{en ? 'Current server time' : 'زمان فعلی سرور'}</span><strong>{serverDateFormatter.format(serverClock)}</strong></div>
+            <small dir="ltr">{serverTimeZone}{serverZoneOffset ? ` · ${serverZoneOffset}` : ''}</small>
+            <div className={styles.serverSelection}><span>{en ? 'Your selected time on the server' : 'زمان انتخابی شما روی سرور'}</span><strong>{selectedOnServer}</strong></div>
+          </div>
+        </div>
         <div className={styles.queueControls}>
           <label className={styles.label}>{en ? 'Interval' : 'فاصله انتشار'}<select className={styles.select} value={cadence} onChange={(event) => setCadence(Number(event.target.value) as PublicationCadence)}><option value={1}>{en ? 'Every day' : 'هر روز'}</option><option value={2}>{en ? 'Every 2 days' : 'هر ۲ روز'}</option><option value={3}>{en ? 'Every 3 days' : 'هر ۳ روز'}</option><option value={4}>{en ? 'Every 4 days' : 'هر ۴ روز'}</option></select></label>
           <label className={styles.label}>{en ? 'First date' : 'تاریخ اولین انتشار'}<input className={styles.input} type="date" value={firstDate} min={new Date().toISOString().slice(0, 10)} onChange={(event) => setFirstDate(event.target.value)} /></label>

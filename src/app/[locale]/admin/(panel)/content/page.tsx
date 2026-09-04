@@ -2,7 +2,7 @@ import { Link } from '@/i18n/navigation';
 import { PublicationQueue } from '@/components/admin/PublicationQueue';
 import styles from '@/components/admin/Admin.module.css';
 import { requireStaffPermission } from '@/server/auth/staff-flow';
-import { persianQueueReadiness } from '@/server/content/publication-queue';
+import { persianQueueReadiness, type PublicationCadence } from '@/server/content/publication-queue';
 import { knex } from '@/server/db/knex';
 import { publicationQueueSchemaReady } from '@/server/db/publication-queue-schema';
 
@@ -42,8 +42,9 @@ export default async function Content({ params }: { params: Promise<{ locale: st
   const publishedPosts = posts.filter((post) => post.status === 'published' && !post.queueActive && (!post.scheduledFor || new Date(post.scheduledFor) <= now));
   const draftPosts = posts.filter((post) => post.status === 'draft' || Boolean(post.scheduledFor && new Date(post.scheduledFor) > now));
   const firstQueued = draftPosts.filter((post) => post.queueActive && post.scheduledFor).sort((a, b) => String(a.scheduledFor).localeCompare(String(b.scheduledFor)))[0];
-  const cadence = [2, 3, 4].includes(Number(settings?.cadence_days)) ? Number(settings.cadence_days) as 2 | 3 | 4 : 3;
+  const cadence = [1, 2, 3, 4].includes(Number(settings?.cadence_days)) ? Number(settings.cadence_days) as PublicationCadence : 3;
   const firstPublishAt = firstQueued?.scheduledFor ?? (settings?.first_publish_at ? new Date(settings.first_publish_at).toISOString() : null);
+  const serverTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const stats = [
     [en ? 'All articles' : 'کل مطالب', posts.length],
     [en ? 'Published' : 'منتشرشده', publishedPosts.length],
@@ -60,7 +61,7 @@ export default async function Content({ params }: { params: Promise<{ locale: st
     </header>
     <div className={styles.grid}>{stats.map(([label, value]) => <article className={styles.card} key={label}><span>{label}</span><strong className={styles.metric}>{value.toLocaleString(locale)}</strong></article>)}</div>
     <div style={{ marginTop: '1rem' }}>{queueSchemaReady
-      ? <PublicationQueue locale={locale} publishedPosts={publishedPosts} draftPosts={draftPosts} cadenceDays={cadence} firstPublishAt={firstPublishAt} />
+      ? <PublicationQueue locale={locale} publishedPosts={publishedPosts} draftPosts={draftPosts} cadenceDays={cadence} firstPublishAt={firstPublishAt} serverNow={now.toISOString()} serverTimeZone={serverTimeZone} />
       : <section className={styles.card} role="status"><strong>{en ? 'Publication queue unavailable' : 'صف انتشار هنوز فعال نیست'}</strong><p className={styles.muted}>{en ? 'Run the pending database migration with the dedicated migrator credential.' : 'مایگریشن دیتابیس را با حساب اختصاصی migrator اجرا کنید؛ سایر بخش‌های مدیریت محتوا همچنان قابل استفاده‌اند.'}</p></section>}
     </div>
   </>;
