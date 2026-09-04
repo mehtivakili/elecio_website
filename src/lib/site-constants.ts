@@ -83,6 +83,28 @@ export const HERO_SLIDE_IMAGES_LIGHT = [
   '/images/hero-slide-light-3.webp',
 ] as const;
 
+// Portrait art-direction assets supplied at 941x1672. The artwork is language-neutral, so both
+// locales intentionally share the same four-image sequence while theme mode selects the device
+// treatment. Hero.tsx switches to these whenever the viewport is taller than it is wide.
+const HERO_SLIDE_IMAGES_MOBILE_DARK = [
+  '/images/hero-slide-mobile-dark-1.webp',
+  '/images/hero-slide-mobile-dark-2.webp',
+  '/images/hero-slide-mobile-dark-3.webp',
+  '/images/hero-slide-mobile-dark-4.webp',
+] as const;
+
+export const HERO_SLIDE_IMAGES_MOBILE = {
+  en: HERO_SLIDE_IMAGES_MOBILE_DARK,
+  fa: HERO_SLIDE_IMAGES_MOBILE_DARK,
+} as const;
+
+export const HERO_SLIDE_IMAGES_LIGHT_MOBILE = [
+  '/images/hero-slide-mobile-light-1.webp',
+  '/images/hero-slide-mobile-light-2.webp',
+  '/images/hero-slide-mobile-light-3.webp',
+  '/images/hero-slide-mobile-light-4.webp',
+] as const;
+
 // Per-slide link targets — not locale-specific, shared by both image sets above by index.
 export const HERO_SLIDES = [
   {

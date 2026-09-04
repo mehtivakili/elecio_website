@@ -4,9 +4,15 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { useTranslations, useLocale } from 'next-intl';
 import { Button } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
-import Image from 'next/image';
+import { getImageProps } from 'next/image';
 import { Link } from '@/i18n/navigation';
-import { HERO_SLIDES, HERO_SLIDE_IMAGES, HERO_SLIDE_IMAGES_LIGHT } from '@/lib/site-constants';
+import {
+  HERO_SLIDES,
+  HERO_SLIDE_IMAGES,
+  HERO_SLIDE_IMAGES_LIGHT,
+  HERO_SLIDE_IMAGES_LIGHT_MOBILE,
+  HERO_SLIDE_IMAGES_MOBILE,
+} from '@/lib/site-constants';
 import { useThemeMode } from '@/lib/theme-context';
 import type { AppLocale } from '@/i18n/routing';
 import styles from './Hero.module.css';
@@ -61,6 +67,7 @@ export function Hero() {
   const { mode } = useThemeMode();
   const slides = t.raw('slides') as Slide[];
   const images = mode === 'light' ? HERO_SLIDE_IMAGES_LIGHT : HERO_SLIDE_IMAGES[locale];
+  const mobileImages = mode === 'light' ? HERO_SLIDE_IMAGES_LIGHT_MOBILE : HERO_SLIDE_IMAGES_MOBILE[locale];
   const [active, setActive] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
@@ -71,6 +78,7 @@ export function Hero() {
   // Light mode has three approved photos, so its fourth photo wraps cleanly to the first.
   const mediaItem = HERO_MEDIA_SEQUENCE[active];
   const posterSrc = images[mediaItem.imageIndex % images.length];
+  const mobilePosterSrc = mobileImages[mediaItem.imageIndex % mobileImages.length];
   const activeVideoIndex = mediaItem.type === 'video' ? mediaItem.videoIndex : null;
 
   useEffect(() => {
@@ -155,14 +163,12 @@ export function Hero() {
       className={styles.hero}
     >
       <div className={styles.media}>
-        <Image
-          key={posterSrc}
-          src={posterSrc}
-          alt=""
-          fill
+        <ResponsiveHeroImage
+          key={`${posterSrc}-${mobilePosterSrc}`}
+          desktopSrc={posterSrc}
+          mobileSrc={mobilePosterSrc}
           fetchPriority={active === 0 ? 'high' : 'auto'}
           loading={active === 0 ? 'eager' : 'lazy'}
-          sizes="100vw"
           className={`${styles.slideImg} ${styles.slideImgActive}`}
         />
         {HERO_VIDEOS.map((videoSrc, videoIndex) => {
@@ -243,6 +249,36 @@ export function Hero() {
         <p className={styles.compat}>{t('compat')}</p>
       </div>
     </section>
+  );
+}
+
+function ResponsiveHeroImage({
+  desktopSrc,
+  mobileSrc,
+  fetchPriority,
+  loading,
+  className,
+}: {
+  desktopSrc: string;
+  mobileSrc: string;
+  fetchPriority: 'high' | 'auto';
+  loading: 'eager' | 'lazy';
+  className: string;
+}) {
+  const common = { alt: '', sizes: '100vw', fetchPriority, loading } as const;
+  const {
+    props: { srcSet: mobileSrcSet },
+  } = getImageProps({ ...common, src: mobileSrc, width: 941, height: 1672, quality: 75 });
+  const {
+    props: { srcSet: desktopSrcSet, ...desktopProps },
+  } = getImageProps({ ...common, src: desktopSrc, width: 1672, height: 941, quality: 75 });
+
+  return (
+    <picture>
+      <source media="(orientation: portrait)" srcSet={mobileSrcSet} />
+      <source media="(orientation: landscape)" srcSet={desktopSrcSet} />
+      <img {...desktopProps} alt="" className={className} />
+    </picture>
   );
 }
 
