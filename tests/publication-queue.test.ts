@@ -11,6 +11,14 @@ test('publication queue assigns stable two, three, or four day slots', () => {
   );
 });
 
+test('publication queue supports daily publishing', () => {
+  const first = new Date('2026-09-01T05:30:00.000Z');
+  assert.deepEqual(
+    scheduleQueueSlots(first, 1, 3).map((date) => date.toISOString()),
+    ['2026-09-01T05:30:00.000Z', '2026-09-02T05:30:00.000Z', '2026-09-03T05:30:00.000Z'],
+  );
+});
+
 test('Persian queue readiness requires indexable copy and cover metadata', () => {
   const ready: QueueReadyPost = {
     slug: 'cnc-machine-guide', title_fa: 'راهنمای دستگاه CNC',

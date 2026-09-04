@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from '@/i18n/navigation';
+import type { PublicationCadence } from '@/server/content/publication-queue';
 import styles from './Admin.module.css';
 
 type QueuePost = {
@@ -36,13 +37,13 @@ export function PublicationQueue({ locale, publishedPosts, draftPosts, cadenceDa
   locale: string;
   publishedPosts: QueuePost[];
   draftPosts: QueuePost[];
-  cadenceDays: 2 | 3 | 4;
+  cadenceDays: PublicationCadence;
   firstPublishAt: string | null;
 }) {
   const en = locale === 'en';
   const router = useRouter();
   const initial = initialSchedule(firstPublishAt, cadenceDays);
-  const [cadence, setCadence] = useState(cadenceDays);
+  const [cadence, setCadence] = useState<PublicationCadence>(cadenceDays);
   const [firstDate, setFirstDate] = useState(initial.date);
   const [firstTime, setFirstTime] = useState(initial.time);
   const [busy, setBusy] = useState<number | 'settings' | null>(null);
@@ -94,7 +95,7 @@ export function PublicationQueue({ locale, publishedPosts, draftPosts, cadenceDa
       <div className={styles.queueHeader}>
         <div><span className={styles.eyebrow}>Publication automation</span><h2>{en ? 'Queue schedule' : 'تنظیمات صف انتشار'}</h2><p className={styles.muted}>{en ? 'Choose the first date and time. Every active draft is published automatically at the selected interval.' : 'تاریخ و ساعت اولین انتشار را مشخص کنید؛ هر پیش‌نویسی که تاگل صف آن روشن باشد با فاصله انتخاب‌شده خودکار منتشر می‌شود.'}</p></div>
         <div className={styles.queueControls}>
-          <label className={styles.label}>{en ? 'Interval' : 'فاصله انتشار'}<select className={styles.select} value={cadence} onChange={(event) => setCadence(Number(event.target.value) as 2 | 3 | 4)}><option value={2}>{en ? 'Every 2 days' : 'هر ۲ روز'}</option><option value={3}>{en ? 'Every 3 days' : 'هر ۳ روز'}</option><option value={4}>{en ? 'Every 4 days' : 'هر ۴ روز'}</option></select></label>
+          <label className={styles.label}>{en ? 'Interval' : 'فاصله انتشار'}<select className={styles.select} value={cadence} onChange={(event) => setCadence(Number(event.target.value) as PublicationCadence)}><option value={1}>{en ? 'Every day' : 'هر روز'}</option><option value={2}>{en ? 'Every 2 days' : 'هر ۲ روز'}</option><option value={3}>{en ? 'Every 3 days' : 'هر ۳ روز'}</option><option value={4}>{en ? 'Every 4 days' : 'هر ۴ روز'}</option></select></label>
           <label className={styles.label}>{en ? 'First date' : 'تاریخ اولین انتشار'}<input className={styles.input} type="date" value={firstDate} min={new Date().toISOString().slice(0, 10)} onChange={(event) => setFirstDate(event.target.value)} /></label>
           <label className={styles.label}>{en ? 'Publish time' : 'ساعت انتشار'}<input className={styles.input} type="time" value={firstTime} onChange={(event) => setFirstTime(event.target.value)} /></label>
           <button className={styles.button} disabled={busy !== null || !firstDate || !firstTime} onClick={() => update({ cadenceDays: cadence, firstPublishAt: selectedFirstPublishAt() }, 'settings')}>{en ? 'Save schedule' : 'ذخیره تنظیمات'}</button>

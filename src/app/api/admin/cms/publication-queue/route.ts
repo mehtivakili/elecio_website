@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { hasTrustedRequestOrigin } from '@/server/auth/customer-flow';
 import { requireStaffPermission } from '@/server/auth/staff-flow';
 import { writeAuditEvent } from '@/server/audit/write-audit-event';
-import { isPublicationCadence, persianQueueReadiness, scheduleQueueSlots } from '@/server/content/publication-queue';
+import { isPublicationCadence, persianQueueReadiness, scheduleQueueSlots, type PublicationCadence } from '@/server/content/publication-queue';
 import { knex } from '@/server/db/knex';
 import { publicationQueueSchemaReady } from '@/server/db/publication-queue-schema';
 
@@ -15,7 +15,7 @@ async function settleDueItems(trx: typeof knex) {
     .update({ publication_queue_active: false, queued_at: null, updated_at: trx.fn.now() });
 }
 
-async function reflowQueue(trx: typeof knex, cadenceDays: 2 | 3 | 4, requestedStart?: Date | null) {
+async function reflowQueue(trx: typeof knex, cadenceDays: PublicationCadence, requestedStart?: Date | null) {
   if (requestedStart && requestedStart <= new Date()) throw new Error('FIRST_PUBLICATION_MUST_BE_FUTURE');
   const queued = await trx('posts')
     .select('id', 'scheduled_for')

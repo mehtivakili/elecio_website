@@ -1,7 +1,7 @@
 import type { RichDocument, RichNode } from './document';
 import { plainText, sanitizeDocument } from './document';
 
-export const PUBLICATION_CADENCES = [2, 3, 4] as const;
+export const PUBLICATION_CADENCES = [1, 2, 3, 4] as const;
 export type PublicationCadence = (typeof PUBLICATION_CADENCES)[number];
 
 export function isPublicationCadence(value: unknown): value is PublicationCadence {
