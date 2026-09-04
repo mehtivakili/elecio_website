@@ -102,25 +102,25 @@ html[dir='rtl'] .scrim {
 }
 .heroArrowPrevious {
   left: clamp(10px, 2vw, 28px);
-  animation: heroArrowNudgeLeft 2s ease-in-out infinite;
+  animation: heroArrowNudgeLeft 5s ease-in-out infinite;
 }
 .heroArrowNext {
   right: clamp(10px, 2vw, 28px);
-  animation: heroArrowNudgeRight 2s ease-in-out infinite;
+  animation: heroArrowNudgeRight 5s ease-in-out infinite;
 }
 @keyframes heroArrowNudgeLeft {
-  0%, 10%, 30%, 50%, 100% {
+  0%, 4%, 12%, 20%, 100% {
     transform: translateY(-50%) translateX(0);
   }
-  20%, 40% {
+  8%, 16% {
     transform: translateY(-50%) translateX(-7px);
   }
 }
 @keyframes heroArrowNudgeRight {
-  0%, 10%, 30%, 50%, 100% {
+  0%, 4%, 12%, 20%, 100% {
     transform: translateY(-50%) translateX(0);
   }
-  20%, 40% {
+  8%, 16% {
     transform: translateY(-50%) translateX(7px);
   }
 }
