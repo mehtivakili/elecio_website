@@ -74,8 +74,11 @@ def main() -> None:
     source = Path(sys.argv[1]).resolve()
     with ZipFile(source) as archive:
         root = ET.fromstring(archive.read("word/document.xml"))
-        rel_root = ET.fromstring(archive.read("word/_rels/document.xml.rels"))
-        relationships = {item.attrib["Id"]: item.attrib.get("Target", "") for item in rel_root}
+        relationships: dict[str, str] = {}
+        relationship_path = "word/_rels/document.xml.rels"
+        if relationship_path in archive.namelist():
+            rel_root = ET.fromstring(archive.read(relationship_path))
+            relationships = {item.attrib["Id"]: item.attrib.get("Target", "") for item in rel_root}
 
     body = root.find("w:body", NS)
     if body is None:

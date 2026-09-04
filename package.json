@@ -29,6 +29,8 @@
     "content:import-fa-ec-005": "tsx scripts/import-fa-publication-drafts.ts EC-005",
     "content:import-fa-ec-006": "tsx scripts/import-fa-publication-drafts.ts EC-006",
     "content:import-fa-ec-007": "tsx scripts/import-fa-publication-drafts.ts EC-007",
+    "content:import-fa-ec-008-010": "tsx scripts/import-fa-ec-008-010.ts",
+    "content:validate-fa-ec-008-010": "tsx scripts/import-fa-ec-008-010.ts --dry-run",
     "content:validate-fa-ec-004-007": "tsx scripts/import-fa-publication-drafts.ts --dry-run",
     "content:backfill-blog-images": "tsx scripts/backfill-blog-image-plan.ts"
   },
