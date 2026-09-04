@@ -84,20 +84,17 @@ html[dir='rtl'] .scrim {
   padding: 0;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  border-radius: 50%;
+  border: 0;
+  border-radius: 0;
   color: rgba(255, 255, 255, 0.86);
-  background: rgba(8, 12, 18, 0.35);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: transparent;
   transform: translateY(-50%);
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.85));
   cursor: pointer;
-  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  transition: color 0.2s ease;
 }
 .heroArrow:hover {
   color: #fff;
-  border-color: rgba(255, 255, 255, 0.5);
-  background: rgba(8, 12, 18, 0.58);
 }
 .heroArrow:focus-visible {
   outline: 2px solid var(--signal-glow);
@@ -105,14 +102,38 @@ html[dir='rtl'] .scrim {
 }
 .heroArrowPrevious {
   left: clamp(10px, 2vw, 28px);
+  animation: heroArrowNudgeLeft 2s ease-in-out infinite;
 }
 .heroArrowNext {
   right: clamp(10px, 2vw, 28px);
+  animation: heroArrowNudgeRight 2s ease-in-out infinite;
+}
+@keyframes heroArrowNudgeLeft {
+  0%, 10%, 30%, 50%, 100% {
+    transform: translateY(-50%) translateX(0);
+  }
+  20%, 40% {
+    transform: translateY(-50%) translateX(-7px);
+  }
+}
+@keyframes heroArrowNudgeRight {
+  0%, 10%, 30%, 50%, 100% {
+    transform: translateY(-50%) translateX(0);
+  }
+  20%, 40% {
+    transform: translateY(-50%) translateX(7px);
+  }
 }
 @media (max-width: 720px) {
   .heroArrow {
     width: 34px;
     height: 34px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .heroArrowPrevious,
+  .heroArrowNext {
+    animation: none;
   }
 }
 
