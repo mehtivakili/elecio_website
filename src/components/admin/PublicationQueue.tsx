@@ -26,11 +26,25 @@ const missingLabels: Record<string, string> = {
   body_image_alt: 'متن جایگزین تصاویر متن', robots_index: 'اجازه ایندکس', translation_status: 'نسخه فارسی',
 };
 
+const queueErrorLabels: Record<string, string> = {
+  FIRST_PUBLICATION_MUST_BE_FUTURE: 'تاریخ و ساعت اولین انتشار باید در آینده باشد.',
+  INVALID_FIRST_PUBLICATION: 'تاریخ یا ساعت اولین انتشار معتبر نیست.',
+  INVALID_CADENCE: 'فاصله انتشار معتبر نیست.',
+  publication_queue_migration_required: 'مایگریشن صف انتشار هنوز روی سرور اجرا نشده است.',
+};
+
 function initialSchedule(value: string | null, cadence: number) {
-  const date = value ? new Date(value) : new Date(Date.now() + cadence * 86_400_000);
+  const minimum = new Date(Date.now() + 5 * 60_000);
+  let date = value ? new Date(value) : new Date(Number.NaN);
+  if (Number.isNaN(date.getTime()) || date <= minimum) {
+    date = new Date();
+    date.setDate(date.getDate() + cadence);
+    date.setHours(9, 0, 0, 0);
+    if (date <= minimum) date.setDate(date.getDate() + 1);
+  }
   const offset = date.getTimezoneOffset() * 60_000;
   const local = new Date(date.getTime() - offset).toISOString();
-  return { date: local.slice(0, 10), time: value ? local.slice(11, 16) : '09:00' };
+  return { date: local.slice(0, 10), time: local.slice(11, 16) };
 }
 
 export function PublicationQueue({ locale, publishedPosts, draftPosts, cadenceDays, firstPublishAt }: {
@@ -63,7 +77,9 @@ export function PublicationQueue({ locale, publishedPosts, draftPosts, cadenceDa
     });
     const result = await response.json();
     if (!response.ok) {
-      const missing = Array.isArray(result.missing) ? result.missing.map((item: string) => missingLabels[item] ?? item).join('، ') : result.error;
+      const missing = Array.isArray(result.missing)
+        ? result.missing.map((item: string) => missingLabels[item] ?? item).join('، ')
+        : (en ? result.error : queueErrorLabels[result.error] ?? result.error);
       setMessage(en ? `Queue update failed: ${missing}` : `به‌روزرسانی صف ممکن نشد: ${missing}`);
     } else {
       setMessage(en ? 'Publication schedule updated.' : 'زمان‌بندی انتشار به‌روزرسانی شد.');
