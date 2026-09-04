@@ -33,14 +33,13 @@ const queueErrorLabels: Record<string, string> = {
   publication_queue_migration_required: 'مایگریشن صف انتشار هنوز روی سرور اجرا نشده است.',
 };
 
-function initialSchedule(value: string | null, cadence: number) {
+function initialSchedule(value: string | null) {
   const minimum = new Date(Date.now() + 5 * 60_000);
   let date = value ? new Date(value) : new Date(Number.NaN);
   if (Number.isNaN(date.getTime()) || date <= minimum) {
     date = new Date();
-    date.setDate(date.getDate() + cadence);
+    date.setDate(date.getDate() + 1);
     date.setHours(9, 0, 0, 0);
-    if (date <= minimum) date.setDate(date.getDate() + 1);
   }
   const offset = date.getTimezoneOffset() * 60_000;
   const local = new Date(date.getTime() - offset).toISOString();
@@ -56,7 +55,7 @@ export function PublicationQueue({ locale, publishedPosts, draftPosts, cadenceDa
 }) {
   const en = locale === 'en';
   const router = useRouter();
-  const initial = initialSchedule(firstPublishAt, cadenceDays);
+  const initial = initialSchedule(firstPublishAt);
   const [cadence, setCadence] = useState<PublicationCadence>(cadenceDays);
   const [firstDate, setFirstDate] = useState(initial.date);
   const [firstTime, setFirstTime] = useState(initial.time);
