@@ -233,20 +233,24 @@ export function Hero() {
       </div>
 
       <div className={styles.content} key={active}>
-        <p className={styles.kicker}>{slide.kicker}</p>
-        <h1 className={styles.headline}>
-          {slide.headlineStart} <span className={styles.highlight}>{slide.headlineHighlight}</span>
-        </h1>
-        <p className={styles.sub}>{slide.subheadline}</p>
-        <div className={styles.actions}>
-          <HeroCtaButton href={target.primaryHref} external={target.primaryExternal} type="primary">
-            {slide.ctaPrimary}
-          </HeroCtaButton>
-          <HeroCtaButton href={target.secondaryHref} external={target.secondaryExternal} className={styles.ghostBtn}>
-            {slide.ctaSecondary}
-          </HeroCtaButton>
+        <div className={styles.heroIntro}>
+          <p className={styles.kicker}>{slide.kicker}</p>
+          <h1 className={styles.headline}>
+            {slide.headlineStart} <span className={styles.highlight}>{slide.headlineHighlight}</span>
+          </h1>
         </div>
-        <p className={styles.compat}>{t('compat')}</p>
+        <div className={styles.heroDetails}>
+          <p className={styles.sub}>{slide.subheadline}</p>
+          <div className={styles.actions}>
+            <HeroCtaButton href={target.primaryHref} external={target.primaryExternal} type="primary">
+              {slide.ctaPrimary}
+            </HeroCtaButton>
+            <HeroCtaButton href={target.secondaryHref} external={target.secondaryExternal} className={styles.ghostBtn}>
+              {slide.ctaSecondary}
+            </HeroCtaButton>
+          </div>
+          <p className={styles.compat}>{t('compat')}</p>
+        </div>
       </div>
     </section>
   );
