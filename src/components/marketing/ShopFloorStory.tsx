@@ -109,14 +109,25 @@ export function ShopFloorStory() {
       aria-label={en ? 'Interactive Smart DNC shop-floor story' : 'داستان سه‌بعدی Smart DNC در کارگاه'}
     >
       {started ? (
-        <iframe
-          ref={frameRef}
-          className={styles.frame}
-          src={`/3d/story/index.html?lang=${locale}&v=20260829-mobile-layout`}
-          title={en ? 'Interactive Smart DNC shop-floor story' : 'داستان تعاملی سه‌بعدی Smart DNC'}
-          loading="eager"
-          onLoad={() => window.dispatchEvent(new Event('scroll'))}
-        />
+        <>
+          <div className={styles.scrollCue} role="note">
+            <span className={styles.scrollCueText}>
+              {en ? 'Scroll down to continue the story' : 'برای ادامه داستان به پایین اسکرول کنید'}
+            </span>
+            <span className={styles.scrollChevrons} aria-hidden="true">
+              <span />
+              <span />
+            </span>
+          </div>
+          <iframe
+            ref={frameRef}
+            className={styles.frame}
+            src={`/3d/story/index.html?lang=${locale}&v=20260829-mobile-layout`}
+            title={en ? 'Interactive Smart DNC shop-floor story' : 'داستان تعاملی سه‌بعدی Smart DNC'}
+            loading="eager"
+            onLoad={() => window.dispatchEvent(new Event('scroll'))}
+          />
+        </>
       ) : (
         <div className={styles.gate}>
           <Image

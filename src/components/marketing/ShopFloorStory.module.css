@@ -256,6 +256,61 @@
   background: #080a0d;
 }
 
+.scrollCue {
+  position: sticky;
+  top: clamp(96px, 12svh, 126px);
+  z-index: 5;
+  width: fit-content;
+  max-width: calc(100% - 32px);
+  min-height: 56px;
+  margin: 0 auto -56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 14px 10px;
+  border: 1px solid rgb(150 207 255 / 24%);
+  border-radius: 18px;
+  color: #f4f9ff;
+  background: rgb(7 13 23 / 72%);
+  box-shadow: 0 12px 38px rgb(0 0 0 / 34%);
+  backdrop-filter: blur(10px);
+  pointer-events: none;
+  opacity: 0;
+  animation: scrollCueCycle 3s ease-in-out infinite;
+}
+
+.scrollCueText {
+  font-size: clamp(0.72rem, 2.8vw, 0.84rem);
+  font-weight: 750;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.scrollChevrons {
+  position: relative;
+  width: 16px;
+  height: 13px;
+}
+
+.scrollChevrons span {
+  position: absolute;
+  left: 4px;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #7fc7ff;
+  border-bottom: 2px solid #7fc7ff;
+  transform: rotate(45deg);
+}
+
+.scrollChevrons span:first-child {
+  top: -2px;
+}
+
+.scrollChevrons span:last-child {
+  top: 4px;
+}
+
 @media (max-width: 900px) {
   .gated {
     min-height: 100svh;
@@ -304,6 +359,12 @@
     animation: none;
     transition: none;
   }
+
+  .scrollCue {
+    opacity: 0.88;
+    animation: none;
+  }
+
 }
 
 @keyframes posterBreath {
@@ -329,4 +390,10 @@
 @keyframes notePulse {
   0%, 100% { opacity: 0.45; transform: scale(0.8); }
   50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes scrollCueCycle {
+  0%, 5% { opacity: 0; transform: translateY(-8px) scale(0.96); }
+  14%, 56% { opacity: 1; transform: translateY(0) scale(1); }
+  70%, 100% { opacity: 0; transform: translateY(10px) scale(0.98); }
 }
