@@ -903,6 +903,8 @@ const KEYS=[
   {p:[13900,15100,26200], t:[ -200,1350, 900], title:tr('Link down','قطع ارتباط')},
   {p:[14700,15700,27000], t:[ -400,1400, 800], title:tr('Whole floor','کل کارگاه')}
 ];
+const MOBILE_CAMERA_PULLBACK=1.38;
+const MOBILE_DEVICE_SCALE=3;
 const camPos=new THREE.Vector3().fromArray(KEYS[0].p);
 const camTgt=new THREE.Vector3().fromArray(KEYS[0].t);
 const wantP=camPos.clone(), wantT=camTgt.clone();
@@ -945,6 +947,8 @@ function resize(){
   camera.aspect=innerWidth/innerHeight;
   camera.fov=innerWidth<760?46:30;
   camera.updateProjectionMatrix();
+  const deviceScale=innerWidth<=900?MOBILE_DEVICE_SCALE:1;
+  devs.forEach(function(d){ d.node.scale.setScalar(deviceScale); });
   svg.setAttribute('viewBox','0 0 '+innerWidth+' '+innerHeight);
   svg.setAttribute('width',innerWidth); svg.setAttribute('height',innerHeight);
   layoutPanes();
@@ -1048,6 +1052,11 @@ function frame(){
   const k=REDUCE?1:Math.min(1,dt*6.2);
   camPos.lerp(wantP,k); camTgt.lerp(wantT,k);
   camera.position.copy(camPos);
+  if(innerWidth<=900){
+    // A portrait viewport has roughly half the horizontal field of view of desktop. Pull the
+    // camera back enough to retain both edge stations without making the highlighted unit tiny.
+    camera.position.sub(camTgt).multiplyScalar(MOBILE_CAMERA_PULLBACK).add(camTgt);
+  }
   if(DEBUG){
     const d=camPos.distanceTo(camTgt)*(1+dbg.r);
     camera.position.set(camTgt.x+d*Math.cos(dbg.el)*Math.sin(dbg.az),
@@ -1196,6 +1205,7 @@ function frame(){
   /* ---- the units ---- */
   for(let i=0;i<devs.length;i++){
     const d=devs[i];
+    d.node.scale.setScalar(wide?1:MOBILE_DEVICE_SCALE);
     d.node.visible=born>.01;
     d.wifi.visible=winOn;
     d.stream.visible=winOn;

@@ -162,7 +162,7 @@ export function ShopFloorStory() {
           <iframe
             ref={frameRef}
             className={styles.frame}
-            src={`/3d/story/index.html?lang=${locale}&v=20260829-mobile-layout`}
+            src={`/3d/story/index.html?lang=${locale}&v=20260905-mobile-framing`}
             title={en ? 'Interactive Smart DNC shop-floor story' : 'داستان تعاملی سه‌بعدی Smart DNC'}
             loading="eager"
             onLoad={() => window.dispatchEvent(new Event('scroll'))}
