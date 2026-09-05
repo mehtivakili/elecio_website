@@ -8,7 +8,7 @@ import styles from './ShopFloorStory.module.css';
 const STORY_STAGE_COUNT = 7;
 const STAGE_LOCK_MS = 900;
 const SCROLL_CUE_DELAY_MS = 5000;
-const SCROLL_CUE_VISIBLE_MS = 1600;
+const SCROLL_CUE_VISIBLE_MS = 3000;
 
 export function ShopFloorStory() {
   const locale = useLocale();

@@ -281,7 +281,7 @@
 }
 
 .scrollCueVisible {
-  animation: scrollCueReveal 1600ms ease-in-out both;
+  animation: scrollCueReveal 3s ease-in-out both;
 }
 
 .scrollCueText {
@@ -298,7 +298,7 @@
 }
 
 .scrollCueVisible .scrollChevrons {
-  animation: scrollChevronNudge 1200ms ease-in-out both;
+  animation: scrollChevronNudge 3s ease-in-out both;
 }
 
 .scrollChevrons span {
@@ -406,11 +406,11 @@
 
 @keyframes scrollCueReveal {
   0% { opacity: 0; transform: translateY(-8px) scale(0.96); }
-  12%, 78% { opacity: 1; transform: translateY(0) scale(1); }
+  8%, 90% { opacity: 1; transform: translateY(0) scale(1); }
   100% { opacity: 0; transform: translateY(8px) scale(0.98); }
 }
 
 @keyframes scrollChevronNudge {
-  0%, 10%, 34%, 58%, 100% { transform: translateY(0); }
-  22%, 46% { transform: translateY(7px); }
+  0%, 10%, 40%, 75%, 100% { transform: translateY(0); }
+  25%, 60% { transform: translateY(7px); }
 }
