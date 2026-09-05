@@ -277,7 +277,11 @@
   backdrop-filter: blur(10px);
   pointer-events: none;
   opacity: 0;
-  animation: scrollCueCycle 3s ease-in-out infinite;
+  transform: translateY(-8px) scale(0.96);
+}
+
+.scrollCueVisible {
+  animation: scrollCueReveal 1600ms ease-in-out both;
 }
 
 .scrollCueText {
@@ -291,6 +295,10 @@
   position: relative;
   width: 16px;
   height: 13px;
+}
+
+.scrollCueVisible .scrollChevrons {
+  animation: scrollChevronNudge 1200ms ease-in-out both;
 }
 
 .scrollChevrons span {
@@ -361,8 +369,12 @@
   }
 
   .scrollCue {
-    opacity: 0.88;
     animation: none;
+  }
+
+  .scrollCueVisible {
+    opacity: 0.88;
+    transform: none;
   }
 
 }
@@ -392,8 +404,13 @@
   50% { opacity: 1; transform: scale(1.2); }
 }
 
-@keyframes scrollCueCycle {
-  0%, 5% { opacity: 0; transform: translateY(-8px) scale(0.96); }
-  14%, 56% { opacity: 1; transform: translateY(0) scale(1); }
-  70%, 100% { opacity: 0; transform: translateY(10px) scale(0.98); }
+@keyframes scrollCueReveal {
+  0% { opacity: 0; transform: translateY(-8px) scale(0.96); }
+  12%, 78% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(8px) scale(0.98); }
+}
+
+@keyframes scrollChevronNudge {
+  0%, 10%, 34%, 58%, 100% { transform: translateY(0); }
+  22%, 46% { transform: translateY(7px); }
 }

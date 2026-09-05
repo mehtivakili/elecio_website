@@ -7,12 +7,15 @@ import styles from './ShopFloorStory.module.css';
 
 const STORY_STAGE_COUNT = 7;
 const STAGE_LOCK_MS = 900;
+const SCROLL_CUE_DELAY_MS = 5000;
+const SCROLL_CUE_VISIBLE_MS = 1600;
 
 export function ShopFloorStory() {
   const locale = useLocale();
   const hostRef = useRef<HTMLElement>(null);
   const frameRef = useRef<HTMLIFrameElement>(null);
   const [started, setStarted] = useState(false);
+  const [scrollCueVisible, setScrollCueVisible] = useState(false);
 
   useEffect(() => {
     if (!started) return;
@@ -43,6 +46,40 @@ export function ShopFloorStory() {
       if (frame) cancelAnimationFrame(frame);
       window.removeEventListener('scroll', requestSync);
       window.removeEventListener('resize', requestSync);
+    };
+  }, [started]);
+
+  useEffect(() => {
+    if (!started) return;
+
+    let reminderTimer = 0;
+    let hideTimer = 0;
+    let disposed = false;
+
+    const showReminder = () => {
+      if (disposed) return;
+      setScrollCueVisible(true);
+      window.clearTimeout(hideTimer);
+      hideTimer = window.setTimeout(() => {
+        if (!disposed) setScrollCueVisible(false);
+      }, SCROLL_CUE_VISIBLE_MS);
+      reminderTimer = window.setTimeout(showReminder, SCROLL_CUE_DELAY_MS);
+    };
+
+    const armReminder = () => {
+      window.clearTimeout(reminderTimer);
+      window.clearTimeout(hideTimer);
+      setScrollCueVisible(false);
+      reminderTimer = window.setTimeout(showReminder, SCROLL_CUE_DELAY_MS);
+    };
+
+    armReminder();
+    window.addEventListener('scroll', armReminder, { passive: true });
+    return () => {
+      disposed = true;
+      window.clearTimeout(reminderTimer);
+      window.clearTimeout(hideTimer);
+      window.removeEventListener('scroll', armReminder);
     };
   }, [started]);
 
@@ -110,7 +147,10 @@ export function ShopFloorStory() {
     >
       {started ? (
         <>
-          <div className={styles.scrollCue} role="note">
+          <div
+            className={`${styles.scrollCue} ${scrollCueVisible ? styles.scrollCueVisible : ''}`}
+            role="note"
+          >
             <span className={styles.scrollCueText}>
               {en ? 'Scroll down to continue the story' : 'برای ادامه داستان به پایین اسکرول کنید'}
             </span>
