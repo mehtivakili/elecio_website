@@ -25,19 +25,6 @@ const PRODUCTS = [
 
 const ROWS: ComparisonRow[] = [
   {
-    icon: '▣',
-    label: { en: 'PC Required', fa: 'بدون PC' },
-    cells: [
-      { state: 'yes', en: 'No PC required', fa: 'بدون PC' },
-      { state: 'yes', en: 'PC required', fa: 'PC required' },
-      { en: 'PC required', fa: 'PC required' },
-      { en: 'PC required', fa: 'PC required' },
-      { en: 'PC required', fa: 'PC required' },
-      { state: 'yes', en: 'PC required', fa: 'PC required' },
-      { state: 'yes', en: 'PC / Server', fa: 'PC / Server' },
-    ],
-  },
-  {
     icon: '◎',
     label: { en: 'Network', fa: 'شبکه' },
     cells: [
