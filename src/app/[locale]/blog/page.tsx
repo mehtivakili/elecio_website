@@ -32,6 +32,7 @@ export default async function BlogPage({ params, searchParams }: {
     knex('categories').select('slug', en ? 'name_en as name' : 'name_fa as name').orderBy('sort_order'),
   ]);
   const dateFormatter = new Intl.DateTimeFormat(locale, { dateStyle: 'medium' });
+  const hasMorePosts = posts.length > 12;
 
   return (
     <main className={styles.index}>
@@ -61,7 +62,21 @@ export default async function BlogPage({ params, searchParams }: {
           </nav>
         )}
 
-        <section className={styles.grid} aria-label={en ? 'Latest articles' : 'تازه‌ترین مقاله‌ها'}>
+        <div className={styles.listToolbar}>
+          <strong>{en ? 'Latest articles' : 'تازه‌ترین مقاله‌ها'}</strong>
+          <span id="blog-scroll-hint">
+            {hasMorePosts
+              ? (en ? 'Scroll this section for more' : 'برای دیدن مطالب بیشتر، این بخش را اسکرول کنید')
+              : `${posts.length.toLocaleString(locale)} ${en ? 'articles' : 'مطلب'}`}
+          </span>
+        </div>
+
+        <section
+          className={styles.grid}
+          aria-label={en ? 'Latest articles' : 'تازه‌ترین مقاله‌ها'}
+          aria-describedby="blog-scroll-hint"
+          tabIndex={posts.length > 0 ? 0 : undefined}
+        >
           {posts.map((post, index) => (
             <article className={styles.card} key={post.id}>
               <Link className={styles.cardLink} href={`/blog/${post.slug}`}>
@@ -71,9 +86,9 @@ export default async function BlogPage({ params, searchParams }: {
                       className={styles.cover}
                       src={brandedImagePath(post.cover_image_path)}
                       alt={post.title}
-                      width={480}
+                      width={640}
                       height={360}
-                      sizes="(max-width: 720px) 36vw, (max-width: 1100px) 35vw, 230px"
+                      sizes="(max-width: 460px) 100vw, (max-width: 820px) 50vw, (max-width: 1150px) 33vw, 25vw"
                       priority={index < 2}
                       unoptimized
                     />
