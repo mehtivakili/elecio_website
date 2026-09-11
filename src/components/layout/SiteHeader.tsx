@@ -25,6 +25,7 @@ export function SiteHeader() {
     { key: '/product', label: t('product') },
     { key: '/software', label: t('software') },
     { key: '/blog', label: t('blog') },
+    { key: '/documents', label: t('documents') },
     { key: '/about', label: t('about') },
     { key: '/contact', label: t('contact') },
   ];

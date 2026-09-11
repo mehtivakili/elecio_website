@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const contentUpdatedAt = new Date(process.env.NEXT_PUBLIC_CONTENT_UPDATED_AT ?? '2026-08-13T00:00:00.000Z');
-  const paths = ['', '/product', '/software', '/about', '/contact', '/blog', '/for/business-owners', '/for/operators', '/for/programmers', '/privacy', '/terms'];
+  const paths = ['', '/product', '/software', '/about', '/contact', '/blog', '/documents', '/for/business-owners', '/for/operators', '/for/programmers', '/privacy', '/terms'];
   const staticRows = paths.flatMap((path) => ['fa', 'en'].map((locale) => ({
     url: `${SITE_URL}/${locale}${path}`,
     lastModified: contentUpdatedAt,

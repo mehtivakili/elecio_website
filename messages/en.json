@@ -4,6 +4,7 @@
     "product": "Product",
     "software": "Software",
     "blog": "Blog",
+    "documents": "Documents",
     "about": "About",
     "contact": "Contact",
     "order": "Order Now",
@@ -583,6 +584,7 @@
     "rights": "All rights reserved — ElecIO.",
     "legalTitle": "Legal",
     "privacy": "Privacy Notice",
-    "terms": "Terms of Service"
+    "terms": "Terms of Service",
+    "documents": "CNC document library"
   }
 }

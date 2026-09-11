@@ -60,6 +60,9 @@ export function SiteFooter() {
           <h3 className={styles.heading}>{t('legalTitle')}</h3>
           <ul className={styles.list}>
             <li>
+              <Link href="/documents">{t('documents')}</Link>
+            </li>
+            <li>
               <Link href="/privacy">{t('privacy')}</Link>
             </li>
             <li>
