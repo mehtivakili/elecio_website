@@ -169,7 +169,7 @@ export function Hero() {
           mobileSrc={mobilePosterSrc}
           fetchPriority={active === 0 ? 'high' : 'auto'}
           loading={active === 0 ? 'eager' : 'lazy'}
-          className={`${styles.slideImg} ${styles.slideImgActive}`}
+          className={`${styles.slideImg} ${styles.slideImgActive} ${locale === 'fa' && mode === 'light' ? styles.slideImgPersianLight : ''}`}
         />
         {HERO_VIDEOS.map((videoSrc, videoIndex) => {
           const isActive = engaged && activeVideoIndex === videoIndex && !reduceMotion;

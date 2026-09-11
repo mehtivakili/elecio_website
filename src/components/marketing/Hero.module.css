@@ -38,6 +38,9 @@
 .slideImgActive {
   opacity: 1;
 }
+.slideImgPersianLight {
+  transform: scaleX(-1);
+}
 .slideVideo {
   position: absolute;
   inset: 0;

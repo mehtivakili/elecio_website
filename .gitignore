@@ -19,7 +19,7 @@
 
 # production
 /build
-
+/.codex-temp/
 # local backup archives (GitHub rejects historical blobs over 100 MB)
 *.rar
 
