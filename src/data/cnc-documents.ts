@@ -33,6 +33,15 @@ const FANUC_ARCHIVE_URLS: Record<string, string> = {
   'B-61393E/06': 'https://manualmachine.com/fanuc/b61393e/29140904-connection-manual/',
   'B-61393E-2/02': 'https://pdfcoffee.com/b61393e-2-02-connection-manual-pdf-free.html',
   'B-61395E/07': 'https://www.mroelectric.com/static/app/product/pdfs/fanuc-hmi-manual.pdf',
+  'B-54810E/01': 'https://www.scribd.com/document/693782928/Fanuc-10-11-12-Operator-Manual',
+  'B-54813E/04': 'https://www.scribd.com/doc/312362012/Fanuc-10-11-12-100-110-120-series-Connecting-Manual-B-54813E-04',
+  'B-54815E': 'https://cncmanual.com/download/1439/',
+  'B-54044E': 'https://www.scribd.com/document/977233649/B-54044E-02-Fanuc-system-6M-model-B-Operator-s-manual',
+  'B-54045E': 'https://store.payloadz.com/details/2648435-documents-and-forms-manuals-fanuc-6m-model-b-maintenance-manual.html',
+  'B-62564E/02': 'https://cncmanual.com/fanuc-series-15150-model-b-machining-center-operators-manual-programming-b-62564e02/',
+  'B-62564E-1/02': 'https://cncmanual.com/fanuc-series-15150-model-b-machining-center-operators-manual-operation-b-62564e-102/',
+  'B-62560E/02': 'https://cncmanual.com/fanuc-series-15150-model-b-parameter-manual-b-62560e02/',
+  'B-62075E/04': 'https://cncmanual.com/download/5190/',
   'B-62454E/04': 'https://cncmanual.com/fanuc-series-1616018180-model-b-machining-center-operators-manual-b-62454e04/',
   'B-62444E/03': 'https://cncmanual.com/fanuc-series-1618160180-model-tb-lathe-operator-manual-b-62444e03/',
   'B-62450E/02': 'https://cncmanual.com/fanuc-series-1616018180-model-b-parameter-manual-b-62450e02/',
@@ -53,6 +62,11 @@ const FANUC_ARCHIVE_URLS: Record<string, string> = {
   'B-63835EN/03': 'https://cncmanual.com/fanuc-series-0i0i-mate-model-b-maintenance-manual-b-63835en03/',
   'B-64115EN/03': 'https://cncmanual.com/fanuc/fanuc-pdf-manuals/fanuc-b-64115/',
   'B-64305EN/03': 'https://cncmanual.com/fanuc-series-0i0i-mate-model-d-maintenance-manual-b-64305en03/',
+  'B-62704EN': 'https://cncmanual.com/fanuc/fanuc-16-18-20-21-manuals/',
+  'B-62705EN': 'https://cncmanual.com/fanuc/fanuc-16-18-20-21-manuals/',
+  'B-62710EN': 'https://cncmanual.com/fanuc/fanuc-16-18-20-21-manuals/',
+  'B-62703EN-1': 'https://cncmanual.com/fanuc/fanuc-16-18-20-21-manuals/',
+  'B-62703EN': 'https://cncmanual.com/fanuc/fanuc-16-18-20-21-manuals/',
 };
 
 const MITSUBISHI_PDF_URLS: Record<string, string> = {
@@ -110,6 +124,37 @@ export const controllerDocumentGroups: ControllerDocumentGroup[] = [
     ],
   },
   {
+    id: 'fanuc-6m-6t', brand: 'fanuc', brandLabel: 'FANUC', model: 'Series 6M / 6T Model B',
+    descriptionFa: 'اسناد اپراتوری و نگهداری کنترلرهای قدیمی و پرکاربرد سری 6 مدل B.',
+    descriptionEn: 'Operation and maintenance references for legacy Series 6 Model B controls.',
+    documents: [
+      fanucDocument("6M Model B Operator's Manual", 'operator', 'B-54044E'),
+      fanucDocument('6M Model B Maintenance Manual', 'maintenance', 'B-54045E'),
+      { title: '6T Maintenance Manual Archive', kind: 'maintenance', language: 'EN', url: 'https://douglasrudd.org/manuals/', access: 'archive', officialUrl: FANUC_PORTAL },
+    ],
+  },
+  {
+    id: 'fanuc-10-11-12', brand: 'fanuc', brandLabel: 'FANUC', model: 'Series 10 / 11 / 12',
+    descriptionFa: 'مجموعه اپراتوری، اتصال و نگهداری برای خانواده‌های 10/100، 11/110 و 12/120.',
+    descriptionEn: 'Operator, connection, and maintenance set for the 10/100, 11/110, and 12/120 families.',
+    documents: [
+      fanucDocument("Operator's Manual / Appendixes", 'operator', 'B-54810E/01'),
+      fanucDocument('Connection Manual', 'connection', 'B-54813E/04'),
+      fanucDocument('Maintenance Manual', 'maintenance', 'B-54815E'),
+    ],
+  },
+  {
+    id: 'fanuc-15-150-b', brand: 'fanuc', brandLabel: 'FANUC', model: 'Series 15 / 150 Model B',
+    descriptionFa: 'تفکیک دقیق راهبری، برنامه‌نویسی، پارامتر و نگهداری برای Model B.',
+    descriptionEn: 'Detailed operation, programming, parameter, and maintenance references for Model B.',
+    documents: [
+      fanucDocument("Machining Center Operator's Manual — Programming", 'programming', 'B-62564E/02'),
+      fanucDocument("Machining Center Operator's Manual — Operation", 'operator', 'B-62564E-1/02'),
+      fanucDocument('Parameter Manual', 'parameter', 'B-62560E/02'),
+      fanucDocument('Maintenance Manual', 'maintenance', 'B-62075E/04'),
+    ],
+  },
+  {
     id: 'fanuc-16-18-b', brand: 'fanuc', brandLabel: 'FANUC', model: 'Series 16 / 18 Model B',
     descriptionFa: 'مرجع سرویس و عیب‌یابی کنترلرهای Model B.',
     descriptionEn: 'Service and troubleshooting reference for Model B controls.',
@@ -145,6 +190,18 @@ export const controllerDocumentGroups: ControllerDocumentGroup[] = [
       fanucDocument("Operator's Manual — Lathe", 'operator', 'B-63004EN/02'),
       fanucDocument("Operator's Manual — Machining Center", 'operator', 'B-63014EN/02'),
       fanucDocument('Parameter Manual', 'parameter', 'B-63010EN/02'),
+    ],
+  },
+  {
+    id: 'fanuc-21-210-b', brand: 'fanuc', brandLabel: 'FANUC', model: 'Series 21 / 210 Model B',
+    descriptionFa: 'اسناد اپراتوری، اتصال، پارامتر و نگهداری کنترلرهای سری 21 و 210 مدل B.',
+    descriptionEn: 'Operation, connection, parameter, and maintenance references for Series 21/210 Model B.',
+    documents: [
+      fanucDocument("Machining Center Operator's Manual", 'operator', 'B-62704EN'),
+      fanucDocument('Maintenance Manual', 'maintenance', 'B-62705EN'),
+      fanucDocument('Parameter Manual', 'parameter', 'B-62710EN'),
+      fanucDocument('Connection Manual — Functions', 'connection', 'B-62703EN-1'),
+      fanucDocument('Connection Manual — Hardware', 'connection', 'B-62703EN'),
     ],
   },
   {
@@ -227,6 +284,16 @@ export const controllerDocumentGroups: ControllerDocumentGroup[] = [
       { title: 'Documentation Overview — 840D/840Di/810D', kind: 'reference', language: 'EN', url: 'https://support.industry.siemens.com/cs/attachments/28741046/FBTD_0201_en.pdf', access: 'direct' },
       { title: 'Programming Manual — Fundamentals', kind: 'programming', documentNumber: '6FC5398-1BP10-1BA0', revision: '03/2006', language: 'EN', url: 'https://support.industry.siemens.com/cs/attachments/108682379/PG_0306_en.pdf', access: 'direct' },
       { title: 'Diagnostics Manual — 840D/840Di/810D', kind: 'diagnostics', revision: '10/2004', language: 'EN', url: 'https://support.industry.siemens.com/cs/attachments/107588559/DA_1004_en.pdf', access: 'direct' },
+    ],
+  },
+  {
+    id: 'siemens-840c', brand: 'siemens', brandLabel: 'SIEMENS', model: 'SINUMERIK 840C',
+    descriptionFa: 'راهنمای اپراتوری و مجموعه اسناد نصب و عیب‌یابی نسل 840C.',
+    descriptionEn: 'Operator, installation, and diagnostics references for the legacy 840C generation.',
+    documents: [
+      { title: "Operator's Guide", kind: 'operator', language: 'EN', url: 'https://www.manualslib.com/manual/1565777/Siemens-Sinumerik-840c.html', access: 'archive' },
+      { title: 'Operator / Programming / Installation Collection', kind: 'reference', language: 'EN', url: 'https://manualmachine.com/siemens/840c/4713156-operators-guide/', access: 'archive' },
+      { title: 'Complete 840C Manual Collection', kind: 'reference', language: 'Multi', url: 'https://www.manualslib.com/products/Siemens-Sinumerik-840c-2039899.html', access: 'archive' },
     ],
   },
   {

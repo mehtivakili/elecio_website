@@ -66,8 +66,12 @@ export function Hero() {
   const locale = useLocale() as AppLocale;
   const { mode } = useThemeMode();
   const slides = t.raw('slides') as Slide[];
-  const images = mode === 'light' ? HERO_SLIDE_IMAGES_LIGHT : HERO_SLIDE_IMAGES[locale];
-  const mobileImages = mode === 'light' ? HERO_SLIDE_IMAGES_LIGHT_MOBILE : HERO_SLIDE_IMAGES_MOBILE[locale];
+  const images = locale === 'fa'
+    ? HERO_SLIDE_IMAGES.fa
+    : mode === 'light' ? HERO_SLIDE_IMAGES_LIGHT : HERO_SLIDE_IMAGES.en;
+  const mobileImages = locale === 'fa'
+    ? HERO_SLIDE_IMAGES_MOBILE.fa
+    : mode === 'light' ? HERO_SLIDE_IMAGES_LIGHT_MOBILE : HERO_SLIDE_IMAGES_MOBILE.en;
   const [active, setActive] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
@@ -169,7 +173,7 @@ export function Hero() {
           mobileSrc={mobilePosterSrc}
           fetchPriority={active === 0 ? 'high' : 'auto'}
           loading={active === 0 ? 'eager' : 'lazy'}
-          className={`${styles.slideImg} ${styles.slideImgActive} ${locale === 'fa' && mode === 'light' ? styles.slideImgPersianLight : ''}`}
+          className={`${styles.slideImg} ${styles.slideImgActive}`}
         />
         {HERO_VIDEOS.map((videoSrc, videoIndex) => {
           const isActive = engaged && activeVideoIndex === videoIndex && !reduceMotion;

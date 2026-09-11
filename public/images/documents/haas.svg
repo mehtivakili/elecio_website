@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 180" role="img" aria-labelledby="title">
+  <title id="title">Haas Automation</title>
+  <circle cx="90" cy="90" r="76" fill="#d71920"/>
+  <circle cx="90" cy="90" r="64" fill="none" stroke="#fff" stroke-width="5"/>
+  <path d="M45 58h25v23h40V58h25v64h-25V99H70v23H45z" fill="#fff"/>
+  <path d="M144 45h238" stroke="#d71920" stroke-width="7"/>
+  <text x="152" y="98" fill="#202b3a" font-family="Arial Black,Arial,sans-serif" font-size="51" font-weight="900" letter-spacing="2">HAAS</text>
+  <text x="154" y="128" fill="#667085" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="700" letter-spacing="5">AUTOMATION</text>
+</svg>

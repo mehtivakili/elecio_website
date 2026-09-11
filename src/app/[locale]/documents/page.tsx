@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { DocumentsLibrary } from '@/components/documents/DocumentsLibrary';
-import { controllerDocumentGroups } from '@/data/cnc-documents';
 import styles from './page.module.css';
 
 export function generateStaticParams() {
@@ -22,10 +21,13 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
 }
 
-export default async function DocumentsPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function DocumentsPage({ params, searchParams }: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ model?: string; query?: string }>;
+}) {
   const { locale } = await params;
+  const { model, query } = await searchParams;
   const en = locale === 'en';
-  const documentCount = controllerDocumentGroups.reduce((sum, group) => sum + group.documents.length, 0);
 
   return (
     <main className={styles.page}>
@@ -40,24 +42,9 @@ export default async function DocumentsPage({ params }: { params: Promise<{ loca
                 : 'شماره دقیق اسناد و لینک منبع اصلی سازندگان؛ فایل‌ها روی سرور Elecio کپی نشده‌اند و مستقیماً از مرجع رسمی باز می‌شوند.'}
             </p>
           </div>
-          <dl className={styles.stats}>
-            <div><dt>{en ? 'Manufacturers' : 'سازنده'}</dt><dd>5</dd></div>
-            <div><dt>{en ? 'Controller families' : 'خانواده کنترلر'}</dt><dd>{controllerDocumentGroups.length.toLocaleString(locale)}</dd></div>
-            <div><dt>{en ? 'Document records' : 'رکورد سند'}</dt><dd>{documentCount.toLocaleString(locale)}</dd></div>
-          </dl>
         </header>
 
-        <aside className={styles.notice}>
-          <span aria-hidden="true">✓</span>
-          <p>
-            <strong>{en ? 'Official-source policy' : 'سیاست منبع رسمی'}</strong>
-            {en
-              ? ' Direct PDF links are used only when the manufacturer publishes them. FANUC legacy manuals open in MyPortal and require sign-in; use the exact document number shown.'
-              : ' لینک مستقیم PDF فقط زمانی استفاده شده که خود سازنده آن را منتشر کرده باشد. منوال‌های قدیمی FANUC در MyPortal باز می‌شوند و نیاز به ورود دارند؛ شماره دقیق نمایش‌داده‌شده را جست‌وجو کنید.'}
-          </p>
-        </aside>
-
-        <DocumentsLibrary locale={locale} />
+        <DocumentsLibrary locale={locale} initialModel={model} initialQuery={query} />
       </div>
     </main>
   );

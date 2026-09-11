@@ -14,7 +14,6 @@ export function SiteFooter() {
 
   return (
     <footer className={styles.footer}>
-      <PrivacyPreferences />
       <div className={styles.inner}>
         <div>
           <h3 className={styles.heading}>{t('contactTitle')}</h3>
@@ -67,6 +66,9 @@ export function SiteFooter() {
             </li>
             <li>
               <Link href="/terms">{t('terms')}</Link>
+            </li>
+            <li>
+              <PrivacyPreferences />
             </li>
           </ul>
         </div>

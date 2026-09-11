@@ -7,3 +7,43 @@ export async function getPublishedPost(locale:string,slug:string):Promise<Public
 export async function getSlugRedirect(slug:string){return knex('post_slug_history as h').join('posts as p','p.id','h.post_id').select('p.slug').where('h.old_slug',slug).where('p.status','published').first();}
 export async function getPublishedPostOnlyLocale(slug:string):Promise<'fa'|'en'|null>{const row=await knex('posts').select('translation_status').where({slug,status:'published'}).where(function(){this.whereNull('scheduled_for').orWhere('scheduled_for','<=',knex.fn.now())}).first();if(row?.translation_status==='fa_only')return'fa';if(row?.translation_status==='en_only')return'en';return null;}
 export async function listPublishedPosts(locale:string,category?:string){const fa=locale==='fa';let query=knex('posts as p').leftJoin('categories as c','c.id','p.category_id').select('p.id','p.slug',fa?'p.title_fa as title':'p.title_en as title',fa?'p.excerpt_fa as excerpt':'p.excerpt_en as excerpt','p.cover_image_path','p.published_at','p.updated_at',fa?'c.name_fa as category_name':'c.name_en as category_name','c.slug as category_slug').where('p.status','published').where(function(){this.whereNull('p.scheduled_for').orWhere('p.scheduled_for','<=',knex.fn.now())}).whereNot('p.translation_status',fa?'en_only':'fa_only').orderBy('p.published_at','desc').limit(50);if(category)query=query.where('c.slug',category);return query;}
+
+export async function searchPublishedPosts(locale: string, terms: string[]) {
+  const fa = locale === 'fa';
+  const titleColumn = fa ? 'p.title_fa' : 'p.title_en';
+  const excerptColumn = fa ? 'p.excerpt_fa' : 'p.excerpt_en';
+  const categoryColumn = fa ? 'c.name_fa' : 'c.name_en';
+  const tagColumn = fa ? 't.name_fa' : 't.name_en';
+
+  return knex('posts as p')
+    .leftJoin('categories as c', 'c.id', 'p.category_id')
+    .leftJoin('post_tags as pt', 'pt.post_id', 'p.id')
+    .leftJoin('tags as t', 't.id', 'pt.tag_id')
+    .distinct(
+      'p.id',
+      'p.slug',
+      `${titleColumn} as title`,
+      `${excerptColumn} as excerpt`,
+      `${categoryColumn} as category_name`,
+      'p.published_at',
+    )
+    .where('p.status', 'published')
+    .where(function publishedNow() {
+      this.whereNull('p.scheduled_for').orWhere('p.scheduled_for', '<=', knex.fn.now());
+    })
+    .whereNot('p.translation_status', fa ? 'en_only' : 'fa_only')
+    .where(function matchSearchTerms() {
+      for (const term of terms) {
+        const pattern = `%${term}%`;
+        this.andWhere(function matchTerm() {
+          this.where(titleColumn, 'like', pattern)
+            .orWhere(excerptColumn, 'like', pattern)
+            .orWhere(categoryColumn, 'like', pattern)
+            .orWhere(tagColumn, 'like', pattern)
+            .orWhere('p.slug', 'like', pattern);
+        });
+      }
+    })
+    .orderBy('p.published_at', 'desc')
+    .limit(12);
+}

@@ -9,6 +9,7 @@ import { Link, usePathname } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 import { ORDER_URL } from '@/lib/site-constants';
 import { useThemeMode } from '@/lib/theme-context';
+import { GlobalSearch } from './GlobalSearch';
 import styles from './SiteHeader.module.css';
 
 export function SiteHeader() {
@@ -58,6 +59,7 @@ export function SiteHeader() {
         />
 
         <div className={styles.actions}>
+          <GlobalSearch />
           <Link
             href={pathname}
             locale={otherLocale}
