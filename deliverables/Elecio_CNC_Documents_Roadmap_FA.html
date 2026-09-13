@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <title>نقشه راه توسعه مرکز اسناد CNC السیو</title>
+  <style>
+    @page { size: A4; margin: 13mm 14mm 16mm; }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: #111827; background: #fff; font-family: Tahoma, Arial, sans-serif; font-size: 10.5pt; line-height: 1.85; }
+    h1,h2,h3,p { margin-top: 0; } h1 { margin-bottom: 7mm; font-size: 27pt; line-height: 1.35; } h2 { margin: 0 0 4mm; font-size: 17pt; } h3 { margin: 0 0 2mm; font-size: 11.5pt; }
+    .cover { min-height: 265mm; display: flex; flex-direction: column; justify-content: space-between; padding: 12mm; border: 1px solid #cbd5e1; border-top: 6px solid #1476e7; border-radius: 6mm; background: radial-gradient(circle at 15% 10%, #dbeafe, transparent 34%), linear-gradient(145deg,#f8fafc,#fff); }
+    .brand { color: #1476e7; font-weight: 900; letter-spacing: 2px; } .lead { max-width: 145mm; color: #475569; font-size: 12pt; }
+    .cover-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:4mm; } .stat { padding:5mm; border:1px solid #dbe3ee; border-radius:4mm; background:#fff; }
+    .stat b { display:block; color:#1476e7; font-size:20pt; } .meta { color:#64748b; font-size:9pt; }
+    section { break-inside: avoid; margin-bottom: 7mm; } .page-break { break-before: page; }
+    .box { padding: 5mm; border:1px solid #dbe3ee; border-radius:4mm; background:#f8fafc; }
+    .route { direction:ltr; display:block; margin:1.5mm 0; padding:2.5mm 3mm; border-radius:2mm; color:#0f4f9b; background:#eaf3ff; font-family:Consolas,monospace; text-align:left; }
+    table { width:100%; border-collapse:collapse; margin:3mm 0 6mm; font-size:9pt; } th,td { padding:2.5mm 3mm; border:1px solid #dbe3ee; vertical-align:top; } th { color:#0f4f9b; background:#eff6ff; text-align:right; } tr { break-inside:avoid; }
+    ul { margin:2mm 0 0; padding-right:5mm; } li { margin-bottom:1mm; } .check { list-style:none; padding:0; } .check li::before { content:'☐'; margin-left:2mm; color:#1476e7; font-weight:bold; }
+    .priority { display:inline-block; padding:.5mm 2mm; border-radius:99px; font-size:8pt; font-weight:bold; } .p1{color:#991b1b;background:#fee2e2}.p2{color:#92400e;background:#fef3c7}.p3{color:#166534;background:#dcfce7}
+    .note { padding:4mm; border-right:4px solid #1476e7; background:#eff6ff; } .footer { margin-top:8mm; padding-top:3mm; border-top:1px solid #dbe3ee; color:#64748b; font-size:8pt; }
+  </style>
+</head>
+<body>
+  <div class="cover">
+    <div><div class="brand">ELECIO · CNC DOCUMENT CENTER</div><h1>نقشه راه توسعه<br>مرکز اسناد کنترلرهای CNC</h1><p class="lead">برنامه اجرایی برای تبدیل بخش اسناد السیو به یک مرجع ساختاریافته، قابل جست‌وجو و قابل اعتماد برای اپراتورها، برنامه‌نویسان و تعمیرکاران CNC در ایران.</p></div>
+    <div class="cover-grid"><div class="stat"><b>۹</b>سازنده کنترلر</div><div class="stat"><b>۴۰</b>خانواده کنترلر</div><div class="stat"><b>۳</b>سطح مسیریابی</div></div>
+    <div class="meta">نسخه ۱.۰ · شهریور ۱۴۰۵ · تهیه‌شده برای Elecio</div>
+  </div>
+
+  <section class="page-break"><h2>۱. معماری نهایی مرکز اسناد</h2><p>مرکز اسناد باید بر اساس «سازنده کنترلر» و سپس «مدل دقیق کنترلر» سازمان‌دهی شود؛ نه صرفاً مدل ماشین. برای کنترل‌های اختصاصی مانند MAZATROL یا OSP، مدل ماشین و نسخه نرم‌افزار نیز در متادیتا ثبت شود.</p><div class="box"><h3>مسیر سطح اول — همه سازندگان</h3><code class="route">/fa/documents</code><h3>مسیر سطح دوم — صفحه مستقل سازنده</h3><code class="route">/fa/documents/fanuc</code><h3>مسیر سطح سوم — صفحه مستقل مدل و اسناد آن</h3><code class="route">/fa/documents/fanuc/fanuc-0i-f-plus</code></div></section>
+
+  <section><h2>۲. کارهای انجام‌شده در این نسخه</h2><ul class="check"><li>ایجاد صفحه مستقل برای هر سازنده و هر مدل کنترلر</li><li>تبدیل کارت‌های صفحه اصلی اسناد به لینک‌های واقعی و قابل اشتراک‌گذاری</li><li>انتقال نتایج جست‌وجوی سراسری به آدرس مستقیم صفحه مدل</li><li>حفظ سازگاری لینک‌های قدیمی دارای پارامتر model با Redirect</li><li>افزودن صفحات مدل‌ها به Sitemap برای SEO</li><li>افزودن ۱۵ خانواده اولویت‌دار و چهار سازنده جدید</li><li>تفکیک منبع مستقیم، کتابخانه رسمی، پورتال رسمی و آرشیو</li></ul></section>
+
+  <section><h2>۳. خانواده‌های اضافه‌شده</h2><table><thead><tr><th>سازنده</th><th>مدل‌ها</th><th>اولویت بازار</th></tr></thead><tbody>
+    <tr><td>FANUC</td><td dir="ltr">0i-F / 0i-F Plus · 30i/31i/32i-B &amp; B Plus</td><td><span class="priority p1">خیلی بالا</span></td></tr>
+    <tr><td>SIEMENS</td><td dir="ltr">808D · 828D · 840D sl</td><td><span class="priority p1">خیلی بالا</span></td></tr>
+    <tr><td>HEIDENHAIN</td><td dir="ltr">TNC 320 · TNC 620 · TNC 640</td><td><span class="priority p1">خیلی بالا</span></td></tr>
+    <tr><td>MITSUBISHI</td><td dir="ltr">M800 / M80 / E80</td><td><span class="priority p1">خیلی بالا</span></td></tr>
+    <tr><td>SYNTEC</td><td dir="ltr">6 Series · 21/22 Series</td><td><span class="priority p1">خیلی بالا</span></td></tr>
+    <tr><td>GSK</td><td dir="ltr">928 Series · 980 Series</td><td><span class="priority p1">خیلی بالا</span></td></tr>
+    <tr><td>FAGOR</td><td dir="ltr">CNC 8055</td><td><span class="priority p2">بالا</span></td></tr>
+    <tr><td>MAZAK</td><td dir="ltr">MAZATROL Fusion 640 / Matrix / Matrix 2</td><td><span class="priority p2">بالا</span></td></tr>
+  </tbody></table><p class="note">ثبت مدل در سایت به معنی کامل‌بودن بسته اسناد آن نیست. در این مرحله منبع رسمی اولیه ثبت شده و تکمیل اپراتوری، پارامتر، اتصال و نگهداری باید طبق چک‌لیست بخش بعد انجام شود.</p></section>
+
+  <section class="page-break"><h2>۴. بسته استاندارد اسناد برای هر مدل</h2><table><thead><tr><th>نوع سند</th><th>هدف</th><th>حداقل اطلاعات لازم</th></tr></thead><tbody>
+    <tr><td>Operator</td><td>کاربری روزمره و تنظیم ماشین</td><td>نسخه فرز/تراش، شماره سند، نسخه نرم‌افزار</td></tr><tr><td>Programming</td><td>G-code، سیکل‌ها، Macro و برنامه‌نویسی مکالمه‌ای</td><td>Dialect، نوع ماشین و Revision</td></tr><tr><td>Parameter</td><td>پارامترهای NC، Servo و Spindle</td><td>هشدار ایمنی و تطبیق دقیق نسل کنترل</td></tr><tr><td>Connection</td><td>سخت‌افزار، I/O، RS-232 و شبکه</td><td>Hardware/Function manual و Pinout</td></tr><tr><td>Maintenance</td><td>سرویس، باتری، بردها و Backup</td><td>روش بازیابی و نکات جلوگیری از پاک‌شدن حافظه</td></tr><tr><td>Diagnostics</td><td>Alarm، Fault و عیب‌یابی</td><td>کد خطا، زیرسیستم و نسخه معتبر</td></tr><tr><td>Reference</td><td>کاتالوگ، Option list و ابزار نرم‌افزاری</td><td>منبع رسمی و تاریخ بررسی</td></tr>
+  </tbody></table></section>
+
+  <section><h2>۵. اطلاعاتی که در صفحه هر مدل باید تکمیل شود</h2><ul class="check"><li>نوع ماشین: تراش، فرز، Mill-Turn، روتر، سنگ‌زنی یا EDM</li><li>نسل دقیق کنترل، پسوند مدل و تصویر پلاک کنترلر</li><li>نسخه NC Software و محدوده Revision منوال</li><li>رابط‌های انتقال: RS-232، USB، Ethernet، FTP یا DNC</li><li>تنظیم Baud، Parity، Stop bit، Handshake و Pinout کابل</li><li>روش Backup/Restore برای SRAM، Parameter، Offset، Macro و PLC/PMC</li><li>مدل درایو Servo/Spindle و اسناد مرتبط</li><li>نرم‌افزار رسمی انتقال یا شبیه‌ساز کنترلر</li><li>ماشین‌سازها و مدل ماشین‌های متداول مجهز به این کنترل</li><li>لینک مقاله‌های آموزشی مرتبط در بلاگ السیو</li></ul></section>
+
+  <section><h2>۶. مدل‌های پیشنهادی مرحله بعد</h2><table><thead><tr><th>مرحله</th><th>مدل‌ها</th><th>دلیل</th></tr></thead><tbody>
+    <tr><td><span class="priority p1">مرحله A</span></td><td dir="ltr">FANUC 0i-E · HEIDENHAIN CNC PILOT 640 / MANUALplus 620 · Mitsubishi E60/E68</td><td>پوشش خلأهای مهم در برندهای فعلی</td></tr>
+    <tr><td><span class="priority p2">مرحله B</span></td><td dir="ltr">Fagor 8035/8058/8060/8065 · MAZATROL T-Plus/M-Plus/Smooth · Okuma OSP U/E/P</td><td>ماشین‌های اروپایی و ژاپنی دست‌دوم</td></tr>
+    <tr><td><span class="priority p3">مرحله C</span></td><td dir="ltr">Yasnac · NUM 750/1020/1040 · Hurco Ultimax/WinMax · LNC · HNC</td><td>تقاضای تخصصی و ماشین‌های خاص</td></tr>
+  </tbody></table></section>
+
+  <section class="page-break"><h2>۷. شاخه مستقل EDM و وایرکات</h2><p>کنترلرهای EDM بهتر است در یک شاخه مستقل قرار گیرند، زیرا سند آن‌ها اغلب به ترکیب مدل ماشین، کنترل و نسخه نرم‌افزار وابسته است.</p><ul><li>AGIE / Charmilles: خانواده‌های Robofil، Roboform و Cut</li><li>Sodick: کنترل‌های LN و نسل‌های مرتبط با مدل ماشین</li><li>Mitsubishi EDM</li><li>FANUC ROBOCUT</li><li>Makino EDM و CHMER</li></ul></section>
+
+  <section><h2>۸. کیفیت منبع و نگهداری لینک‌ها</h2><ul class="check"><li>اولویت نخست همیشه دامنه رسمی سازنده باشد.</li><li>اگر دانلود نیازمند ورود است، برچسب «پورتال رسمی» نمایش داده شود.</li><li>آرشیو شخص ثالث از منبع رسمی کاملاً متمایز باشد.</li><li>تاریخ آخرین بررسی لینک برای هر سند ذخیره شود.</li><li>Link Checker خودکار به‌صورت هفتگی اجرا شود.</li><li>Redirect، خطای ۴۰۴، تغییر Content-Type و فایل HTML جعلی به‌جای PDF بررسی شود.</li><li>فایل‌های سازنده روی سرور Elecio Mirror نشوند مگر با مجوز روشن.</li></ul></section>
+
+  <section><h2>۹. قابلیت‌های محصولی پیشنهادی</h2><ul class="check"><li>فیلتر نوع ماشین، برند، مدل، زبان و نوع سند</li><li>نشان «لینک بررسی‌شده» همراه با تاریخ</li><li>فرم ارسال عکس پلاک کنترلر برای کمک به تشخیص مدل</li><li>امکان گزارش لینک خراب توسط کاربر</li><li>نمایش اسناد مرتبط با درایو، موتور و I/O در کنار کنترلر</li><li>اتصال هر سند به مقاله آموزشی یا راهنمای انتقال فایل Elecio</li><li>صفحه «محبوب‌ترین منوال‌ها» بر اساس کلیک، بدون ذخیره اطلاعات حساس</li><li>Schema.org و Breadcrumb برای صفحات سازنده و مدل</li></ul></section>
+
+  <section><h2>۱۰. معیار پایان کار برای هر خانواده</h2><div class="box"><ul class="check"><li>حداقل یک منوال اپراتوری معتبر</li><li>حداقل یک سند برنامه‌نویسی یا سیکل‌ها</li><li>منوال پارامتر یا مرجع تنظیمات</li><li>منوال اتصال/نگهداری یا توضیح شفاف درباره نبود دسترسی عمومی</li><li>شماره سند و Revision ثبت‌شده</li><li>تست دستی لینک و تطبیق عنوان PDF با کارت</li><li>تست صفحه فارسی، انگلیسی، موبایل و جست‌وجوی سراسری</li></ul></div></section>
+
+  <section><h2>۱۱. برنامه نگهداری پیشنهادی</h2><table><thead><tr><th>تناوب</th><th>کار</th></tr></thead><tbody><tr><td>هفتگی</td><td>بررسی خودکار وضعیت لینک‌ها و Redirectها</td></tr><tr><td>ماهانه</td><td>بازبینی لینک‌های خراب و درخواست‌های کاربران</td></tr><tr><td>فصلی</td><td>افزودن خانواده‌های جدید و Revisionهای تازه</td></tr><tr><td>سالانه</td><td>ممیزی کامل منبع، مجوز، SEO و ساختار دسته‌بندی</td></tr></tbody></table></section>
+
+  <div class="footer">این سند نقشه راه اجرایی است. تغییر پارامتر، PLC/PMC، Servo یا Backup باید فقط با تطبیق دقیق مدل ماشین، کنترلر و نسخه نرم‌افزار انجام شود.</div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 120" role="img" aria-labelledby="title">
+  <title id="title">GSK CNC</title>
+  <rect x="6" y="19" width="104" height="82" rx="16" fill="#176fc1"/>
+  <path d="M83 47c-7-9-16-13-28-13-20 0-34 12-34 27s14 27 34 27c11 0 21-3 29-10V60H55v14h13v5c-4 2-8 3-13 3-11 0-19-8-19-21s8-21 19-21c7 0 13 3 18 9l10-2Z" fill="#fff"/>
+  <text x="126" y="78" fill="#176fc1" font-family="Arial,Helvetica,sans-serif" font-size="63" font-weight="900" letter-spacing="4">GSK</text>
+</svg>

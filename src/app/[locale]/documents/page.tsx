@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import { DocumentsLibrary } from '@/components/documents/DocumentsLibrary';
+import { controllerDocumentGroups } from '@/data/cnc-documents';
 import styles from './page.module.css';
 
 export function generateStaticParams() {
@@ -27,6 +29,11 @@ export default async function DocumentsPage({ params, searchParams }: {
 }) {
   const { locale } = await params;
   const { model, query } = await searchParams;
+  const legacyModel = controllerDocumentGroups.find((group) => group.id === model);
+  if (legacyModel) {
+    const suffix = query ? `?query=${encodeURIComponent(query)}` : '';
+    redirect(`/${locale}/documents/${legacyModel.brand}/${legacyModel.id}${suffix}`);
+  }
   const en = locale === 'en';
 
   return (
@@ -44,7 +51,7 @@ export default async function DocumentsPage({ params, searchParams }: {
           </div>
         </header>
 
-        <DocumentsLibrary locale={locale} initialModel={model} initialQuery={query} />
+        <DocumentsLibrary locale={locale} />
       </div>
     </main>
   );

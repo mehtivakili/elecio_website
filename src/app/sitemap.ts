@@ -1,6 +1,8 @@
 import type { MetadataRoute } from 'next';
 import { knex } from '@/server/db/knex';
 import { SITE_URL } from '@/lib/seo';
+import { controllerBrandProfiles } from '@/data/controller-brands';
+import { controllerDocumentGroups } from '@/data/cnc-documents';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,6 +16,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: path === '' ? 1 : path === '/product' ? 0.9 : path === '/privacy' || path === '/terms' ? 0.3 : 0.7,
     alternates: { languages: { fa: `${SITE_URL}/fa${path}`, en: `${SITE_URL}/en${path}`, 'x-default': `${SITE_URL}/fa${path}` } },
   })));
+  const documentRows = ['fa', 'en'].flatMap((locale) => [
+    ...controllerBrandProfiles.map((brand) => ({ url: `${SITE_URL}/${locale}/documents/${brand.id}`, lastModified: contentUpdatedAt, changeFrequency: 'monthly' as const, priority: 0.72 })),
+    ...controllerDocumentGroups.map((group) => ({ url: `${SITE_URL}/${locale}/documents/${group.brand}/${group.id}`, lastModified: contentUpdatedAt, changeFrequency: 'monthly' as const, priority: 0.68 })),
+  ]);
 
   try {
     const posts = await knex('posts')
@@ -34,8 +40,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           : undefined,
       }));
     });
-    return [...staticRows, ...articles];
+    return [...staticRows, ...documentRows, ...articles];
   } catch {
-    return staticRows;
+    return [...staticRows, ...documentRows];
   }
 }

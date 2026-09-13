@@ -32,6 +32,10 @@ const brandAliases: Record<string, string> = {
   siemens: 'SIEMENS زیمنس سینومریک SINUMERIK',
   mitsubishi: 'MITSUBISHI میتسوبیشی ملداس MELDAS',
   haas: 'HAAS هاس',
+  syntec: 'SYNTEC سینتک سین تک',
+  gsk: 'GSK جی اس کی',
+  fagor: 'FAGOR فاگور فگور',
+  mazak: 'MAZAK MAZATROL مازاک مزاک مازاترول',
 };
 
 const documentKindAliases: Record<string, string> = {
@@ -95,14 +99,14 @@ export async function GET(request: NextRequest) {
     const groupSearch = `${groupTitle} ${brandAliases[group.brand]} ${description} ${group.documents.map((document) => `${document.title} ${document.documentNumber ?? ''} ${documentKindAliases[document.kind]}`).join(' ')}`;
     const groupScore = relevance(query, groupTitle, groupSearch);
     if (groupScore) {
-      documentResults.push({ id: `model:${group.id}`, kind: 'document', title: groupTitle, description, meta: en ? `${group.documents.length} documents` : `${group.documents.length.toLocaleString('fa-IR')} سند`, href: `/documents?model=${encodeURIComponent(group.id)}#document-results`, score: groupScore + 8 });
+      documentResults.push({ id: `model:${group.id}`, kind: 'document', title: groupTitle, description, meta: en ? `${group.documents.length} documents` : `${group.documents.length.toLocaleString('fa-IR')} سند`, href: `/documents/${group.brand}/${group.id}`, score: groupScore + 8 });
     }
     for (const document of group.documents) {
       const title = document.title;
       const search = `${title} ${document.documentNumber ?? ''} ${documentKindAliases[document.kind]}`;
       const score = relevance(query, title, search);
       if (!score) continue;
-      documentResults.push({ id: `document:${group.id}:${document.documentNumber ?? document.title}`, kind: 'document', title, description: groupTitle, meta: document.documentNumber ?? (en ? 'CNC manual' : 'منوال CNC'), href: `/documents?model=${encodeURIComponent(group.id)}&query=${encodeURIComponent(document.documentNumber ?? document.title)}#document-results`, score: score + 12 });
+      documentResults.push({ id: `document:${group.id}:${document.documentNumber ?? document.title}`, kind: 'document', title, description: groupTitle, meta: document.documentNumber ?? (en ? 'CNC manual' : 'منوال CNC'), href: `/documents/${group.brand}/${group.id}?query=${encodeURIComponent(document.documentNumber ?? document.title)}#document-results`, score: score + 12 });
     }
   }
 
@@ -126,7 +130,7 @@ export async function GET(request: NextRequest) {
     ...pageResults.sort((a, b) => b.score - a.score).slice(0, 4),
     ...articleResults.sort((a, b) => b.score - a.score).slice(0, 5),
     ...documentResults.sort((a, b) => b.score - a.score).slice(0, 6),
-  ].sort((a, b) => b.score - a.score).slice(0, 12).map(({ score: _score, ...result }) => result);
+  ].sort((a, b) => b.score - a.score).slice(0, 12).map(({ id, kind, title, description, meta, href }) => ({ id, kind, title, description, meta, href }));
 
   return NextResponse.json({ results });
 }
