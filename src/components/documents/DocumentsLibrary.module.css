@@ -80,6 +80,7 @@
 .documentInfo h3 { margin: .38rem 0; font-size: .88rem; line-height: 1.5; }
 .documentMeta { display: flex; min-height: 20px; gap: .55rem; align-items: center; color: var(--text-40); font-size: .67rem; }
 .documentMeta code { color: var(--foreground); font: 750 .72rem/1.4 ui-monospace, SFMono-Regular, Consolas, monospace; }
+.documentCoverage { margin: .28rem 0 0; color: var(--text-40); font-size: .65rem; line-height: 1.55; }
 .documentActions a { display: flex; min-height: 38px; padding: .45rem .65rem; align-items: center; justify-content: space-between; border-radius: 9px; color: var(--foreground); background: color-mix(in srgb, var(--brand-accent) 13%, var(--surface)); font-size: .7rem; font-weight: 850; }
 .documentActions a:hover { color: white; background: var(--brand-accent); }
 .documentActions .officialLink { min-height: 32px; margin-top: .4rem; border: 1px solid var(--border); color: var(--text-60); background: transparent; font-size: .64rem; }
@@ -105,6 +106,31 @@
 .modelFacts { display: flex; margin-top: 1.25rem; gap: .55rem; flex-wrap: wrap; }
 .modelFacts span { display: grid; min-width: 128px; padding: .7rem .85rem; border: 1px solid var(--border); border-radius: 11px; color: var(--text-40); background: var(--surface-2); font-size: .64rem; }
 .modelFacts b { margin-bottom: .28rem; color: var(--brand-accent); font-size: .8rem; }
+.technicalProfile { padding: 1.25rem; border-top: 1px solid var(--border); background: linear-gradient(150deg, color-mix(in srgb, var(--brand-accent) 5%, var(--surface-2)), var(--surface-2) 56%); }
+.profileHeader { display: flex; margin-bottom: 1rem; gap: 1.25rem; align-items: center; justify-content: space-between; }
+.profileHeader > div:first-child > span { display: block; margin-bottom: .38rem; color: var(--brand-accent); font: 850 .62rem/1 'Archivo Black', 'Vazirmatn', sans-serif; letter-spacing: .08em; }
+.profileHeader h2 { margin: 0; font-size: clamp(1.1rem, 2vw, 1.45rem); line-height: 1.35; }
+.availability { display: grid; min-width: 150px; padding: .72rem .9rem; border: 1px solid color-mix(in srgb, var(--brand-accent) 28%, var(--border)); border-radius: 12px; background: var(--surface); }
+.availability strong { color: var(--brand-accent); font: 900 1.15rem/1.2 'Archivo Black', 'Vazirmatn', sans-serif; }
+.availability span { margin-top: .22rem; color: var(--text-40); font-size: .61rem; }
+.profileFacts { display: grid; margin: 0; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--border); border-radius: 14px; background: var(--surface); }
+.profileFacts div { min-width: 0; padding: .9rem; border-inline-end: 1px solid var(--border); }
+.profileFacts div:last-child { border-inline-end: 0; }
+.profileFacts dt { margin-bottom: .4rem; color: var(--text-40); font-size: .62rem; font-weight: 800; }
+.profileFacts dd { margin: 0; color: var(--foreground); font-size: .7rem; font-weight: 750; line-height: 1.65; overflow-wrap: anywhere; }
+.workflowNotes { display: grid; margin-top: .75rem; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .65rem; }
+.workflowNotes article { display: flex; min-width: 0; padding: .85rem; gap: .65rem; border: 1px solid var(--border); border-radius: 12px; background: color-mix(in srgb, var(--surface) 82%, transparent); }
+.workflowNotes article > span { display: grid; flex: 0 0 auto; width: 30px; height: 30px; place-items: center; border-radius: 9px; color: var(--brand-accent); background: color-mix(in srgb, var(--brand-accent) 11%, var(--surface)); font-size: .62rem; font-weight: 900; }
+.workflowNotes h3 { margin: .08rem 0 .3rem; font-size: .74rem; }
+.workflowNotes p { margin: 0; color: var(--text-60); font-size: .67rem; line-height: 1.7; }
+.profileCaution { margin: .75rem 0 0; padding: .7rem .85rem; border-inline-start: 3px solid #e7a52d; border-radius: 8px; color: var(--text-60); background: color-mix(in srgb, #e7a52d 9%, var(--surface)); font-size: .67rem; line-height: 1.7; }
+.profileCaution b { color: var(--foreground); }
+.sourceLegend { display: flex; margin-top: .7rem; gap: .55rem; flex-wrap: wrap; }
+.sourceLegend span, .sourceBadge { display: inline-flex; align-items: center; border: 1px solid; border-radius: 999px; font-size: .59rem; font-weight: 850; }
+.sourceLegend span { min-height: 27px; padding: .25rem .55rem; }
+.sourceBadge { min-height: 22px; padding: .18rem .45rem; }
+.sourceLegend span[data-source='official'], .sourceBadge[data-source='official'] { color: #168253; border-color: color-mix(in srgb, #24a86a 36%, var(--border)); background: color-mix(in srgb, #24a86a 9%, var(--surface)); }
+.sourceLegend span[data-source='unofficial'], .sourceBadge[data-source='unofficial'] { color: #a3690d; border-color: color-mix(in srgb, #d99521 38%, var(--border)); background: color-mix(in srgb, #d99521 10%, var(--surface)); }
 .related { margin-top: 3.5rem; }
 .related > div:last-child { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; }
 .related > div:last-child a { display: flex; min-height: 82px; padding: 1rem; align-items: flex-start; justify-content: space-between; border: 1px solid var(--border); border-radius: 14px; color: var(--foreground); background: var(--surface); text-decoration: none; }
@@ -116,6 +142,9 @@
   .modelGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .brandPageHero { grid-template-columns: 180px minmax(0, 1fr); }
   .brandPageHero dl { grid-column: 1 / -1; }
+  .profileFacts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .profileFacts div:nth-child(2) { border-inline-end: 0; }
+  .profileFacts div:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
 }
 
 @media (max-width: 760px) {
@@ -133,6 +162,12 @@
   .modelBrandLogo { width: 124px; }
   .modelSection, .documentSection { margin-top: 3.5rem; }
   .documentHero { min-height: 0; padding: 1.35rem; gap: 1rem; flex-direction: column; }
+  .technicalProfile { padding: 1rem; }
+  .profileHeader { align-items: stretch; flex-direction: column; }
+  .availability { min-width: 0; }
+  .profileFacts, .workflowNotes { grid-template-columns: 1fr; }
+  .profileFacts div { border-inline-end: 0; border-bottom: 1px solid var(--border); }
+  .profileFacts div:last-child { border-bottom: 0; }
   .documentTools { grid-template-columns: 1fr; }
   .kindFilters { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
   .kindFilters::-webkit-scrollbar { display: none; }

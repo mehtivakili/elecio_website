@@ -21,7 +21,7 @@ export function DocumentList({ group, locale, initialQuery = '' }: { group: Cont
   const kinds = kindOrder.filter((item) => group.documents.some((document) => document.kind === item));
   const documents = useMemo(() => {
     const needle = query.trim().toLocaleLowerCase(locale);
-    return group.documents.filter((document) => (kind === 'all' || document.kind === kind) && (!needle || [document.title, document.documentNumber, document.revision, document.language].filter(Boolean).join(' ').toLocaleLowerCase(locale).includes(needle)));
+    return group.documents.filter((document) => (kind === 'all' || document.kind === kind) && (!needle || [document.title, document.documentNumber, document.revision, document.language, document.coverageFa, document.coverageEn].filter(Boolean).join(' ').toLocaleLowerCase(locale).includes(needle)));
   }, [group.documents, kind, locale, query]);
 
   return <>
@@ -32,10 +32,22 @@ export function DocumentList({ group, locale, initialQuery = '' }: { group: Cont
         {kinds.map((item) => <button type="button" key={item} data-active={kind === item} onClick={() => setKind(item)}>{kindLabels[item][en ? 'en' : 'fa']} <b>{group.documents.filter((document) => document.kind === item).length.toLocaleString(numberLocale)}</b></button>)}
       </div>
     </div>
-    {documents.length ? <ul className={styles.documents}>{documents.map((document) => <li key={`${document.title}-${document.documentNumber ?? document.url}`}>
-      <div className={styles.documentIcon} aria-hidden="true">{document.kind === 'connection' ? '⌁' : document.kind === 'parameter' ? '#' : '≡'}</div>
-      <div className={styles.documentInfo}><div className={styles.documentHeading}><span className={styles.kind}>{kindLabels[document.kind][en ? 'en' : 'fa']}</span><span className={styles.language}>{document.language}</span></div><h3>{document.title}</h3><div className={styles.documentMeta} dir="ltr">{document.documentNumber && <code>{document.documentNumber}</code>}{document.revision && <span>{document.revision}</span>}</div></div>
-      <div className={styles.documentActions}><a href={document.url} target="_blank" rel="noopener noreferrer nofollow">{accessLabels[document.access][en ? 'en' : 'fa']}<span aria-hidden="true">↗</span></a>{document.officialUrl && <a className={styles.officialLink} href={document.officialUrl} target="_blank" rel="noopener noreferrer nofollow">{en ? 'Official manufacturer source' : 'منبع رسمی سازنده'}<span aria-hidden="true">↗</span></a>}</div>
-    </li>)}</ul> : <div className={styles.empty}><strong>{en ? 'No matching documents' : 'سندی با این مشخصات پیدا نشد'}</strong><p>{en ? 'Clear the search or choose another type.' : 'عبارت جست‌وجو را پاک کنید یا نوع دیگری را انتخاب کنید.'}</p></div>}
+    {documents.length ? <ul className={styles.documents}>{documents.map((document) => {
+      const source = document.source ?? (document.access === 'archive' ? 'unofficial' : 'official');
+      return <li key={`${document.title}-${document.documentNumber ?? document.url}`}>
+        <div className={styles.documentIcon} aria-hidden="true">{document.kind === 'connection' ? '⌁' : document.kind === 'parameter' ? '#' : '≡'}</div>
+        <div className={styles.documentInfo}>
+          <div className={styles.documentHeading}>
+            <span className={styles.kind}>{kindLabels[document.kind][en ? 'en' : 'fa']}</span>
+            <span className={styles.language}>{document.language}</span>
+            <span className={styles.sourceBadge} data-source={source}>{source === 'official' ? (en ? 'Official' : 'رسمی') : (en ? 'Unofficial / archive' : 'غیررسمی / آرشیوی')}</span>
+          </div>
+          <h3>{document.title}</h3>
+          <div className={styles.documentMeta} dir="ltr">{document.documentNumber && <code>{document.documentNumber}</code>}{document.revision && <span>{document.revision}</span>}</div>
+          {(document.coverageFa || document.coverageEn) && <p className={styles.documentCoverage}>{en ? document.coverageEn : document.coverageFa}</p>}
+        </div>
+        <div className={styles.documentActions}><a href={document.url} target="_blank" rel="noopener noreferrer nofollow">{accessLabels[document.access][en ? 'en' : 'fa']}<span aria-hidden="true">↗</span></a>{document.officialUrl && <a className={styles.officialLink} href={document.officialUrl} target="_blank" rel="noopener noreferrer nofollow">{en ? 'Official manufacturer source' : 'منبع رسمی سازنده'}<span aria-hidden="true">↗</span></a>}</div>
+      </li>;
+    })}</ul> : <div className={styles.empty}><strong>{en ? 'No matching documents' : 'سندی با این مشخصات پیدا نشد'}</strong><p>{en ? 'Clear the search or choose another type.' : 'عبارت جست‌وجو را پاک کنید یا نوع دیگری را انتخاب کنید.'}</p></div>}
   </>;
 }
