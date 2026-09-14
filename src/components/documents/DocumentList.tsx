@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { ControllerDocumentGroup, DocumentKind } from '@/data/cnc-documents';
 import styles from './DocumentsLibrary.module.css';
 
@@ -18,6 +18,17 @@ export function DocumentList({ group, locale, initialQuery = '' }: { group: Cont
   const numberLocale = en ? 'en-US' : 'fa-IR';
   const [kind, setKind] = useState<DocumentKind | 'all'>('all');
   const [query, setQuery] = useState(initialQuery);
+  const [localDownloads, setLocalDownloads] = useState<Record<string, string>>({});
+  useEffect(() => {
+    let active = true;
+    fetch('/downloads/cnc-documents/manifest.json', { cache: 'no-store' })
+      .then((response) => response.ok ? response.json() : Promise.reject(new Error(`HTTP ${response.status}`)))
+      .then((manifest: { entries?: Array<{ id: string; localPath: string }> }) => {
+        if (active) setLocalDownloads(Object.fromEntries((manifest.entries ?? []).map((entry) => [entry.id, entry.localPath])));
+      })
+      .catch(() => undefined);
+    return () => { active = false; };
+  }, []);
   const kinds = kindOrder.filter((item) => group.documents.some((document) => document.kind === item));
   const documents = useMemo(() => {
     const needle = query.trim().toLocaleLowerCase(locale);
@@ -33,6 +44,8 @@ export function DocumentList({ group, locale, initialQuery = '' }: { group: Cont
       </div>
     </div>
     {documents.length ? <ul className={styles.documents}>{documents.map((document) => {
+      const documentIndex = group.documents.indexOf(document);
+      const localUrl = localDownloads[`${group.id}:${documentIndex}:primary`];
       const source = document.source ?? (document.access === 'archive' ? 'unofficial' : 'official');
       return <li key={`${document.title}-${document.documentNumber ?? document.url}`}>
         <div className={styles.documentIcon} aria-hidden="true">{document.kind === 'connection' ? '⌁' : document.kind === 'parameter' ? '#' : '≡'}</div>
@@ -46,7 +59,7 @@ export function DocumentList({ group, locale, initialQuery = '' }: { group: Cont
           <div className={styles.documentMeta} dir="ltr">{document.documentNumber && <code>{document.documentNumber}</code>}{document.revision && <span>{document.revision}</span>}</div>
           {(document.coverageFa || document.coverageEn) && <p className={styles.documentCoverage}>{en ? document.coverageEn : document.coverageFa}</p>}
         </div>
-        <div className={styles.documentActions}><a href={document.url} target="_blank" rel="noopener noreferrer nofollow">{accessLabels[document.access][en ? 'en' : 'fa']}<span aria-hidden="true">↗</span></a>{document.officialUrl && <a className={styles.officialLink} href={document.officialUrl} target="_blank" rel="noopener noreferrer nofollow">{en ? 'Official manufacturer source' : 'منبع رسمی سازنده'}<span aria-hidden="true">↗</span></a>}</div>
+        <div className={styles.documentActions}><a href={localUrl ?? document.url} target="_blank" rel="noopener noreferrer nofollow" download={localUrl ? true : undefined}>{localUrl ? (en ? 'Direct local download' : 'دانلود مستقیم از سرور') : accessLabels[document.access][en ? 'en' : 'fa']}<span aria-hidden="true">↗</span></a>{localUrl && <a className={styles.officialLink} href={document.url} target="_blank" rel="noopener noreferrer nofollow">{en ? 'Original source' : 'منبع اصلی'}<span aria-hidden="true">↗</span></a>}{document.officialUrl && <a className={styles.officialLink} href={document.officialUrl} target="_blank" rel="noopener noreferrer nofollow">{en ? 'Official manufacturer source' : 'منبع رسمی سازنده'}<span aria-hidden="true">↗</span></a>}</div>
       </li>;
     })}</ul> : <div className={styles.empty}><strong>{en ? 'No matching documents' : 'سندی با این مشخصات پیدا نشد'}</strong><p>{en ? 'Clear the search or choose another type.' : 'عبارت جست‌وجو را پاک کنید یا نوع دیگری را انتخاب کنید.'}</p></div>}
   </>;
