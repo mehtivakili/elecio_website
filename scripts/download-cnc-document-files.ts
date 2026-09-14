@@ -19,6 +19,7 @@ type CheckedLink = {
 type CheckReport = { schemaVersion: number; checkedAt: string; results: CheckedLink[] };
 type DiscoveredLink = { url: string; label: string };
 type CachedPage = { finalUrl: string; html: string };
+type ManifestEntry = { id: string; localPath: string; sourceUrl: string; bytes: number; updatedAt: string };
 
 const args = process.argv.slice(2);
 const option = (name: string, fallback: string) => {
@@ -46,6 +47,7 @@ const idFilter = option('--id', '');
 const dryRun = args.includes('--dry-run');
 const overwrite = args.includes('--overwrite');
 const directOnly = args.includes('--direct-only');
+const manifestOnly = args.includes('--manifest-only');
 const userAgent = 'ElecioDocumentChecker/1.0 (+https://elecio.co)';
 const pageCache = new Map<string, CachedPage>();
 const cookies = new Map<string, string>();
@@ -227,12 +229,62 @@ async function main() {
   const candidates = report.results.filter((item) => item.linkKind === 'primary'
     && item.localPath?.startsWith('/downloads/cnc-documents/')
     && (!idFilter || item.id.includes(idFilter))).slice(0, limit);
+  const manifestEntries = new Map<string, ManifestEntry>();
+  const writeManifest = async () => {
+    const temporary = `${manifestPath}.part-${process.pid}`;
+    await mkdir(path.dirname(manifestPath), { recursive: true });
+    await writeFile(temporary, `${JSON.stringify({
+      schemaVersion: 1,
+      generatedAt: new Date().toISOString(),
+      entries: [...manifestEntries.values()].sort((a, b) => a.id.localeCompare(b.id)),
+    }, null, 2)}\n`, 'utf8');
+    try {
+      await rename(temporary, manifestPath);
+    } catch (error) {
+      if (!(error instanceof Error) || !('code' in error) || !['EEXIST', 'EPERM'].includes(String(error.code))) throw error;
+      await rm(manifestPath, { force: true });
+      await rename(temporary, manifestPath);
+    }
+  };
+
+  const recoveredAt = new Date().toISOString();
+  for (const item of candidates) {
+    const destination = destinationFor(item.localPath!);
+    if (!await hasPdfSignature(destination)) continue;
+    manifestEntries.set(item.id, {
+      id: item.id,
+      localPath: item.localPath!,
+      sourceUrl: item.url,
+      bytes: (await stat(destination)).size,
+      updatedAt: recoveredAt,
+    });
+  }
+  if (!dryRun) await writeManifest();
+  if (manifestOnly) {
+    console.log(`Manifest rebuilt with ${manifestEntries.size} local PDF file(s): ${manifestPath}`);
+    return;
+  }
+
+  let manifestWriteChain = Promise.resolve();
+  const checkpoint = (result: Awaited<ReturnType<typeof download>>) => {
+    if (dryRun || !['downloaded', 'discovered', 'skipped'].includes(result.status) || !result.localPath) return Promise.resolve();
+    manifestEntries.set(result.id, {
+      id: result.id,
+      localPath: result.localPath,
+      sourceUrl: result.sourceUrl,
+      bytes: result.bytes,
+      updatedAt: new Date().toISOString(),
+    });
+    manifestWriteChain = manifestWriteChain.then(writeManifest);
+    return manifestWriteChain;
+  };
   const results: Awaited<ReturnType<typeof download>>[] = [];
   let cursor = 0;
   await Promise.all(Array.from({ length: Math.min(concurrency, candidates.length) }, async () => {
     while (cursor < candidates.length) {
       const item = candidates[cursor++];
       const result = await download(item); results.push(result);
+      await checkpoint(result);
       console.log(`[${result.status.toUpperCase()}] ${item.url} -> ${result.destination}`);
     }
   }));
@@ -247,22 +299,6 @@ async function main() {
   };
   await mkdir(path.dirname(resultPath), { recursive: true });
   await writeFile(resultPath, `${JSON.stringify({ summary, results }, null, 2)}\n`, 'utf8');
-  if (!dryRun) {
-    type ManifestEntry = { id: string; localPath: string; sourceUrl: string; bytes: number; updatedAt: string };
-    let existing: { entries?: ManifestEntry[] } = {};
-    try { existing = JSON.parse(await readFile(manifestPath, 'utf8')) as { entries?: ManifestEntry[] }; } catch { /* First run. */ }
-    const entries = new Map<string, ManifestEntry>();
-    for (const entry of existing.entries ?? []) {
-      if (entry.localPath?.startsWith('/downloads/cnc-documents/') && await hasPdfSignature(destinationFor(entry.localPath))) entries.set(entry.id, entry);
-    }
-    const updatedAt = new Date().toISOString();
-    for (const result of results) {
-      if (!['downloaded', 'discovered', 'skipped'].includes(result.status) || !result.localPath) continue;
-      entries.set(result.id, { id: result.id, localPath: result.localPath, sourceUrl: result.sourceUrl, bytes: result.bytes, updatedAt });
-    }
-    await mkdir(path.dirname(manifestPath), { recursive: true });
-    await writeFile(manifestPath, `${JSON.stringify({ schemaVersion: 1, generatedAt: updatedAt, entries: [...entries.values()].sort((a, b) => a.id.localeCompare(b.id)) }, null, 2)}\n`, 'utf8');
-  }
   console.log(`\nResult: ${resultPath}`); console.log(JSON.stringify(summary, null, 2));
   if (summary.failed > 0) process.exitCode = 1;
 }
