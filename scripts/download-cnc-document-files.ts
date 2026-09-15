@@ -43,7 +43,7 @@ const maxHtmlBytes = positiveNumber('--max-html-mb', 12) * 1024 * 1024;
 const maxDepth = Math.floor(positiveNumber('--max-depth', 3));
 const maxVisits = Math.floor(positiveNumber('--max-visits', 32));
 const limit = Math.floor(positiveNumber('--limit', Number.MAX_SAFE_INTEGER));
-const idFilter = option('--id', '');
+const idFilters = option('--id', '').split(',').map((value) => value.trim()).filter(Boolean);
 const sourceHostFilter = option('--source-host', '').toLowerCase();
 const dryRun = args.includes('--dry-run');
 const overwrite = args.includes('--overwrite');
@@ -202,6 +202,12 @@ const knownCandidates = (url: string) => {
 };
 
 const curatedDocumentUrls: Record<string, string[]> = {
+  'B-61404E': [
+    'https://cncmanual.com/fanuc-series-0-00-0-mate-for-machining-center-operators-manual-b-61404e08/',
+  ],
+  'B-61393E/06': [
+    'https://www.drivesul.com.br/template/imagens/manuais/manuais-fanuc/fanuc-series-0-model-c/Series%200%20%2000%20%200-Mate%20-%20Connection%20Manual%20%28Hardware%29.pdf',
+  ],
   'B-62560E/02': [
     'https://www.star-circuit.com/article/pdf/F15_PARAMETER_MANUAL.pdf',
   ],
@@ -217,8 +223,14 @@ const curatedDocumentUrls: Record<string, string[]> = {
   'B-63014EN/02': [
     'https://www.star-circuit.com/article/pdf/FANUC_Series_16i_18i_160i_180i_160is_180isMA_Operator_Manual.pdf',
   ],
+  'B-64120EN': [
+    'https://epcm.ucoz.ru/programs/B-64120EN_01.pdf',
+  ],
   'IB-1501046': [
     'https://www.mitsubishielectric.com/dl/fa/document/manual/cnc/ib1501046/ib1501046engl.pdf',
+  ],
+  'BNP-B2212 / BNP-B2269': [
+    'https://dl.mitsubishielectric.com/dl/fa/document/manual/cnc/bnp-b2212%28eng%29/bnp-b2212%28eng%29Z.pdf',
   ],
   'IB-1500254': [
     'https://dl.mitsubishielectric.com/dl/fa/document/manual/cnc/ib1500254%28eng%29/ib1500254d.pdf',
@@ -258,9 +270,104 @@ const curatedDocumentUrls: Record<string, string[]> = {
   ],
 };
 
-const curatedCandidates = (item: CheckedLink) => item.documentNumber
-  ? (curatedDocumentUrls[item.documentNumber] ?? [])
-  : [];
+// Collection, portal and JavaScript-driven rows do not have a document number,
+// so pin a representative full PDF to the stable row id. This also makes the
+// server job repeatable when a vendor changes its library UI.
+const curatedEntryUrls: Record<string, string[]> = {
+  'heidenhain-tnc-426-430:1:primary': [
+    'https://content.heidenhain.de/doku/tnc_guide/pdf_files/TNC400/280476-xx/bhb/340_135-22.pdf',
+  ],
+  'heidenhain-tnc-426-430:2:primary': [
+    'https://endat.heidenhain.com/fileadmin/pdf/en/01_Products/Prospekte/PR_Programming_Station_for_TNC_Controls_ID825930_en.pdf',
+    'https://www.heidenhain.com/fileadmin/pdf/en/01_Products/Prospekte/PR_Programming_Station_for_TNC_Controls_ID825930_en.pdf',
+  ],
+  'heidenhain-tnc-426-430:3:primary': [
+    'https://content.heidenhain.de/doku/tnc_guide/pdf_files/TNC400/280476-xx/tchprobe/329_203-26.pdf',
+  ],
+  'heidenhain-itnc-530:2:primary': [
+    'https://content.heidenhain.de/doku/tnc_guide/pdf_files/iTNC530/34049x-04/en/533_188-23.pdf',
+  ],
+  'heidenhain-itnc-530:3:primary': [
+    'https://endat.heidenhain.com/fileadmin/pdf/en/01_Products/Prospekte/PR_Programming_Station_for_TNC_Controls_ID825930_en.pdf',
+    'https://www.heidenhain.com/fileadmin/pdf/en/01_Products/Prospekte/PR_Programming_Station_for_TNC_Controls_ID825930_en.pdf',
+  ],
+  'siemens-802d:4:primary': [
+    'https://support.industry.siemens.com/cs/attachments/26218975/802Dsl_BPD_0609_en_en-US.pdf',
+  ],
+  'siemens-802d:6:primary': [
+    'https://support.industry.siemens.com/cs/attachments/28529557/802D_FB_1103_en.pdf',
+  ],
+  'mitsubishi-m700-m70:6:primary': [
+    'https://dl.mitsubishielectric.com/dl/fa/document/manual/cnc/ib1500087/ib1500087a.pdf',
+  ],
+  'mitsubishi-m700-m70:7:primary': [
+    'https://dl.mitsubishielectric.com/dl/fa/document/manual/cnc/ib1500904/ib1500904engm.pdf',
+  ],
+  'haas-classic-ngc:0:primary': [
+    "https://www.haascnc.com/content/dam/haascnc/en/service/manual/operator/english---mill-ngc---operator%27s-manual---2025.pdf",
+  ],
+  'fanuc-0i-f-plus:0:primary': [
+    'https://www.fanucamerica.com/docs/default-source/cnc-files/brochures/fanuc-0i-f-plus-cnc-brochure.pdf',
+  ],
+  'fanuc-0i-f-plus:6:primary': [
+    'https://www.fanucamerica.com/docs/default-source/cnc-files/v2-cnc-plus-alpha-id-servo-brochure.pdf',
+    'https://www.fanuc.eu/~/media/files/pdf/products/cnc/brochures/mbr-02265-fa%20seamless%20cnc%20concept-v5/brochure-seamless-cnc-en.pdf',
+  ],
+  'fanuc-30i-31i-32i-b:0:primary': [
+    'https://www.fanucamerica.com/docs/default-source/cnc-files/brochures/cnc-products-and-services.pdf',
+    'https://www.fanucamerica.com/docs/default-source/cnc-files/brochures/30i-b-plus-brochure.pdf',
+  ],
+  'fanuc-30i-31i-32i-b:1:primary': [
+    'https://www.fanuc.eu/~/media/files/pdf/products/cnc/brochures/mbr-02265-fa%20seamless%20cnc%20concept-v5/brochure-seamless-cnc-en.pdf',
+  ],
+  'siemens-808d:0:primary': [
+    'https://support.industry.siemens.com/cs/attachments/109763681/808D_ADV_turning_op_man_1218_en-US.pdf',
+  ],
+  'siemens-828d:1:primary': [
+    'https://support.industry.siemens.com/cs/attachments/109974163/828D_turning_op_man_0724_en-US.pdf',
+  ],
+  'siemens-828d:2:primary': [
+    'https://support.industry.siemens.com/cs/attachments/109974240/828D_ncprogramming_progr_man_0724_en-US.pdf',
+  ],
+  'siemens-828d:5:primary': [
+    'https://support.industry.siemens.com/cs/attachments/109974378/828D_md_lists_man_0724_en-US.pdf',
+  ],
+  'siemens-828d:6:primary': [
+    'https://support.industry.siemens.com/cs/attachments/109802874/828D_alarms_diagnostics_man_0721_en-US.pdf',
+  ],
+  'siemens-840d-sl:0:primary': [
+    'https://support.industry.siemens.com/cs/attachments/109752342/840Dsl_828D_808D_AMM_op_man_1217_en-US.pdf',
+  ],
+  'siemens-840d-sl:1:primary': [
+    'https://support.industry.siemens.com/cs/attachments/109783219/840Dsl_turning_op_man_1020_en-US.pdf',
+  ],
+  'heidenhain-tnc-320:0:primary': [
+    'https://content.heidenhain.de/doku/tnc_guide/pdf_files/TNC320/77185x-18/klartext/1096950-25.pdf',
+    'https://www.heidenhain.com/fileadmin/pdf/en/01_Products/Prospekte/PR_TNC320_ID1113511_en.pdf',
+  ],
+  'heidenhain-tnc-620:0:primary': [
+    'https://content.heidenhain.de/doku/tnc_guide/pdf_files/TNC620/81760x-08/einrichten/1263172-22.pdf',
+  ],
+  'heidenhain-tnc-620:1:primary': [
+    'https://endat.heidenhain.com/fileadmin/pdf/en/01_Products/Prospekte/PR_Programming_Station_for_TNC_Controls_ID825930_en.pdf',
+    'https://www.heidenhain.com/fileadmin/pdf/en/01_Products/Prospekte/PR_Programming_Station_for_TNC_Controls_ID825930_en.pdf',
+  ],
+  'heidenhain-tnc-640:6:primary': [
+    'https://endat.heidenhain.com/fileadmin/pdf/en/01_Products/Prospekte/PR_TNC640_HSCI_ID892916_en.pdf',
+    'https://www.heidenhain.com/fileadmin/pdf/en/01_Products/Prospekte/PR_TNC640_HSCI_ID892916_en.pdf',
+  ],
+  'gsk-980-series:0:primary': [
+    'https://www.gsk.com.cn/uploadfiles/%E7%BD%91%E7%AB%99%E8%AF%B4%E6%98%8E%E4%B9%A6/cnc/%E7%A0%94%E5%8F%91%E4%BA%8C%E5%AE%A4%E8%AF%B4%E6%98%8E%E4%B9%A6/980tdc%E7%B3%BB%E5%88%97/2012-09-24%20English%20GSK980TDc%202011.6.2.pdf',
+  ],
+  'gsk-980-series:1:primary': [
+    'https://www.gsk.com.cn/uploadfiles/%E7%BD%91%E7%AB%99%E8%AF%B4%E6%98%8E%E4%B9%A6/cnc/%E7%A0%94%E5%8F%91%E4%B8%89%E5%AE%A4%E8%AF%B4%E6%98%8E%E4%B9%A6%EF%BC%88%E4%B8%8A%E4%BC%A0%E7%BD%91%E7%AB%99%EF%BC%89/2015-05-26%20English%20GSK980TC3%E7%B3%BB%E5%88%97%20PLC%E5%8F%8A%E5%AE%89%E8%A3%85%E8%BF%9E%E6%8E%A5%E6%89%8B%E5%86%8C_2014%E5%B9%B412%E6%9C%88%E7%AC%AC1%E7%89%88_.pdf',
+  ],
+};
+
+const curatedCandidates = (item: CheckedLink) => [
+  ...(item.documentNumber ? (curatedDocumentUrls[item.documentNumber] ?? []) : []),
+  ...(curatedEntryUrls[item.id] ?? []),
+];
 
 const siteSearchCandidates = (item: CheckedLink) => {
   if (!item.documentNumber) return [];
@@ -336,7 +443,7 @@ async function main() {
   const candidates = report.results.filter((item) => item.linkKind === 'primary'
     && item.localPath?.startsWith('/downloads/cnc-documents/')
     && (!sourceHostFilter || new URL(item.url).hostname.toLowerCase() === sourceHostFilter)
-    && (!idFilter || item.id.includes(idFilter))).slice(0, limit);
+    && (!idFilters.length || idFilters.some((id) => item.id.includes(id)))).slice(0, limit);
   const manifestEntries = new Map<string, ManifestEntry>();
   const writeManifest = async () => {
     const temporary = `${manifestPath}.part-${process.pid}`;
