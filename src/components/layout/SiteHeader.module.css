@@ -6,8 +6,10 @@
 }
 
 /* The one place glass is still used — a floating pill nav, like allys.mu / mcshannock.design. */
+/* Sized to the content (logo + 7 nav items + actions measure ~1220px in fa, ~1255px in en) so the
+   menu doesn't stretch into an empty gap; below this width the menu's own overflow takes over. */
 .inner {
-  max-width: 1420px;
+  max-width: 1280px;
   margin: 0 auto;
   padding: 10px 14px 10px 20px;
   display: flex;
@@ -40,6 +42,7 @@
 .desktopMenu {
   flex: 1;
   min-width: 0;
+  justify-content: center;
   border-bottom: none;
   background: transparent;
 }
