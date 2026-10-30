@@ -75,3 +75,37 @@
 .mediaGrid code { overflow: hidden; text-overflow: ellipsis; direction: ltr; }
 .mediaThumb { position: relative; aspect-ratio: 16/10; overflow: hidden; border-radius: 12px; background: var(--surface-2); }
 .mediaThumb img { object-fit: cover; }
+.rangeTabs { display: inline-flex; gap: .25rem; margin-bottom: 1rem; padding: .25rem; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); }
+.rangeTabs a { padding: .45rem .95rem; border-radius: 999px; color: var(--text-60); font-size: .86rem; font-weight: 750; }
+.rangeTabs a:hover, .rangeTabs a:focus-visible { color: var(--foreground); }
+.rangeTabs a.rangeTabActive { color: #fff; background: var(--signal); }
+.chartCard { margin-top: 1rem; }
+.chartCard h2, .trafficGrid h2 { margin: .25rem 0; font-size: 1.15rem; }
+.chartCard .muted { margin: 0; font-size: .85rem; }
+.chart { display: grid; grid-template-columns: auto minmax(0,1fr); gap: .6rem; margin-top: .75rem; }
+.chartAxis { display: flex; flex-direction: column; justify-content: space-between; height: 220px; color: var(--text-40); font-size: .72rem; text-align: end; font-variant-numeric: tabular-nums; }
+.chartPlot { min-width: 0; }
+.chartBars { display: flex; align-items: flex-end; gap: 2px; height: 220px; border-bottom: 1px solid var(--border); background-image: linear-gradient(to bottom, color-mix(in srgb, var(--border) 70%, transparent) 1px, transparent 1px); background-size: 100% 50%; }
+.chartBar { position: relative; flex: 1 1 0; min-width: 0; height: 100%; display: flex; align-items: flex-end; justify-content: center; border-radius: 6px 6px 0 0; }
+.chartBar:hover, .chartBar:focus-visible { background: color-mix(in srgb, var(--signal) 9%, transparent); outline: none; }
+.chartFill { width: 100%; max-width: 40px; border-radius: 4px 4px 0 0; background: var(--signal); transition: opacity .15s ease; }
+.chartBarMuted .chartFill { opacity: .35; }
+.chartTip { position: absolute; z-index: 3; bottom: calc(100% + 8px); left: 50%; display: none; gap: .15rem; padding: .55rem .7rem; color: var(--foreground); background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 12px 28px -14px rgba(0,0,0,.55); font-size: .78rem; white-space: nowrap; transform: translateX(-50%); pointer-events: none; }
+.chartBar:hover .chartTip, .chartBar:focus-visible .chartTip { display: grid; }
+.chartTicks { display: flex; gap: 2px; margin-top: .4rem; color: var(--text-40); font-size: .72rem; }
+.chartTicks span { flex: 1 1 0; min-width: 0; white-space: nowrap; text-align: center; }
+.chartTicks span:first-child { text-align: start; }
+.chartTicks span:last-child { text-align: end; }
+.trafficGrid { display: grid; grid-template-columns: minmax(280px,.8fr) minmax(0,1.6fr); gap: 1rem; margin-top: 1.5rem; align-items: start; }
+.scrollTable { max-height: 560px; overflow: auto; }
+.compactTable { min-width: 0; }
+.compactTable th, .compactTable td { padding: .6rem .8rem; vertical-align: middle; font-variant-numeric: tabular-nums; }
+.compactTable thead th { position: sticky; top: 0; z-index: 1; background: var(--surface); }
+.compactTable a { color: var(--foreground); }
+.compactTable a:hover, .compactTable a:focus-visible { color: var(--signal); }
+.selectedRow td { background: color-mix(in srgb, var(--signal) 10%, transparent); }
+.pathCell { overflow-wrap: anywhere; }
+.meter { display: block; min-width: 72px; height: 4px; margin-top: .35rem; overflow: hidden; border-radius: 999px; background: var(--surface-2); }
+.meter span { display: block; height: 100%; border-radius: inherit; background: var(--signal); }
+.inlineButton { display: inline-flex; align-items: center; min-height: 38px; font-size: .85rem; white-space: nowrap; }
+@media(max-width:1100px){.trafficGrid{grid-template-columns:1fr}}

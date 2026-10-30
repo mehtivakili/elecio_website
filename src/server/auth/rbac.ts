@@ -13,6 +13,7 @@ export const resources = [
   'staff',
   'integrations',
   'audit',
+  'analytics',
 ] as const;
 export type AppResource = (typeof resources)[number];
 export type AppAction = 'read' | 'create' | 'update' | 'delete' | 'publish' | 'manage';
@@ -51,6 +52,7 @@ export const permissionMatrix: Record<AppRole, Partial<Record<AppResource, Grant
     leads: { actions: ['read', 'update', 'manage'], scope: 'all' },
     users: { actions: ['read', 'update', 'manage'], scope: 'all' },
     audit: { actions: ['read'], scope: 'all' },
+    analytics: { actions: ['read'], scope: 'all' },
   },
   owner: Object.fromEntries(
     resources.map((resource) => [resource, { actions: allActions, scope: 'all' }])

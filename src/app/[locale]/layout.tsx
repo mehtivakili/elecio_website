@@ -11,6 +11,7 @@ import { InlineScript } from '@/components/layout/InlineScript';
 import { CustomScrollbar } from '@/components/layout/CustomScrollbar';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { SiteFooter } from '@/components/layout/SiteFooter';
+import { PageViewTracker } from '@/components/layout/PageViewTracker';
 import '../globals.css';
 import { SITE_URL } from '@/lib/seo';
 import { organizationJsonLd, websiteJsonLd, jsonLdScript } from '@/lib/structured-data';
@@ -94,6 +95,7 @@ export default async function LocaleLayout({
               <SiteHeader />
               <div id="main-content" className="page-content">{children}</div>
               <SiteFooter />
+              <PageViewTracker />
             </AppThemeProvider>
           </AntdRegistry>
         </NextIntlClientProvider>

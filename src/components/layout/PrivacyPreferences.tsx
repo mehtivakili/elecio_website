@@ -22,7 +22,7 @@ export function PrivacyPreferences() {
   };
   return (
     <aside className={styles.banner} aria-label={fa ? 'تنظیمات حریم خصوصی' : 'Privacy preferences'}>
-      <p>{fa ? 'با اجازه شما فقط آمار کلی و ناشناسِ اقدام‌ها را می‌شماریم؛ هیچ شماره، ایمیل یا شناسه‌ای ثبت نمی‌شود.' : 'With your permission, we count anonymous aggregate actions only. No phone, email, user, session, or device identifier is stored.'}</p>
+      <p>{fa ? 'بازدید صفحات را بدون کوکی و به‌صورت ناشناس می‌شماریم؛ هیچ IP، شماره، ایمیل یا حساب کاربری ذخیره نمی‌شود. با اجازه شما، اقدام‌هایی مثل دانلود و ارسال پیام را هم به‌صورت ناشناس می‌شماریم. «فقط ضروری» هر دو را غیرفعال می‌کند.' : 'We count page visits anonymously, without cookies. No IP address, phone number, email or account is stored. With your permission, we also count anonymous actions such as downloads and contact requests. “Necessary only” turns both off.'}</p>
       <div>
         <button type="button" onClick={() => choose('denied')}>{fa ? 'فقط ضروری' : 'Necessary only'}</button>
         <button type="button" className={styles.accept} onClick={() => choose('granted')}>{fa ? 'اجازه آمار ناشناس' : 'Allow anonymous metrics'}</button>

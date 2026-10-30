@@ -11,6 +11,7 @@ export default async function PanelLayout({children,params}:{children:React.Reac
   const en=locale==='en';
   const links=[
     ['/admin',en?'Dashboard':'داشبورد',true],
+    ['/admin/analytics',en?'Analytics':'آمار بازدید',can(staff.role,'analytics','read')],
     ['/admin/leads',en?'Leads':'سرنخ‌ها',can(staff.role,'leads','read','all')||can(staff.role,'leads','read','assigned')],
     ['/admin/content',en?'Content':'محتوا',can(staff.role,'content','read')],
     ['/admin/content/library',en?'Content library':'کتابخانه محتوا',can(staff.role,'content','manage')],
