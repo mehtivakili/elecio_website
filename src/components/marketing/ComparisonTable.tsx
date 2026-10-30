@@ -15,9 +15,6 @@ type ComparisonRow = {
 
 const PRODUCTS = [
   'Elecio Smart DNC',
-  'HBM WiFi DNC',
-  'Electro Olympic',
-  'Hermes DNC',
   'Micro DNC 3A',
   'Quinx DNC',
   'CIMCO DNC-Max',
@@ -30,9 +27,6 @@ const ROWS: ComparisonRow[] = [
     cells: [
       { state: 'yes', en: 'Wi-Fi', fa: 'Wi-Fi' },
       { state: 'yes', en: 'Wi-Fi', fa: 'Wi-Fi' },
-      { state: 'no' },
-      { state: 'yes', en: 'Wi-Fi', fa: 'Wi-Fi' },
-      { state: 'yes', en: 'Wi-Fi', fa: 'Wi-Fi' },
       { state: 'yes', en: 'Wi-Fi / LAN', fa: 'Wi-Fi / LAN' },
       { en: '—', fa: '—' },
     ],
@@ -42,7 +36,6 @@ const ROWS: ComparisonRow[] = [
     label: { en: 'Local Storage', fa: 'حافظه' },
     cells: [
       { state: 'yes', en: 'microSD supported', fa: 'قابل ارتقا با microSD' },
-      { state: 'no' }, { state: 'no' }, { state: 'no' },
       { state: 'yes', en: '4GB', fa: '4GB' },
       { state: 'no' },
       { en: '—', fa: '—' },
@@ -56,9 +49,6 @@ const ROWS: ComparisonRow[] = [
       { en: 'Limited support', fa: 'پشتیبانی محدود' },
       { en: 'Limited support', fa: 'پشتیبانی محدود' },
       { en: 'Limited support', fa: 'پشتیبانی محدود' },
-      { en: 'Limited support', fa: 'پشتیبانی محدود' },
-      { en: 'Limited support', fa: 'پشتیبانی محدود' },
-      { en: 'Limited support', fa: 'پشتیبانی محدود' },
     ],
   },
   {
@@ -66,7 +56,7 @@ const ROWS: ComparisonRow[] = [
     label: { en: 'Heidenhain Support', fa: 'Heidenhain' },
     cells: [
       { state: 'yes', en: 'TNC + LSV2 from software', fa: 'TNC + LSV2؛ انتخاب از نرم‌افزار' },
-      { state: 'yes' }, { state: 'no' }, { state: 'no' }, { state: 'no' }, { state: 'no' }, { state: 'no' },
+      { state: 'no' }, { state: 'no' }, { state: 'no' },
     ],
   },
   {
@@ -74,9 +64,6 @@ const ROWS: ComparisonRow[] = [
     label: { en: 'CNC Software', fa: 'نرم‌افزار' },
     cells: [
       { state: 'yes', en: 'Windows + Android + Web', fa: 'Windows + Android + Web' },
-      { en: 'Windows + Web', fa: 'Windows + Web' },
-      { state: 'no' },
-      { en: '—', fa: '—' },
       { en: 'Windows', fa: 'Windows' },
       { en: 'Windows', fa: 'Windows' },
       { en: 'Windows + Web', fa: 'Windows + Web' },
@@ -85,39 +72,34 @@ const ROWS: ComparisonRow[] = [
   {
     icon: '▥',
     label: { en: 'Multi-CNC Monitoring', fa: 'پایش چند CNC' },
-    cells: [{ state: 'yes' }, { state: 'yes' }, { state: 'yes' }, { state: 'yes' }, { state: 'no' }, { state: 'no' }, { state: 'no' }],
+    cells: [{ state: 'yes' }, { state: 'no' }, { state: 'no' }, { state: 'no' }],
   },
   {
     icon: '♙',
     label: { en: 'Operator Panel', fa: 'پنل اپراتور' },
-    cells: [
-      { state: 'yes' },
-      { en: 'Touch', fa: 'Touch' },
-      { en: 'Touch', fa: 'Touch' },
-      { state: 'no' }, { state: 'no' }, { state: 'yes' }, { state: 'no' },
-    ],
+    cells: [{ state: 'yes' }, { state: 'no' }, { state: 'yes' }, { state: 'no' }],
   },
   {
     icon: '▰',
     label: { en: 'File Management', fa: 'فولدر‌بندی' },
-    cells: [{ state: 'yes' }, { state: 'yes' }, { state: 'yes' }, { state: 'yes' }, { state: 'no' }, { state: 'yes' }, { state: 'yes' }],
+    cells: [{ state: 'yes' }, { state: 'no' }, { state: 'yes' }, { state: 'yes' }],
   },
   {
     icon: '↻',
     label: { en: 'Auto Repeat', fa: 'Auto Repeat' },
-    cells: [{ state: 'yes' }, { state: 'yes' }, { state: 'yes' }, { state: 'yes' }, { state: 'yes' }, { state: 'yes' }, { state: 'yes' }],
+    cells: [{ state: 'yes' }, { state: 'yes' }, { state: 'yes' }, { state: 'yes' }],
   },
   {
     icon: '⇆',
     label: { en: 'Transfer Resume', fa: 'پایش انتقال' },
-    cells: [{ state: 'yes' }, { state: 'yes' }, { state: 'no' }, { state: 'yes' }, { state: 'yes' }, { state: 'yes' }, { state: 'yes' }],
+    cells: [{ state: 'yes' }, { state: 'yes' }, { state: 'yes' }, { state: 'yes' }],
   },
   {
     icon: '▧',
     label: { en: 'Production Reports', fa: 'گزارش تولید' },
     cells: [
       { state: 'yes', en: 'Runtime + Idle + Cycle + Shift', fa: 'Runtime + Idle + Cycle + Shift' },
-      { state: 'yes' }, { state: 'no' }, { state: 'no' }, { state: 'no' }, { state: 'no' },
+      { state: 'no' }, { state: 'no' },
       { state: 'yes', en: 'MDC-Max advanced', fa: 'MDC-Max پیشرفته' },
     ],
   },
@@ -126,17 +108,13 @@ const ROWS: ComparisonRow[] = [
     label: { en: 'Technical Support & Updates', fa: 'پشتیبانی و آپدیت' },
     cells: [
       { state: 'yes', en: 'Full support + regular updates', fa: 'پشتیبانی + به‌روزرسانی' },
-      { state: 'yes', en: 'Limited support + on request', fa: 'پشتیبانی + به‌روزرسانی' },
-      { state: 'no' }, { state: 'no' }, { state: 'yes' }, { state: 'yes' }, { state: 'no' },
+      { state: 'yes' }, { state: 'yes' }, { state: 'no' },
     ],
   },
   {
     icon: '◇',
     label: { en: 'Warranty', fa: 'گارانتی' },
     cells: [
-      { en: '12 months', fa: '۱۲ ماه' },
-      { en: 'General support not included', fa: 'اعلام عمومی مشخص نشد' },
-      { en: '24 months', fa: '۲۴ ماه' },
       { en: '12 months', fa: '۱۲ ماه' },
       { en: '12 months', fa: '۱۲ ماه' },
       { en: 'General support not included', fa: 'اعلام عمومی مشخص نشد' },

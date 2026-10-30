@@ -125,7 +125,7 @@
 
 .table {
   width: 100%;
-  min-width: 1320px;
+  min-width: 980px;
   border-spacing: 0;
   border-collapse: separate;
   table-layout: fixed;
@@ -315,7 +315,7 @@
   }
 
   .table {
-    min-width: 1180px;
+    min-width: 860px;
     font-size: 12px;
   }
 
