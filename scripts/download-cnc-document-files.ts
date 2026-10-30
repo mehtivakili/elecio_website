@@ -292,9 +292,11 @@ const curatedEntryUrls: Record<string, string[]> = {
     'https://www.heidenhain.com/fileadmin/pdf/en/01_Products/Prospekte/PR_Programming_Station_for_TNC_Controls_ID825930_en.pdf',
   ],
   'siemens-802d:4:primary': [
+    'https://archive.org/download/manualzilla-id-7352721/7352721.pdf',
     'https://support.industry.siemens.com/cs/attachments/26218975/802Dsl_BPD_0609_en_en-US.pdf',
   ],
   'siemens-802d:6:primary': [
+    'https://archive.org/download/manuallib-id-75205/75205.pdf',
     'https://support.industry.siemens.com/cs/attachments/28529557/802D_FB_1103_en.pdf',
   ],
   'mitsubishi-m700-m70:6:primary': [
@@ -321,15 +323,19 @@ const curatedEntryUrls: Record<string, string[]> = {
     'https://www.fanuc.eu/~/media/files/pdf/products/cnc/brochures/mbr-02265-fa%20seamless%20cnc%20concept-v5/brochure-seamless-cnc-en.pdf',
   ],
   'siemens-808d:0:primary': [
+    'https://cache.industry.siemens.com/dl/files/680/80918680/att_107195/v1/EN_808D_Operating_and_Programming_Turning_2013-09.pdf?download=true',
     'https://support.industry.siemens.com/cs/attachments/109763681/808D_ADV_turning_op_man_1218_en-US.pdf',
   ],
   'siemens-828d:1:primary': [
+    'https://archive.org/download/romi-dcm-620-5x/U17421_Siemens%20Universal.pdf',
     'https://support.industry.siemens.com/cs/attachments/109974163/828D_turning_op_man_0724_en-US.pdf',
   ],
   'siemens-828d:2:primary': [
+    'https://archive.org/download/romi-dcm-620-5x/U17442_Fundaments.pdf',
     'https://support.industry.siemens.com/cs/attachments/109974240/828D_ncprogramming_progr_man_0724_en-US.pdf',
   ],
   'siemens-828d:5:primary': [
+    'https://cache.industry.siemens.com/dl/files/036/109803036/att_1082781/v1/828D_md_lists_man_0721_en-US.pdf?download=true',
     'https://support.industry.siemens.com/cs/attachments/109974378/828D_md_lists_man_0724_en-US.pdf',
   ],
   'siemens-828d:6:primary': [
@@ -341,8 +347,15 @@ const curatedEntryUrls: Record<string, string[]> = {
   'siemens-840d-sl:1:primary': [
     'https://support.industry.siemens.com/cs/attachments/109783219/840Dsl_turning_op_man_1020_en-US.pdf',
   ],
+  'siemens-840c:0:primary': [
+    'https://archive.org/download/manualsbase-id-72774/72774.pdf',
+  ],
+  'siemens-840c:1:primary': [
+    'https://archive.org/download/manualslib-id-152480/152480.pdf',
+  ],
   'heidenhain-tnc-320:0:primary': [
     'https://content.heidenhain.de/doku/tnc_guide/pdf_files/TNC320/77185x-18/klartext/1096950-25.pdf',
+    'https://endat.heidenhain.com/fileadmin/pdf/en/01_Products/Prospekte/PR_TNC320_ID1113511_en.pdf',
     'https://www.heidenhain.com/fileadmin/pdf/en/01_Products/Prospekte/PR_TNC320_ID1113511_en.pdf',
   ],
   'heidenhain-tnc-620:0:primary': [

@@ -1,88 +1,50 @@
 {
   "summary": {
     "checkedAt": "2026-09-14T08:43:30.755Z",
-    "completedAt": "2026-09-15T20:03:33.735Z",
-    "eligible": 8,
+    "completedAt": "2026-09-16T03:37:03.696Z",
+    "eligible": 4,
     "downloaded": 0,
-    "discovered": 6,
+    "discovered": 4,
     "skipped": 0,
     "planned": 0,
-    "failed": 2,
-    "totalBytes": 42373466
+    "failed": 0,
+    "totalBytes": 31560883
   },
   "results": [
     {
-      "id": "heidenhain-itnc-530:3:primary",
+      "id": "siemens-802d:6:primary",
       "status": "discovered",
-      "localPath": "/downloads/cnc-documents/heidenhain/heidenhain-itnc-530/Programming-Station-and-documentation.pdf",
-      "destination": "E:\\work\\elecio_web2\\elecio_website\\public\\downloads\\cnc-documents\\heidenhain\\heidenhain-itnc-530\\Programming-Station-and-documentation.pdf",
-      "bytes": 640819,
-      "sourceUrl": "https://endat.heidenhain.com/fileadmin/pdf/en/01_Products/Prospekte/PR_Programming_Station_for_TNC_Controls_ID825930_en.pdf",
+      "localPath": "/downloads/cnc-documents/siemens/siemens-802d/Machine-Data-Description-of-Functions.pdf",
+      "destination": "E:\\work\\elecio_web2\\elecio_website\\public\\downloads\\cnc-documents\\siemens\\siemens-802d\\Machine-Data-Description-of-Functions.pdf",
+      "bytes": 3360493,
+      "sourceUrl": "https://dn760104.eu.archive.org/0/items/manuallib-id-75205/75205.pdf",
       "visited": 1
     },
     {
-      "id": "heidenhain-tnc-426-430:2:primary",
+      "id": "siemens-802d:4:primary",
       "status": "discovered",
-      "localPath": "/downloads/cnc-documents/heidenhain/heidenhain-tnc-426-430/TNC-programming-station-and-documentation.pdf",
-      "destination": "E:\\work\\elecio_web2\\elecio_website\\public\\downloads\\cnc-documents\\heidenhain\\heidenhain-tnc-426-430\\TNC-programming-station-and-documentation.pdf",
-      "bytes": 640819,
-      "sourceUrl": "https://endat.heidenhain.com/fileadmin/pdf/en/01_Products/Prospekte/PR_Programming_Station_for_TNC_Controls_ID825930_en.pdf",
+      "localPath": "/downloads/cnc-documents/siemens/siemens-802d/6FC5398-1CP10-series.pdf",
+      "destination": "E:\\work\\elecio_web2\\elecio_website\\public\\downloads\\cnc-documents\\siemens\\siemens-802d\\6FC5398-1CP10-series.pdf",
+      "bytes": 4195886,
+      "sourceUrl": "https://dn760103.eu.archive.org/0/items/manualzilla-id-7352721/7352721.pdf",
       "visited": 1
     },
     {
-      "id": "heidenhain-tnc-620:1:primary",
+      "id": "siemens-828d:2:primary",
       "status": "discovered",
-      "localPath": "/downloads/cnc-documents/heidenhain/heidenhain-tnc-620/TNC-programming-station-Free-demo-and-documentation.pdf",
-      "destination": "E:\\work\\elecio_web2\\elecio_website\\public\\downloads\\cnc-documents\\heidenhain\\heidenhain-tnc-620\\TNC-programming-station-Free-demo-and-documentation.pdf",
-      "bytes": 640819,
-      "sourceUrl": "https://endat.heidenhain.com/fileadmin/pdf/en/01_Products/Prospekte/PR_Programming_Station_for_TNC_Controls_ID825930_en.pdf",
+      "localPath": "/downloads/cnc-documents/siemens/siemens-828d/6FC5398-1BP40-2BP40.pdf",
+      "destination": "E:\\work\\elecio_web2\\elecio_website\\public\\downloads\\cnc-documents\\siemens\\siemens-828d\\6FC5398-1BP40-2BP40.pdf",
+      "bytes": 8626315,
+      "sourceUrl": "https://dn711107.ca.archive.org/0/items/romi-dcm-620-5x/U17442_Fundaments.pdf",
       "visited": 1
     },
     {
-      "id": "fanuc-0i-f-plus:6:primary",
-      "status": "failed",
-      "localPath": "/downloads/cnc-documents/fanuc/fanuc-0i-f-plus/0i-F-Plus-30i-B-Plus-Seamless-CNC-Overview.pdf",
-      "destination": "E:\\work\\elecio_web2\\elecio_website\\public\\downloads\\cnc-documents\\fanuc\\fanuc-0i-f-plus\\0i-F-Plus-30i-B-Plus-Seamless-CNC-Overview.pdf",
-      "bytes": 0,
-      "sourceUrl": "https://www.fanuc.eu/~/media/files/pdf/products/cnc/brochures/mbr-02265-fa%20seamless%20cnc%20concept-v5/brochure-seamless-cnc-en.pdf?la=en",
-      "visited": 3,
-      "error": "No matching PDF found after checking 3 URL(s); last error: HTTP 410 for https://www.fanuc.eu/~/media/files/pdf/products/cnc/brochures/mbr-02265-fa%20seamless%20cnc%20concept-v5/brochure-seamless-cnc-en.pdf?la=en"
-    },
-    {
-      "id": "fanuc-30i-31i-32i-b:0:primary",
-      "status": "failed",
-      "localPath": "/downloads/cnc-documents/fanuc/fanuc-30i-31i-32i-b/30i-31i-32i-B-Plus-Official-documentation-portal.pdf",
-      "destination": "E:\\work\\elecio_web2\\elecio_website\\public\\downloads\\cnc-documents\\fanuc\\fanuc-30i-31i-32i-b\\30i-31i-32i-B-Plus-Official-documentation-portal.pdf",
-      "bytes": 0,
-      "sourceUrl": "https://myportal.fanucamerica.com/",
-      "visited": 3,
-      "error": "No matching PDF found after checking 3 URL(s); last error: HTTP 403 for https://myportal.fanucamerica.com/"
-    },
-    {
-      "id": "heidenhain-tnc-640:6:primary",
+      "id": "siemens-828d:1:primary",
       "status": "discovered",
-      "localPath": "/downloads/cnc-documents/heidenhain/heidenhain-tnc-640/TNC-640-Product-resources.pdf",
-      "destination": "E:\\work\\elecio_web2\\elecio_website\\public\\downloads\\cnc-documents\\heidenhain\\heidenhain-tnc-640\\TNC-640-Product-resources.pdf",
-      "bytes": 25175323,
-      "sourceUrl": "https://endat.heidenhain.com/fileadmin/pdf/en/01_Products/Prospekte/PR_TNC640_HSCI_ID892916_en.pdf",
-      "visited": 1
-    },
-    {
-      "id": "gsk-980-series:1:primary",
-      "status": "discovered",
-      "localPath": "/downloads/cnc-documents/gsk/gsk-980-series/980-Series-Programming-Operation-and-PLC-Manuals.pdf",
-      "destination": "E:\\work\\elecio_web2\\elecio_website\\public\\downloads\\cnc-documents\\gsk\\gsk-980-series\\980-Series-Programming-Operation-and-PLC-Manuals.pdf",
-      "bytes": 2737079,
-      "sourceUrl": "https://www.gsk.com.cn/uploadfiles/%E7%BD%91%E7%AB%99%E8%AF%B4%E6%98%8E%E4%B9%A6/cnc/%E7%A0%94%E5%8F%91%E4%B8%89%E5%AE%A4%E8%AF%B4%E6%98%8E%E4%B9%A6%EF%BC%88%E4%B8%8A%E4%BC%A0%E7%BD%91%E7%AB%99%EF%BC%89/2015-05-26%20English%20GSK980TC3%E7%B3%BB%E5%88%97%20PLC%E5%8F%8A%E5%AE%89%E8%A3%85%E8%BF%9E%E6%8E%A5%E6%89%8B%E5%86%8C_2014%E5%B9%B412%E6%9C%88%E7%AC%AC1%E7%89%88_.pdf",
-      "visited": 1
-    },
-    {
-      "id": "gsk-980-series:0:primary",
-      "status": "discovered",
-      "localPath": "/downloads/cnc-documents/gsk/gsk-980-series/GSK-980-Series-Official-CNC-downloads.pdf",
-      "destination": "E:\\work\\elecio_web2\\elecio_website\\public\\downloads\\cnc-documents\\gsk\\gsk-980-series\\GSK-980-Series-Official-CNC-downloads.pdf",
-      "bytes": 12538607,
-      "sourceUrl": "https://www.gsk.com.cn/uploadfiles/%E7%BD%91%E7%AB%99%E8%AF%B4%E6%98%8E%E4%B9%A6/cnc/%E7%A0%94%E5%8F%91%E4%BA%8C%E5%AE%A4%E8%AF%B4%E6%98%8E%E4%B9%A6/980tdc%E7%B3%BB%E5%88%97/2012-09-24%20English%20GSK980TDc%202011.6.2.pdf",
+      "localPath": "/downloads/cnc-documents/siemens/siemens-828d/6FC5398-series.pdf",
+      "destination": "E:\\work\\elecio_web2\\elecio_website\\public\\downloads\\cnc-documents\\siemens\\siemens-828d\\6FC5398-series.pdf",
+      "bytes": 15378189,
+      "sourceUrl": "https://dn760100.eu.archive.org/0/items/romi-dcm-620-5x/U17421_Siemens%20Universal.pdf",
       "visited": 1
     }
   ]
