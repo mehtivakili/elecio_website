@@ -1,0 +1,10 @@
+Mode: imagegen — create new raster image
+
+1. cover
+Create one premium photorealistic editorial cover image for a Persian technical article about calculating spindle speed and feed rate in CNC machining, wide 3:2, 1536x1024. Macro view of a carbide end mill cutting a steel workpiece inside a CNC milling machine, crisp curled chips flying in a controlled way, slight motion blur on the tool flutes, clean industrial lighting with realistic metallic reflections. No readable text, letters, numbers, labels, logos, brands, trademarks, watermark, title or border. One image only.
+
+2. body-milling-chipload
+Create one realistic macro editorial photograph of a four-flute carbide end mill engaged in a side-milling cut on an aluminum block, wide 3:2, 1536x1024, showing individual chips forming at the cutting edges and a clean machined wall. Studio-industrial lighting that highlights the flute geometry and chip shape, shallow depth of field. No readable text, numbers, labels, logos, brands, watermark, title or border. One image only.
+
+3. body-turning-feed
+Create one realistic editorial photograph of a CNC lathe turning operation, wide 3:2, 1536x1024. A carbide insert in a tool holder is facing or turning a rotating steel bar held in a three-jaw chuck, producing a continuous controlled chip and a bright machined surface, coolant lightly applied. Photographed through the machine window, crisp detail, professional industrial lighting. No readable text, numbers, labels, logos, brands, watermark, title or border. One image only.

@@ -1,0 +1,1871 @@
+{
+ "code": "EC-013",
+ "slug": "کنترلر-فانوک",
+ "title": "کنترلر فانوک (FANUC)؛ سری‌ها، قابلیت‌ها و نکات کار",
+ "excerpt": "کنترلر فانوک در بسیاری از فرزها و تراش‌های CNC کارگاه‌های ایران دیده می‌شود. در این راهنما سری‌های قدیمی و جدید فانوک، تفاوت مدل‌ها، روش‌های انتقال برنامه، پارامترها و پشتیبان‌گیری و منابع رسمی را مرور می‌کنیم.",
+ "seoTitle": "کنترلر فانوک (FANUC)؛ سری‌ها، قابلیت‌ها و نکات کار",
+ "seoDescription": "کنترلر فانوک از رایج‌ترین کنترل‌های CNC در کارگاه‌های ایران است. سری‌های قدیمی و جدید، تفاوت مدل‌ها، انتقال برنامه و دفترچه‌های رسمی را بشناسید.",
+ "focusKeyword": "کنترل فانوک",
+ "secondaryKeywords": "کنترلر FANUC، کنترل فانوک چیست، فانوک 0i، فانوک 0i-F، فانوک 16i 18i 21i، فانوک 30i، منوال فانوک، انتقال برنامه به فانوک",
+ "schemaType": "TechArticle",
+ "category": {
+  "slug": "controller-setup",
+  "nameFa": "تنظیم کنترلر",
+  "nameEn": "Controller setup",
+  "sortOrder": 20
+ },
+ "tags": [
+  [
+   "fanuc",
+   "Fanuc",
+   "Fanuc"
+  ],
+  [
+   "cnc-controller",
+   "کنترلر CNC",
+   "CNC controller"
+  ],
+  [
+   "rs232",
+   "RS-232 CNC",
+   "RS-232 CNC"
+  ],
+  [
+   "cnc-program-transfer",
+   "انتقال برنامه CNC",
+   "CNC program transfer"
+  ],
+  [
+   "backup",
+   "پشتیبان‌گیری",
+   "Backup"
+  ]
+ ],
+ "media": [
+  {
+   "file": "کنترلر-فانوک-cover-hd.webp",
+   "kind": "cover",
+   "alt": "پنل کنترلر CNC صنعتی روی بدنه دستگاه فرز",
+   "caption": "کنترلر CNC مغز دستگاه است و سری و آپشن‌های آن روی برنامه‌نویسی، انتقال برنامه و نگهداری اثر دارد"
+  },
+  {
+   "file": "کنترلر-فانوک-body-memory-card-hd.webp",
+   "kind": "body",
+   "alt": "اسلات کارت حافظه و درگاه‌های ارتباطی کنار پنل کنترلر CNC",
+   "caption": "بسیاری از کنترلرهای سری i اسلات کارت حافظه دارند؛ اما مدل‌های قدیمی معمولاً فقط ارتباط سریال دارند"
+  },
+  {
+   "file": "کنترلر-فانوک-body-legacy-cabinet-hd.webp",
+   "kind": "body",
+   "alt": "تابلو برق و کنترلر یک دستگاه CNC قدیمی با کابل سریال",
+   "caption": "کنترلرهای قدیمی‌تر هنوز در بسیاری از کارگاه‌ها کار می‌کنند و معمولاً از طریق RS-232 برنامه دریافت می‌کنند"
+  }
+ ],
+ "body": {
+  "type": "doc",
+  "content": [
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "کنترلر فانوک (FANUC) یکی از رایج‌ترین کنترل‌های CNC در دنیا و در کارگاه‌های ایران است. بسیاری از فرزها، تراش‌ها و مراکز ماشین‌کاری، چه نو و چه کارکرده، با یکی از سری‌های فانوک کار می‌کنند. شناخت درست سری کنترلر به شما کمک می‌کند برنامه‌نویسی، انتقال برنامه، پشتیبان‌گیری و حتی خرید قطعه یدکی را با اطمینان بیشتری انجام دهید."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در این راهنما توضیح می‌دهیم کنترلر فانوک چیست، سری‌های قدیمی و جدید آن چه تفاوت‌هایی دارند، برنامه چگونه به این کنترلر منتقل می‌شود و برای کار روزمره و نگهداری به چه منابعی نیاز دارید. هدف ما معرفی کلی و کاربردی است؛ جزئیات هر مدل را همیشه باید با دفترچه رسمی همان سری تطبیق داد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "کنترلر فانوک چیست؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "کنترلر CNC بخشی از دستگاه است که برنامه را می‌خواند، حرکت محورها را محاسبه می‌کند، سروو موتورها و اسپیندل را فرمان می‌دهد و با منطق ماشین (PLC) برای کارهای جانبی هماهنگ می‌شود. فانوک سازنده ژاپنی این کنترلرهاست و علاوه بر خود کنترلر، معمولاً درایوها، سروو موتورها و موتور اسپیندل را هم تأمین می‌کند."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "سازنده ماشین (مثلاً سازنده یک فرز عمودی) کنترلر فانوک را روی دستگاه نصب و پیکربندی می‌کند. به همین دلیل دو دستگاه با یک سری کنترلر فانوک ممکن است کدهای M، منوها و آپشن‌های متفاوتی داشته باشند؛ چون بخشی از رفتار دستگاه را سازنده ماشین تعیین کرده است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "سری‌های رایج کنترلر فانوک"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "فانوک در طول چند دهه سری‌های مختلفی عرضه کرده است. در کارگاه‌های ایران هم سری‌های قدیمی و هم سری‌های جدید دیده می‌شوند. جدول زیر یک دسته‌بندی کلی و ساده‌شده است:"
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "گروه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نمونه سری‌ها"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ویژگی کلی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نکته کارگاهی"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نسل‌های قدیمی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "سری 0 (مانند 0-M و 0-T)، سری‌های 10، 11، 12، 15، 16 و 18"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "حافظه برنامه محدود، ارتباط اصلی از طریق RS-232"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "هنوز در دستگاه‌های کارکرده زیاد دیده می‌شوند"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "سری i نسل اول"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "16i، 18i، 21i و 0i (نسخه‌های A تا C)"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "حافظه بیشتر، کارت حافظه در بسیاری از مدل‌ها"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ترکیبی از RS-232 و کارت حافظه برای انتقال"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "سری 0i جدیدتر"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "0i-D و 0i-F و 0i-F Plus"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "رابط کاربری کامل‌تر و گزینه‌های ارتباطی بیشتر"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "امکانات دقیق به مدل و آپشن خریداری‌شده بستگی دارد"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "سری‌های سطح بالا"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "30i، 31i و 32i"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "برای ماشین‌های پیچیده و چندمحوره"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اغلب در ماشین‌های گران‌تر و چندکاناله"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در نام‌گذاری فانوک، معمولاً حرف M به کنترلر فرز و مراکز ماشین‌کاری و حرف T به کنترلر تراش اشاره دارد. مثلاً 0i-MF برای فرز و 0i-TF برای تراش در نظر گرفته شده‌اند."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "دفترچه‌های اپراتوری، برنامه‌نویسی و نگهداری بسیاری از این سری‌ها در "
+     },
+     {
+      "type": "text",
+      "text": "کتابخانه اسناد فانوک",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/documents/fanuc"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " دسته‌بندی شده‌اند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "سری کنترلر فانوک دستگاه را چگونه تشخیص دهیم؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "پیش از سفارش قطعه، دانلود دفترچه یا تنظیم ارتباط، باید سری دقیق کنترلر را بدانید. این روش‌ها معمولاً کمک می‌کنند:"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "نام سری روی قاب پنل یا نمایشگر کنترلر (مثلاً Series 0i-MF)"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "صفحه پیکربندی سیستم یا اطلاعات نرم‌افزار در منوی کنترلر"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "برچسب مشخصات روی کابینت کنترلر یا درایوها"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "مدارک خرید و دفترچه سازنده ماشین"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "نام دقیق سری اهمیت دارد؛ زیرا حتی بین 0i-D و 0i-F تفاوت‌هایی در منوها، پارامترها و گزینه‌های ارتباطی وجود دارد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "تفاوت مدل‌های قدیمی و جدید فانوک در کار روزمره"
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "موضوع"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "سری‌های قدیمی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "سری‌های جدیدتر"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "حافظه برنامه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "محدود؛ برنامه‌های حجیم جا نمی‌شوند"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "بیشتر، اما همچنان محدود برای برنامه‌های بسیار بزرگ CAM"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "انتقال برنامه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "عمدتاً RS-232"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "RS-232، کارت حافظه و در بسیاری از مدل‌ها اترنت یا USB بسته به آپشن"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "رابط کاربری"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ساده و مبتنی بر کلیدهای نرم‌افزاری"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "گرافیکی‌تر با راهنماهای بیشتر"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "قطعات یدکی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تأمین برخی بردها ممکن است دشوار باشد"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دسترسی بهتر از طریق نمایندگی‌ها"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پشتیبان‌گیری"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "معمولاً از طریق ارتباط سریال"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کارت حافظه و ابزارهای داخلی کنترلر"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "یک تصور اشتباه رایج این است که کنترلر قدیمی یعنی دستگاه بی‌ارزش. در بسیاری از موارد مکانیک دستگاه سالم است و فقط روش انتقال برنامه و مدیریت فایل قدیمی مانده است. این مشکل را می‌توان بدون تعویض کنترلر و با یک راهکار DNC حل کرد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "انتقال برنامه به کنترلر فانوک"
+     }
+    ]
+   },
+   {
+    "type": "image",
+    "attrs": {
+     "src": "/uploads/کنترلر-فانوک-body-memory-card-hd.webp",
+     "alt": "اسلات کارت حافظه و درگاه‌های ارتباطی کنار پنل کنترلر CNC",
+     "title": "بسیاری از کنترلرهای سری i اسلات کارت حافظه دارند؛ اما مدل‌های قدیمی معمولاً فقط ارتباط سریال دارند"
+    }
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "بسته به سری و آپشن‌های کنترلر، معمولاً یکی از این روش‌ها در دسترس است:"
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "انتقال از طریق RS-232"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "قدیمی‌ترین و گسترده‌ترین روش است و تقریباً همه سری‌های فانوک از آن پشتیبانی می‌کنند. در این روش تنظیمات ارتباط سریال در کنترلر و در دستگاه یا نرم‌افزار طرف مقابل باید دقیقاً یکسان باشند؛ از جمله کانال ورودی و خروجی، سرعت انتقال و تنظیمات کاراکتر. جزئیات این تنظیمات را در "
+     },
+     {
+      "type": "text",
+      "text": "چک‌لیست اتصال RS-232 کنترلر فانوک",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/fanuc-rs232-checklist"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " توضیح داده‌ایم."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "کارت حافظه"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "بسیاری از کنترلرهای سری i اسلات کارت حافظه دارند. این روش برای انتقال برنامه و پشتیبان‌گیری کاربردی است، اما همان مشکلات فلش را دارد: نسخه‌های متعدد، رفت‌وآمد و احتمال خراب شدن کارت در محیط کارگاه."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "اترنت و USB"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در بسیاری از مدل‌های جدیدتر، اترنت داخلی یا درگاه USB وجود دارد. فعال بودن این امکانات به مدل و آپشن‌های خریداری‌شده بستگی دارد و پیش از برنامه‌ریزی باید در دفترچه یا صفحه پیکربندی کنترلر بررسی شود."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "DNC و دریپ فید"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای اجرای برنامه‌هایی که از حافظه کنترلر بزرگ‌ترند، کنترلر در حالت DNC یا Remote برنامه را همزمان با دریافت اجرا می‌کند. این روش در قالب‌سازی و ماشین‌کاری سطوح سه‌بعدی بسیار رایج است."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای آشنایی کامل با این مفهوم، "
+     },
+     {
+      "type": "text",
+      "text": "مقاله DNC چیست",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/dnc-چیست"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را بخوانید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "پارامترها و پشتیبان‌گیری در فانوک"
+     }
+    ]
+   },
+   {
+    "type": "image",
+    "attrs": {
+     "src": "/uploads/کنترلر-فانوک-body-legacy-cabinet-hd.webp",
+     "alt": "تابلو برق و کنترلر یک دستگاه CNC قدیمی با کابل سریال",
+     "title": "کنترلرهای قدیمی‌تر هنوز در بسیاری از کارگاه‌ها کار می‌کنند و معمولاً از طریق RS-232 برنامه دریافت می‌کنند"
+    }
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "رفتار کنترلر فانوک با هزاران پارامتر تعیین می‌شود؛ از تنظیمات محورها و اسپیندل تا ارتباطات و محدودیت‌های حرکتی. بسیاری از این پارامترها را سازنده ماشین تنظیم کرده و تغییر نادرست آن‌ها می‌تواند دستگاه را از کار بیندازد یا خطرناک کند."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "چند اصل مهم:"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "پیش از هر تغییری، از پارامترها و برنامه‌ها نسخه پشتیبان بگیرید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "پارامترها را فقط با دفترچه پارامتر همان سری و با آگاهی کامل تغییر دهید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "باتری حافظه کنترلر و باتری انکودرها را طبق دفترچه نگهداری بررسی کنید؛ ضعیف شدن باتری می‌تواند به از دست رفتن داده‌ها منجر شود."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "نسخه پشتیبان را خارج از دستگاه و در محل امن نگه‌داری کنید."
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای اصول کلی پشتیبان‌گیری از برنامه‌ها و فایل‌ها، "
+     },
+     {
+      "type": "text",
+      "text": "راهنمای پشتیبان‌گیری و امنیت فایل‌های CNC",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/cnc-backup-security-basics"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را ببینید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "برنامه‌نویسی روی کنترلر فانوک"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برنامه‌نویسی در فانوک بر پایه کدهای G و M است و ساختار آن برای بیشتر برنامه‌نویسان آشناست. با این حال چند نکته مهم وجود دارد:"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "برخی کدها و سیکل‌ها بین سری فرز و تراش متفاوت‌اند."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "کدهای M اختصاصی را سازنده ماشین تعریف می‌کند و باید از دفترچه ماشین استخراج شوند."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "قابلیت‌هایی مانند ماکرو، سیکل‌های خاص یا برنامه‌نویسی گفت‌وگویی ممکن است آپشن باشند."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "خروجی نرم‌افزار CAM باید با پست‌پروسسور متناسب با همان کنترلر و ماشین تولید شود."
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای مرور کدهای کمکی رایج، "
+     },
+     {
+      "type": "text",
+      "text": "فهرست کدهای M در CNC",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/کدهای-m-در-cnc"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را ببینید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "نکات کاربردی برای کار با کنترلر فانوک"
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "موقعیت"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اقدام پیشنهادی"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دریافت دستگاه کارکرده"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "سری دقیق کنترلر، آپشن‌ها و وضعیت باتری‌ها را ثبت کنید و از همه پارامترها پشتیبان بگیرید"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "برنامه حجیم CAM"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ظرفیت حافظه را بررسی و در صورت نیاز از دریپ فید استفاده کنید"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "آلارم ناشناخته"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "متن و شماره آلارم را دقیق یادداشت و با دفترچه نگهداری همان سری بررسی کنید"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تغییر پارامتر"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "فقط با مجوز، نسخه پشتیبان و دفترچه پارامتر"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "انتقال برنامه با فلش"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "به یک روش کنترل‌شده با مرجع مرکزی برنامه‌ها فکر کنید"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "خرید دستگاه کارکرده با کنترلر فانوک؛ چه چیزهایی را بررسی کنیم؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "بسیاری از دستگاه‌های CNC بازار ایران کارکرده‌اند و کنترلر فانوک دارند. پیش از خرید، علاوه بر مکانیک دستگاه، وضعیت کنترلر را هم با دقت بررسی کنید:"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "سری دقیق کنترلر و آپشن‌های فعال را از صفحه پیکربندی ببینید و یادداشت کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "فهرست آلارم‌های ثبت‌شده در تاریخچه کنترلر را بررسی کنید؛ آلارم‌های تکراری سروو یا اسپیندل نشانه هشدار است."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "بپرسید آیا نسخه پشتیبان پارامترها و برنامه‌های PLC موجود است؛ نبود آن ریسک بزرگی است."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "وضعیت باتری حافظه و باتری انکودرها و تاریخ آخرین تعویض را بپرسید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "روش فعلی انتقال برنامه را امتحان کنید؛ یک برنامه کوچک را ارسال و اجرا کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "دسترسی به دفترچه‌های همان سری و قطعات یدکی رایج را بررسی کنید."
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "کنترلر سالم با پارامترهای پشتیبان‌گیری‌شده، ارزش دستگاه را بالا می‌برد و راه‌اندازی بعد از جابه‌جایی را بسیار ساده‌تر می‌کند. اگر نسخه پشتیبان وجود ندارد، اولین کار پس از خرید و پیش از هر جابه‌جایی، تهیه پشتیبان کامل است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "اشتباهات رایج در کار با کنترلر فانوک"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "دانلود دفترچه سری دیگر و استفاده از آن برای تنظیمات دستگاه"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "تغییر پارامترهای ارتباطی بدون یادداشت مقادیر قبلی"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "نادیده گرفتن هشدار باتری حافظه تا زمان از دست رفتن داده‌ها"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "ریست کردن آلارم بدون بررسی علت آن"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "فرض کردن اینکه همه آپشن‌های یک سری روی دستگاه فعال‌اند"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "سؤالات متداول درباره کنترلر فانوک"
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "کنترل فانوک برای فرز بهتر است یا تراش؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "فانوک برای هر دو نوع دستگاه سری‌های مخصوص دارد؛ نسخه‌های M برای فرز و مراکز ماشین‌کاری و نسخه‌های T برای تراش طراحی شده‌اند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "چطور بفهمم کنترلر دستگاهم کدام سری فانوک است؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "نام سری معمولاً روی قاب پنل یا صفحه پیکربندی سیستم کنترلر نمایش داده می‌شود. برچسب کابینت و مدارک سازنده ماشین هم کمک می‌کند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "آیا کنترلر فانوک قدیمی را می‌توان به شبکه وصل کرد؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "بیشتر کنترلرهای قدیمی اترنت ندارند، اما از طریق درگاه RS-232 و یک راهکار DNC سیمی یا بی‌سیم می‌توان آن‌ها را به سیستم انتقال برنامه کارگاه متصل کرد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "دفترچه فانوک را از کجا تهیه کنم؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "دفترچه‌های رسمی را از نمایندگی یا سازنده ماشین تهیه کنید. بسیاری از دفترچه‌های سری‌های رایج در کتابخانه اسناد الکسیو دسته‌بندی شده‌اند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "چرا پارامترهای فانوک پاک می‌شوند؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "یکی از دلایل رایج، ضعیف یا تمام شدن باتری حافظه است. به همین دلیل بررسی دوره‌ای باتری و داشتن نسخه پشتیبان به‌روز ضروری است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "آیا برنامه یک دستگاه فانوک روی دستگاه فانوک دیگر اجرا می‌شود؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "بخش زیادی از کدها مشترک است، اما تفاوت سری، آپشن‌ها و کدهای اختصاصی سازنده ماشین ممکن است باعث خطا شود. برنامه را پیش از اجرا بازبینی و شبیه‌سازی کنید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "جمع‌بندی"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "کنترلر فانوک در طیف گسترده‌ای از دستگاه‌ها، از ماشین‌های قدیمی تا مراکز ماشین‌کاری پیشرفته، استفاده می‌شود. مهم‌ترین قدم برای کار مطمئن با آن، شناخت دقیق سری و آپشن‌های کنترلر و استفاده از دفترچه درست است. پس از آن، انتقال کنترل‌شده برنامه، پشتیبان‌گیری منظم و احتیاط در تغییر پارامترها بیشترین اثر را در کاهش خطا و توقف دارند."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "اگر دستگاه‌های فانوک قدیمی یا جدید دارید و می‌خواهید انتقال برنامه را بدون فلش و کابل‌کشی پیچیده انجام دهید، سازگاری "
+     },
+     {
+      "type": "text",
+      "text": "Smart DNC الکسیو",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/product"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را با سری کنترلر خود بررسی کنید."
+     }
+    ]
+   }
+  ]
+ }
+}

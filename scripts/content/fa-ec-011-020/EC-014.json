@@ -1,0 +1,1921 @@
+{
+ "code": "EC-014",
+ "slug": "محاسبه-دور-و-پیشروی",
+ "title": "محاسبه دور اسپیندل و پیشروی در فرز و تراش CNC",
+ "excerpt": "دور اسپیندل و پیشروی دو عدد کلیدی هر برنامه CNC هستند. در این راهنما فرمول سرعت برشی، پیشروی هر دندانه و پیشروی میز را با مثال عددی فرز و تراش توضیح می‌دهیم و عوامل اصلاح‌کننده و اشتباهات رایج را مرور می‌کنیم.",
+ "seoTitle": "محاسبه دور اسپیندل و پیشروی در فرز و تراش CNC",
+ "seoDescription": "دور اسپیندل و پیشروی را چگونه حساب کنیم؟ فرمول سرعت برشی، پیشروی هر دندانه، مثال عددی فرز و تراش CNC و اشتباهات رایج را گام‌به‌گام ببینید.",
+ "focusKeyword": "محاسبه دور و پیشروی",
+ "secondaryKeywords": "سرعت برشی، فرمول دور اسپیندل، پیشروی هر دندانه، فید و اسپید، RPM، محاسبه فید فرز، پیشروی تراش، G96 سرعت سطحی ثابت",
+ "schemaType": "TechArticle",
+ "category": {
+  "slug": "machining",
+  "nameFa": "ماشین‌کاری",
+  "nameEn": "Machining",
+  "sortOrder": 15
+ },
+ "tags": [
+  [
+   "cutting-speed",
+   "سرعت برشی",
+   "Cutting speed"
+  ],
+  [
+   "feed-rate",
+   "پیشروی",
+   "Feed rate"
+  ],
+  [
+   "spindle-speed",
+   "دور اسپیندل",
+   "Spindle speed"
+  ],
+  [
+   "cnc-programming",
+   "برنامه‌نویسی CNC",
+   "CNC programming"
+  ],
+  [
+   "machining",
+   "ماشین‌کاری",
+   "Machining"
+  ]
+ ],
+ "media": [
+  {
+   "file": "محاسبه-دور-و-پیشروی-cover-hd.webp",
+   "kind": "cover",
+   "alt": "فرز انگشتی کاربایدی هنگام برش قطعه فولادی",
+   "caption": "دور اسپیندل و پیشروی درست، عمر ابزار، کیفیت سطح و زمان سیکل را هم‌زمان تعیین می‌کنند"
+  },
+  {
+   "file": "محاسبه-دور-و-پیشروی-body-milling-chipload-hd.webp",
+   "kind": "body",
+   "alt": "ضخامت براده و درگیری دندانه‌های فرز انگشتی با قطعه",
+   "caption": "پیشروی هر دندانه، ضخامت براده‌ای را تعیین می‌کند که هر لبه برنده برمی‌دارد"
+  },
+  {
+   "file": "محاسبه-دور-و-پیشروی-body-turning-feed-hd.webp",
+   "kind": "body",
+   "alt": "ابزار تراش در حال روتراشی قطعه فولادی استوانه‌ای",
+   "caption": "در تراش، پیشروی معمولاً بر حسب میلی‌متر در هر دور بیان می‌شود"
+  }
+ ],
+ "body": {
+  "type": "doc",
+  "content": [
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "محاسبه دور اسپیندل و پیشروی یکی از اولین مهارت‌هایی است که هر برنامه‌نویس و اپراتور CNC باید بلد باشد. این دو عدد تعیین می‌کنند ابزار با چه سرعتی بچرخد و با چه سرعتی در قطعه جلو برود. اگر کم باشند، زمان سیکل طولانی و گاهی کیفیت سطح ضعیف می‌شود؛ اگر زیاد باشند، ابزار زود فرسوده می‌شود، لرزش ایجاد می‌شود یا حتی ابزار می‌شکند."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در این راهنما فرمول‌های پایه را به زبان ساده توضیح می‌دهیم، برای فرز و تراش مثال عددی می‌زنیم و عواملی را که باید عدد محاسبه‌شده را با آن‌ها اصلاح کنید مرور می‌کنیم. اعداد مثال‌ها فرضی و آموزشی‌اند؛ مقدار واقعی سرعت برشی و پیشروی را باید از کاتالوگ سازنده ابزار برای همان جنس قطعه و همان ابزار برداشت."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "سرعت برشی چیست؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "سرعت برشی (Cutting speed) که با Vc نشان داده می‌شود، سرعت حرکت نسبی لبه برنده نسبت به سطح قطعه است و معمولاً بر حسب متر بر دقیقه بیان می‌شود. سازندگان ابزار برای هر ترکیب از جنس ابزار، پوشش و جنس قطعه یک بازه سرعت برشی پیشنهاد می‌کنند."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "نکته کلیدی این است که سرعت برشی به قطر بستگی ندارد؛ اما دور اسپیندل به قطر بستگی دارد. یک ابزار با قطر کوچک برای رسیدن به همان سرعت برشی باید با دور بیشتری بچرخد."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای آشنایی کلی با پارامترهای برش در کنار سایر مفاهیم ماشین‌کاری، "
+     },
+     {
+      "type": "text",
+      "text": "مقاله ماشین‌کاری چیست",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/ماشین-کاری-چیست"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را ببینید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "فرمول دور اسپیندل"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "دور اسپیندل (n) بر حسب دور بر دقیقه از این رابطه به دست می‌آید:"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "n = (Vc × 1000) ÷ (π × D)",
+      "marks": [
+       {
+        "type": "bold"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در این رابطه:"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "Vc سرعت برشی بر حسب متر بر دقیقه است."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "D قطر ابزار در فرز یا قطر قطعه در محل برش در تراش، بر حسب میلی‌متر است."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "عدد ۱۰۰۰ برای تبدیل متر به میلی‌متر است."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "π تقریباً برابر ۳٫۱۴۱۶ است."
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "اگر بخواهید از دور اسپیندل به سرعت برشی برسید، همین رابطه را برعکس کنید: Vc = (π × D × n) ÷ 1000."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "پیشروی هر دندانه و پیشروی میز در فرز"
+     }
+    ]
+   },
+   {
+    "type": "image",
+    "attrs": {
+     "src": "/uploads/محاسبه-دور-و-پیشروی-body-milling-chipload-hd.webp",
+     "alt": "ضخامت براده و درگیری دندانه‌های فرز انگشتی با قطعه",
+     "title": "پیشروی هر دندانه، ضخامت براده‌ای را تعیین می‌کند که هر لبه برنده برمی‌دارد"
+    }
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در فرزکاری دو مفهوم پیشروی وجود دارد:"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "پیشروی هر دندانه (fz)",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": ": مقدار پیشروی به ازای هر لبه برنده در هر دور، بر حسب میلی‌متر. این عدد ضخامت براده را تعیین می‌کند و معمولاً سازنده ابزار آن را پیشنهاد می‌دهد."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "پیشروی میز (Vf)",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": ": سرعت حرکت ابزار نسبت به قطعه بر حسب میلی‌متر بر دقیقه؛ همان عددی که با F در برنامه نوشته می‌شود."
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "رابطه بین آن‌ها چنین است:"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "Vf = fz × z × n",
+      "marks": [
+       {
+        "type": "bold"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "که در آن z تعداد دندانه‌ها یا لبه‌های برنده ابزار است."
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نماد"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نام"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "واحد رایج"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "از کجا به دست می‌آید؟"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "Vc"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "سرعت برشی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "متر بر دقیقه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کاتالوگ سازنده ابزار"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "D"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "قطر ابزار یا قطعه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "میلی‌متر"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ابزار یا نقشه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "n"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دور اسپیندل"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دور بر دقیقه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "محاسبه از Vc و D"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "fz"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پیشروی هر دندانه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "میلی‌متر"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کاتالوگ سازنده ابزار"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "z"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تعداد دندانه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "عدد"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "مشخصات ابزار"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "Vf"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پیشروی میز"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "میلی‌متر بر دقیقه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "محاسبه از fz، z و n"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "f"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پیشروی در هر دور (تراش)"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "میلی‌متر بر دور"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کاتالوگ اینسرت و نیاز کیفیت سطح"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "مثال عددی فرز CNC"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "فرض کنید با یک فرز انگشتی کاربایدی ۱۰ میلی‌متری با ۳ لبه برنده، قطعه آلومینیومی را فرزکاری می‌کنیم. فرض کنید کاتالوگ ابزار برای این شرایط سرعت برشی ۲۰۰ متر بر دقیقه و پیشروی هر دندانه ۰٫۰۵ میلی‌متر را پیشنهاد کرده است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "گام اول: محاسبه دور اسپیندل"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "n = (200 × 1000) ÷ (3.1416 × 10) ≈ 6366 دور بر دقیقه"
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "گام دوم: محاسبه پیشروی میز"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "Vf = 0.05 × 3 × 6366 ≈ 955 میلی‌متر بر دقیقه"
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "گام سوم: بررسی محدودیت‌های ماشین"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "اگر حداکثر دور اسپیندل دستگاه شما ۶۰۰۰ دور بر دقیقه باشد، نمی‌توانید به ۶۳۶۶ برسید. در این حالت دور را روی حداکثر مجاز یا کمی پایین‌تر تنظیم کنید و پیشروی را با همان fz دوباره حساب کنید: Vf = 0.05 × 3 × 6000 = 900 میلی‌متر بر دقیقه. به این ترتیب ضخامت براده ثابت می‌ماند."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در برنامه، این مقادیر می‌توانند به شکل "
+     },
+     {
+      "type": "text",
+      "text": "S6000 M03",
+      "marks": [
+       {
+        "type": "code"
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " و "
+     },
+     {
+      "type": "text",
+      "text": "F900",
+      "marks": [
+       {
+        "type": "code"
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " نوشته شوند. برای معنای کد M03 به "
+     },
+     {
+      "type": "text",
+      "text": "فهرست کدهای M در CNC",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/کدهای-m-در-cnc"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " مراجعه کنید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "مثال عددی تراش CNC"
+     }
+    ]
+   },
+   {
+    "type": "image",
+    "attrs": {
+     "src": "/uploads/محاسبه-دور-و-پیشروی-body-turning-feed-hd.webp",
+     "alt": "ابزار تراش در حال روتراشی قطعه فولادی استوانه‌ای",
+     "title": "در تراش، پیشروی معمولاً بر حسب میلی‌متر در هر دور بیان می‌شود"
+    }
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در تراش، قطعه می‌چرخد و قطر در محل برش نقش D را دارد. فرض کنید میله فولادی با قطر ۵۰ میلی‌متر را روتراشی می‌کنیم و کاتالوگ اینسرت سرعت برشی ۱۸۰ متر بر دقیقه و پیشروی ۰٫۲ میلی‌متر بر دور را پیشنهاد داده است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "محاسبه دور"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "n = (180 × 1000) ÷ (3.1416 × 50) ≈ 1146 دور بر دقیقه"
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "محاسبه سرعت پیشروی"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در تراش، پیشروی معمولاً بر حسب میلی‌متر بر دور (f) بیان می‌شود. اگر بخواهید آن را به میلی‌متر بر دقیقه تبدیل کنید: Vf = f × n = 0.2 × 1146 ≈ 229 میلی‌متر بر دقیقه."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "سرعت سطحی ثابت در تراش"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "وقتی قطر در حین کار تغییر می‌کند (مثلاً در پیشانی‌تراشی)، اگر دور ثابت بماند، سرعت برشی هم تغییر می‌کند. بسیاری از کنترلرهای تراش حالت سرعت سطحی ثابت دارند که در کنترلرهای سازگار با فانوک معمولاً با G96 فعال می‌شود و کنترلر دور را با تغییر قطر به‌طور خودکار تنظیم می‌کند. در این حالت حتماً حداکثر دور مجاز را هم مشخص کنید؛ زیرا وقتی ابزار به مرکز قطعه نزدیک می‌شود، دور به‌شدت بالا می‌رود. کد تعیین سقف دور در کنترلرهای مختلف متفاوت است و باید با دفترچه همان کنترلر بررسی شود."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای آشنایی با عملیات و اجزای تراش، "
+     },
+     {
+      "type": "text",
+      "text": "مقاله تراش CNC چیست",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/تراش-cnc-چیست"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را مطالعه کنید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "عوامل اصلاح‌کننده؛ چرا عدد محاسبه‌شده نقطه شروع است؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "فرمول‌ها عدد پایه را می‌دهند، اما شرایط واقعی کارگاه ممکن است نیاز به اصلاح داشته باشد:"
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "عامل"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اثر"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اقدام احتمالی"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "بیرون‌زدگی بلند ابزار"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "افزایش لرزش و انحراف"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کاهش دور یا پیشروی، یا کوتاه کردن ابزار"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "بستن ضعیف قطعه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "لرزش و خطای ابعادی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "بهبود فیکسچر پیش از تغییر پارامترها"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "درگیری شعاعی کم"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نازک شدن براده نسبت به fz"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "طبق کاتالوگ، پیشروی را برای جبران نازک‌شدن براده تنظیم کنید"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "عمق برش زیاد"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "بار بیشتر روی ابزار و اسپیندل"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "توان اسپیندل و توصیه سازنده ابزار را بررسی کنید"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "خنک‌کاری نامناسب"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "افزایش دما و سایش"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "روش خنک‌کاری را با ابزار و جنس قطعه تطبیق دهید"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ماشین قدیمی یا لق"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "محدودیت دقت و پایداری"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "از بازه محافظه‌کارانه‌تر کاتالوگ شروع کنید"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "روش عملی برای رسیدن به پارامتر مناسب"
+     }
+    ]
+   },
+   {
+    "type": "orderedList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "جنس قطعه، ابزار و نوع عملیات را دقیق مشخص کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "سرعت برشی و پیشروی پیشنهادی را از کاتالوگ سازنده همان ابزار بردارید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "دور اسپیندل و پیشروی میز را با فرمول‌ها محاسبه کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "محدودیت‌های ماشین مثل حداکثر دور و توان اسپیندل را بررسی کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "برای قطعه اول از وسط یا پایین بازه پیشنهادی شروع کنید و با Override پنل، رفتار برش را زیر نظر بگیرید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "صدا، شکل براده، کیفیت سطح و سایش ابزار را بررسی و پارامترها را به‌تدریج بهینه کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "پارامترهای نهایی موفق را برای استفاده بعدی ثبت کنید."
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "محاسبه برای سوراخ‌کاری و قلاویززنی"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "مته هم مثل فرز یک ابزار دوار است و دور آن با همان فرمول n = (Vc × 1000) ÷ (π × D) و با قطر مته محاسبه می‌شود. تفاوت در پیشروی است: برای مته معمولاً پیشروی در هر دور (f) پیشنهاد می‌شود و پیشروی بر حسب میلی‌متر بر دقیقه برابر است با f × n. مثلاً اگر برای مته ۸ میلی‌متری دور ۲۰۰۰ و پیشروی ۰٫۱ میلی‌متر بر دور در نظر گرفته شود، پیشروی برنامه حدود ۲۰۰ میلی‌متر بر دقیقه خواهد بود."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در قلاویززنی، پیشروی آزاد نیست و باید دقیقاً با گام رزوه هماهنگ باشد:"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "پیشروی قلاویز (میلی‌متر بر دقیقه) = گام رزوه × دور اسپیندل",
+      "marks": [
+       {
+        "type": "bold"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای قلاویز M10 با گام ۱٫۵ میلی‌متر و دور ۵۰۰، پیشروی برابر ۷۵۰ میلی‌متر بر دقیقه است. اگر این عدد درست نباشد، قلاویز تحت کشش یا فشار قرار می‌گیرد و ممکن است بشکند. در قلاویززنی صلب (Rigid tapping) کنترلر حرکت اسپیندل و محور را هماهنگ می‌کند، اما همچنان پیشروی باید با گام رزوه سازگار باشد. سرعت مناسب قلاویز معمولاً بسیار کمتر از فرز است و باید از کاتالوگ سازنده قلاویز برداشته شود."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "اشتباهات رایج در محاسبه دور و پیشروی"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "استفاده از قطر اشتباه؛ مثلاً قطر شنک به‌جای قطر برنده ابزار"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "فراموش کردن تعداد دندانه در محاسبه پیشروی میز"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "اشتباه بین واحد میلی‌متر بر دقیقه و میلی‌متر بر دور در تراش"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "کپی کردن پارامتر یک جنس قطعه برای جنس دیگر"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "کاهش دور برای «احتیاط» بدون کاهش متناسب پیشروی، که باعث افزایش ضخامت براده و بار ابزار می‌شود"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "بی‌توجهی به سقف دور در حالت سرعت سطحی ثابت"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "سؤالات متداول درباره محاسبه دور و پیشروی"
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "فرمول دور اسپیندل چیست؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "دور اسپیندل برابر است با سرعت برشی ضرب در ۱۰۰۰، تقسیم بر حاصل‌ضرب عدد پی در قطر ابزار یا قطعه بر حسب میلی‌متر."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "پیشروی میز در فرز چگونه محاسبه می‌شود؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "پیشروی میز برابر است با پیشروی هر دندانه ضرب در تعداد دندانه‌ها ضرب در دور اسپیندل؛ نتیجه بر حسب میلی‌متر بر دقیقه است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "سرعت برشی مناسب را از کجا پیدا کنم؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "از کاتالوگ یا ابزار انتخاب سازنده ابزار برای همان جنس قطعه، نوع ابزار و پوشش. اعداد عمومی اینترنتی فقط برای آشنایی مناسب‌اند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "چرا با پارامترهای کاتالوگ هم لرزش دارم؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "لرزش معمولاً به صلبیت سیستم مربوط است؛ بیرون‌زدگی ابزار، بستن قطعه، وضعیت ماشین و درگیری ابزار را بررسی کنید. گاهی تغییر دور به یک محدوده دیگر هم لرزش را کم می‌کند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "در تراش از دور ثابت استفاده کنم یا سرعت سطحی ثابت؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای روتراشی و پیشانی‌تراشی با تغییر قطر، سرعت سطحی ثابت معمولاً کیفیت یکنواخت‌تری می‌دهد. برای عملیاتی مثل سوراخ‌کاری در مرکز یا رزوه‌زنی معمولاً دور ثابت استفاده می‌شود."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "آیا پیشروی بیشتر همیشه یعنی تولید سریع‌تر؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "نه همیشه. پیشروی بیش از حد ممکن است عمر ابزار را کم کند، کیفیت سطح را خراب کند یا باعث شکستن ابزار و توقف تولید شود."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "جمع‌بندی"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "محاسبه دور اسپیندل و پیشروی با دو رابطه ساده شروع می‌شود: دور اسپیندل از سرعت برشی و قطر، و پیشروی میز از پیشروی هر دندانه، تعداد دندانه و دور. اما عدد نهایی را شرایط واقعی کارگاه تعیین می‌کند؛ یعنی صلبیت، بستن قطعه، محدودیت ماشین و رفتار برش."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "همیشه از داده سازنده ابزار شروع کنید، محاسبه را برای ماشین خود اصلاح کنید و پارامترهای موفق را ثبت کنید تا دفعه بعد از نقطه بهتری شروع کنید. برای آشنایی بیشتر با خود دستگاه، "
+     },
+     {
+      "type": "text",
+      "text": "مقاله دستگاه CNC چیست",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/دستگاه-cnc-چیست"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را هم ببینید."
+     }
+    ]
+   }
+  ]
+ }
+}

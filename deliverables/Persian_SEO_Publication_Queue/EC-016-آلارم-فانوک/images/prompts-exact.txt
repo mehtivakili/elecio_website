@@ -1,0 +1,10 @@
+Mode: imagegen — create new raster image
+
+1. cover
+Create one premium photorealistic editorial cover image for a Persian technical article about troubleshooting CNC controller alarms, wide 3:2, 1536x1024. An industrial technician wearing gloves and safety glasses, face not clearly visible, inspects an open CNC control cabinet with neat wiring and drive modules, with the machine's control panel nearby showing a dim abstract warning indicator without readable characters. Clean workshop, professional lighting, documentary style. No readable text, letters, numbers, labels, logos, brands, trademarks, watermark, title or border. One image only.
+
+2. body-alarm-screen
+Create one realistic editorial photograph of a CNC operator writing in a small notebook while looking at a CNC control panel screen that shows an abstract red warning bar with no readable characters, wide 3:2, 1536x1024. The operator wears safety glasses, the machine door is closed, workshop softly lit. Focus on the notebook and the panel. No readable text, numbers, labels, logos, brands, watermark, title or border. One image only.
+
+3. body-drive-inspection
+Create one realistic close-up editorial photograph of servo drive modules inside an open CNC electrical cabinet, wide 3:2, 1536x1024, with neatly routed power and feedback cables, and a technician's gloved hand holding a multimeter probe near a terminal, machine powered down safety posture implied. Clean, precise, soft industrial lighting. No readable text, numbers, labels, logos, brands, watermark, title or border. One image only.

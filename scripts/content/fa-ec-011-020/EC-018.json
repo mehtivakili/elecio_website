@@ -1,0 +1,1743 @@
+{
+ "code": "EC-018",
+ "slug": "کنترلر-زیمنس-سینومریک",
+ "title": "کنترلر زیمنس سینومریک؛ مقایسه 808D، 828D و 840D",
+ "excerpt": "کنترلرهای زیمنس سینومریک در طیفی از فرزها و تراش‌ها، از ماشین‌های اقتصادی تا مراکز پیشرفته، استفاده می‌شوند. در این راهنما خانواده‌های 808D، 828D و 840D sl را مقایسه می‌کنیم و انتقال برنامه، برنامه‌نویسی و منابع رسمی را توضیح می‌دهیم.",
+ "seoTitle": "کنترلر زیمنس سینومریک؛ مقایسه 808D، 828D و 840D",
+ "seoDescription": "کنترلرهای زیمنس سینومریک چه تفاوتی دارند؟ کاربرد 808D، 828D و 840D sl، روش‌های انتقال برنامه، شبکه و منابع دفترچه رسمی را در یک راهنما ببینید.",
+ "focusKeyword": "کنترل زیمنس",
+ "secondaryKeywords": "سینومریک، کنترلر Siemens، Sinumerik 808D، Sinumerik 828D، Sinumerik 840D sl، ShopMill، ShopTurn، انتقال برنامه به زیمنس",
+ "schemaType": "TechArticle",
+ "category": {
+  "slug": "controller-setup",
+  "nameFa": "تنظیم کنترلر",
+  "nameEn": "Controller setup",
+  "sortOrder": 20
+ },
+ "tags": [
+  [
+   "siemens",
+   "Siemens",
+   "Siemens"
+  ],
+  [
+   "sinumerik",
+   "سینومریک",
+   "SINUMERIK"
+  ],
+  [
+   "cnc-controller",
+   "کنترلر CNC",
+   "CNC controller"
+  ],
+  [
+   "cnc-program-transfer",
+   "انتقال برنامه CNC",
+   "CNC program transfer"
+  ],
+  [
+   "cnc-networking",
+   "شبکه CNC",
+   "CNC networking"
+  ]
+ ],
+ "media": [
+  {
+   "file": "کنترلر-زیمنس-سینومریک-cover-hd.webp",
+   "kind": "cover",
+   "alt": "پنل کنترلر CNC مدرن روی دستگاه فرز",
+   "caption": "خانواده‌های مختلف سینومریک برای سطح‌های متفاوتی از ماشین‌ها طراحی شده‌اند"
+  },
+  {
+   "file": "کنترلر-زیمنس-سینومریک-body-usb-front-hd.webp",
+   "kind": "body",
+   "alt": "درگاه USB جلوی پنل کنترلر CNC برای انتقال برنامه",
+   "caption": "در بسیاری از کنترلرهای جدیدتر، USB و شبکه کنار روش‌های قدیمی‌تر انتقال برنامه قرار گرفته‌اند"
+  },
+  {
+   "file": "کنترلر-زیمنس-سینومریک-body-shop-network-hd.webp",
+   "kind": "body",
+   "alt": "اتصال دستگاه CNC به شبکه کارگاه از طریق کابل اترنت صنعتی",
+   "caption": "اتصال شبکه‌ای امکان دسترسی به درایو مشترک و مدیریت متمرکز برنامه‌ها را فراهم می‌کند"
+  }
+ ],
+ "body": {
+  "type": "doc",
+  "content": [
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "کنترلرهای زیمنس با نام تجاری SINUMERIK (سینومریک) در بسیاری از فرزها، تراش‌ها و مراکز ماشین‌کاری دیده می‌شوند. از ماشین‌های اقتصادی آموزشی و تولیدی تا ماشین‌های پیشرفته چندمحوره، هر سطح از ماشین معمولاً با یکی از خانواده‌های سینومریک عرضه می‌شود. شناخت تفاوت این خانواده‌ها به شما کمک می‌کند در خرید دستگاه، برنامه‌نویسی، انتقال برنامه و تهیه دفترچه تصمیم بهتری بگیرید."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در این راهنما خانواده‌های 808D، 828D و 840D sl را معرفی و مقایسه می‌کنیم، اشاره‌ای به مدل‌های قدیمی‌تر داریم و روش‌های رایج انتقال برنامه به کنترلرهای زیمنس را توضیح می‌دهیم. جزئیات دقیق هر مدل به نسخه نرم‌افزار و آپشن‌های انتخاب‌شده توسط سازنده ماشین بستگی دارد و باید با دفترچه رسمی همان کنترلر تطبیق داده شود."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "کنترلر سینومریک چیست؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "سینومریک نام خانواده کنترلرهای CNC شرکت زیمنس است. مانند سایر کنترلرها، سینومریک برنامه را می‌خواند، حرکت محورها را محاسبه و درایوها و موتورها را فرمان می‌دهد. زیمنس معمولاً درایوها و موتورها را هم در خانواده SINAMICS عرضه می‌کند و کنترلر و درایو به‌صورت یک مجموعه هماهنگ کار می‌کنند."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "ویژگی شناخته‌شده سینومریک، رابط کاربری گرافیکی و سیکل‌های متنوع برای فرز و تراش است. در خانواده‌های 828D و 840D sl، محیط‌های برنامه‌نویسی کارگاهی ShopMill برای فرز و ShopTurn برای تراش در دسترس‌اند که برنامه‌نویسی قطعات را بدون نوشتن مستقیم کد G ساده‌تر می‌کنند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "خانواده 808D"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "سینومریک 808D برای ماشین‌های اقتصادی و سطح ورودی طراحی شده است و نسخه‌های جداگانه‌ای برای فرز و تراش دارد. این کنترلر در بسیاری از ماشین‌های ساده‌تر، آموزشی و تولیدی سبک دیده می‌شود. رابط کاربری آن ساده‌تر است و برای کارهای دو و سه محور معمول کافی است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "خانواده 828D"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "سینومریک 828D کنترلری فشرده و مبتنی بر پنل است که در بسیاری از فرزها و تراش‌های تولیدی رده میانی استفاده می‌شود. محیط‌های ShopMill و ShopTurn، سیکل‌های پیشرفته‌تر و امکانات ارتباطی بیشتر از ویژگی‌های رایج آن است. در نسل‌های مختلف 828D، حافظه، توان پردازش و امکانات متفاوت است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "خانواده 840D sl"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "سینومریک 840D sl کنترلر سطح بالای زیمنس است و برای ماشین‌های پیچیده، چندمحوره، چندکاناله و مراکز ماشین‌کاری پیشرفته به کار می‌رود. ساختار آن ماژولار است و با درایوهای SINAMICS ترکیب می‌شود. پیش از آن، نسل 840D (معروف به powerline) و پیش‌تر 840C و 810D هم در ماشین‌های قدیمی‌تر رایج بوده‌اند."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "دفترچه‌های اپراتوری و برنامه‌نویسی خانواده‌های مختلف، از 802D و 808D تا 840D sl، در "
+     },
+     {
+      "type": "text",
+      "text": "کتابخانه اسناد زیمنس",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/documents/siemens"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " دسته‌بندی شده‌اند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "جدول مقایسه 808D، 828D و 840D sl"
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ویژگی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "808D"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "828D"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "840D sl"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "سطح ماشین"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اقتصادی و سطح ورودی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تولیدی رده میانی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پیشرفته و چندمحوره"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ساختار"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پنل‌محور و ساده"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پنل‌محور و فشرده"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ماژولار"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "برنامه‌نویسی کارگاهی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "سیکل‌های پایه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ShopMill و ShopTurn"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ShopMill و ShopTurn و امکانات پیشرفته"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کاربرد رایج"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "فرز و تراش ساده"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "فرز و تراش تولیدی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "مراکز ماشین‌کاری، چندکاناله و پنج محور"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "انتقال برنامه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "بسته به مدل؛ USB و در برخی مدل‌ها RS-232"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "USB، کارت حافظه و شبکه بسته به پیکربندی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "شبکه و حافظه‌های جانبی بسته به پیکربندی"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "این جدول یک دید کلی است. پیش از تصمیم‌گیری، امکانات دقیق را در دفترچه و مشخصات ماشین موردنظر بررسی کنید؛ زیرا سازنده ماشین ممکن است برخی امکانات را فعال یا غیرفعال کرده باشد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "برنامه‌نویسی در کنترلرهای زیمنس"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برنامه‌نویسی سینومریک بر پایه کد G است، اما زبان زیمنس تفاوت‌هایی با کنترلرهای سازگار با فانوک دارد؛ از جمله نام‌گذاری سیکل‌ها (مانند سیکل‌های سوراخ‌کاری با نام‌هایی شبیه CYCLE81)، ساختار زیربرنامه‌ها و برخی دستورات کنترل برنامه. در برخی پیکربندی‌های 828D و 840D sl، حالت سازگاری با گویش ISO هم به‌عنوان آپشن وجود دارد تا برنامه‌های نوشته‌شده به سبک ISO اجرا شوند."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "نکات مهم برای برنامه‌نویسان:"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "خروجی نرم‌افزار CAM باید با پست‌پروسسور مخصوص سینومریک تولید شود."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "برنامه‌ای که برای کنترلر فانوک نوشته شده، معمولاً بدون اصلاح روی سینومریک اجرا نمی‌شود."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "استفاده از ShopMill یا ShopTurn برای قطعات ساده‌تر می‌تواند زمان برنامه‌نویسی را کم کند."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "کدهای M و امکانات اختصاصی را سازنده ماشین تعریف می‌کند."
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "اگر در کارگاه هم دستگاه زیمنس و هم فانوک دارید، "
+     },
+     {
+      "type": "text",
+      "text": "راهنمای کنترلر فانوک",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/کنترلر-فانوک"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " تفاوت‌های کاری را روشن‌تر می‌کند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "انتقال برنامه به کنترلر سینومریک"
+     }
+    ]
+   },
+   {
+    "type": "image",
+    "attrs": {
+     "src": "/uploads/کنترلر-زیمنس-سینومریک-body-usb-front-hd.webp",
+     "alt": "درگاه USB جلوی پنل کنترلر CNC برای انتقال برنامه",
+     "title": "در بسیاری از کنترلرهای جدیدتر، USB و شبکه کنار روش‌های قدیمی‌تر انتقال برنامه قرار گرفته‌اند"
+    }
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "روش انتقال برنامه به مدل، نسل و پیکربندی کنترلر بستگی دارد. روش‌های رایج عبارت‌اند از:"
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "USB و کارت حافظه"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در بسیاری از کنترلرهای جدیدتر، درگاه USB یا کارت حافظه روی پنل در دسترس است. این روش ساده است، اما همان مشکلات فلش را دارد: پراکندگی نسخه‌ها، رفت‌وآمد و ریسک امنیتی فایل‌های ناشناخته."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "درایو شبکه"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "کنترلرهای 828D و 840D sl در پیکربندی مناسب می‌توانند به پوشه‌های مشترک شبکه دسترسی داشته باشند. این روش امکان مدیریت متمرکز برنامه‌ها را فراهم می‌کند، اما نیاز به تنظیم درست شبکه، دسترسی‌ها و امنیت دارد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "ارتباط سریال"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در برخی مدل‌های قدیمی‌تر و اقتصادی، ارتباط سریال RS-232 مسیر اصلی انتقال برنامه است. در این حالت تنظیمات ارتباط باید با دفترچه همان مدل هماهنگ شود."
+     }
+    ]
+   },
+   {
+    "type": "image",
+    "attrs": {
+     "src": "/uploads/کنترلر-زیمنس-سینومریک-body-shop-network-hd.webp",
+     "alt": "اتصال دستگاه CNC به شبکه کارگاه از طریق کابل اترنت صنعتی",
+     "title": "اتصال شبکه‌ای امکان دسترسی به درایو مشترک و مدیریت متمرکز برنامه‌ها را فراهم می‌کند"
+    }
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "طراحی روند انتقال"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "مهم‌تر از ابزار انتقال، روند انتقال است: برنامه از کجا می‌آید، چه کسی آن را تأیید می‌کند و چگونه نسخه درست به دستگاه درست می‌رسد."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "این موضوع را با جزئیات بیشتر در "
+     },
+     {
+      "type": "text",
+      "text": "مقاله طراحی روند انتقال برنامه برای کنترلرهای Siemens",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/siemens-program-transfer-workflow"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " بررسی کرده‌ایم. برای آشنایی با مفهوم کلی DNC هم "
+     },
+     {
+      "type": "text",
+      "text": "مقاله DNC چیست",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/dnc-چیست"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را ببینید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "پشتیبان‌گیری و داده‌های ماشین در سینومریک"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "رفتار هر ماشین با کنترلر سینومریک با مجموعه‌ای از داده‌های ماشین (Machine Data)، داده‌های تنظیم و برنامه PLC سازنده تعیین می‌شود. از دست رفتن این داده‌ها، مثلاً بر اثر خرابی حافظه یا تعویض قطعه، می‌تواند راه‌اندازی ماشین را روزها به تأخیر بیندازد. به همین دلیل:"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "از پیکربندی کامل ماشین، طبق روش پیشنهادی دفترچه راه‌اندازی همان نسل، نسخه پشتیبان تهیه کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "علاوه بر پیکربندی، برنامه‌ها، جداول ابزار و آفست‌ها را هم جداگانه بایگانی کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "نسخه پشتیبان را با تاریخ و نسخه نرم‌افزار کنترلر نام‌گذاری و خارج از ماشین نگه‌داری کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "پس از هر تغییر مهم یا تعمیر، نسخه پشتیبان را به‌روز کنید."
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "تغییر داده‌های ماشین فقط باید توسط فرد آموزش‌دیده و با دفترچه مربوط انجام شود؛ زیرا برخی از آن‌ها به ایمنی و رفتار محورها مربوط‌اند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "نسل‌های قدیمی‌تر زیمنس در کارگاه‌های ایران"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در بسیاری از کارگاه‌ها هنوز ماشین‌هایی با کنترلرهای قدیمی‌تر زیمنس مانند 802D، 810D، 840D نسل powerline یا حتی 840C کار می‌کنند. این ماشین‌ها اغلب از نظر مکانیکی سالم‌اند، اما چند چالش رایج دارند:"
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "چالش"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "توضیح"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "راهکار رایج"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "حافظه محدود"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "برنامه‌های حجیم CAM جا نمی‌شوند"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اجرای برنامه از ورودی ارتباطی یا تقسیم برنامه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "درگاه‌های ارتباطی قدیمی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نبود USB یا شبکه در برخی مدل‌ها"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "استفاده از ارتباط سریال و راهکار DNC"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تأمین قطعه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "برخی بردها و نمایشگرها کمیاب‌اند"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نگه‌داری نسخه پشتیبان و شناسایی تأمین‌کننده معتبر"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دفترچه مناسب"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دفترچه‌های نسل قدیم کمتر در دسترس‌اند"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "استفاده از کتابخانه اسناد و مدارک سازنده ماشین"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای این ماشین‌ها، به‌جای تعویض کامل کنترلر، گاهی کافی است روش انتقال و مدیریت برنامه‌ها مدرن شود تا بخش زیادی از مشکلات روزمره برطرف شود."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "خرید ماشین با کنترلر زیمنس؛ چه چیزهایی را بپرسیم؟"
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پرسش"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "چرا مهم است؟"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "خانواده و نسل دقیق کنترلر چیست؟"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دفترچه، قطعات و امکانات به نسل وابسته است"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ShopMill یا ShopTurn فعال است؟"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "روی سرعت برنامه‌نویسی کارگاهی اثر دارد"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "چه درگاه‌های ارتباطی فعال است؟"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "روش انتقال برنامه و اتصال به شبکه را تعیین می‌کند"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نسخه پشتیبان پیکربندی و داده‌های ماشین موجود است؟"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "راه‌اندازی پس از خرابی یا جابه‌جایی را ممکن می‌کند"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پشتیبانی و قطعات در ایران در دسترس است؟"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "زمان توقف در صورت خرابی را کاهش می‌دهد"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "اشتباهات رایج در کار با کنترلر زیمنس"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "استفاده از پست‌پروسسور فانوک برای ماشین زیمنس"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "دانلود دفترچه نسل یا خانواده دیگر و استفاده از آن برای تنظیمات"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "تغییر داده‌های ماشین بدون نسخه پشتیبان و دانش کافی"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "نگه‌داشتن نسخه‌های متعدد یک برنامه روی USB‌های مختلف"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "اتصال کنترلر به شبکه بدون توجه به امنیت و دسترسی کاربران"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "سؤالات متداول درباره کنترلر زیمنس"
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "تفاوت 828D و 840D sl چیست؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "828D کنترلری فشرده و پنل‌محور برای ماشین‌های تولیدی رده میانی است، در حالی که 840D sl کنترلری ماژولار و سطح بالا برای ماشین‌های پیچیده و چندمحوره است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "ShopMill چیست؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "ShopMill محیط برنامه‌نویسی کارگاهی زیمنس برای فرز است که امکان برنامه‌نویسی گام‌به‌گام قطعه را بدون نوشتن مستقیم کد G فراهم می‌کند. معادل آن برای تراش ShopTurn نام دارد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "آیا برنامه فانوک روی کنترلر زیمنس اجرا می‌شود؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "به‌طور معمول بدون اصلاح خیر. برخی کنترلرهای زیمنس آپشن سازگاری با گویش ISO دارند، اما بهتر است برنامه با پست‌پروسسور مخصوص زیمنس تولید شود."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "برنامه را چگونه به کنترلر زیمنس منتقل کنم؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "بسته به مدل از طریق USB، کارت حافظه، درایو شبکه یا در مدل‌های قدیمی‌تر از طریق RS-232. روش دقیق در دفترچه اپراتوری همان کنترلر آمده است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "دفترچه سینومریک را از کجا پیدا کنم؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "دفترچه‌های رسمی از طریق زیمنس و سازنده ماشین قابل دریافت‌اند. بسیاری از دفترچه‌های خانواده‌های رایج در کتابخانه اسناد الکسیو دسته‌بندی شده‌اند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "808D برای چه ماشین‌هایی مناسب است؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای ماشین‌های اقتصادی، آموزشی و تولید سبک فرز و تراش که به امکانات پیشرفته چندمحوره نیاز ندارند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "آیا می‌توان کنترلر قدیمی زیمنس را به شبکه یا سیستم DNC وصل کرد؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در بسیاری از مدل‌های قدیمی که شبکه ندارند، می‌توان از درگاه سریال و یک راهکار DNC سیمی یا بی‌سیم برای انتقال برنامه استفاده کرد. امکان دقیق به مدل و درگاه‌های فعال کنترلر بستگی دارد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "جمع‌بندی"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "خانواده‌های سینومریک برای سطوح مختلف ماشین طراحی شده‌اند: 808D برای ماشین‌های اقتصادی، 828D برای ماشین‌های تولیدی رده میانی و 840D sl برای ماشین‌های پیچیده و چندمحوره. انتخاب پست‌پروسسور درست، استفاده از دفترچه همان نسل و طراحی یک روند انتقال برنامه کنترل‌شده، سه عامل اصلی کار مطمئن با این کنترلرها هستند."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "اگر دستگاه‌های زیمنس و سایر برندها را کنار هم دارید و می‌خواهید انتقال برنامه برای همه آن‌ها یکپارچه شود، سازگاری "
+     },
+     {
+      "type": "text",
+      "text": "Smart DNC الکسیو",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/product"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را با کنترلرهای خود بررسی کنید."
+     }
+    ]
+   }
+  ]
+ }
+}

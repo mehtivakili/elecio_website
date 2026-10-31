@@ -1,0 +1,10 @@
+Mode: imagegen — create new raster image
+
+1. cover
+Create one premium photorealistic editorial cover image for a Persian article about OEE (overall equipment effectiveness) in CNC machine shops, wide 3:2, 1536x1024. A production manager seen from behind or in profile stands in a clean CNC workshop looking at a large wall monitor that shows abstract bar and line charts with no readable labels or numbers, with a row of CNC machines in the background. Professional neutral lighting, documentary style. No readable text, letters, numbers, labels, logos, brands, trademarks, watermark, title or border. One image only.
+
+2. body-stopped-machine
+Create one realistic editorial photograph of a CNC machining center during a changeover, wide 3:2, 1536x1024. The machine door is open, spindle stopped, and an operator wearing safety glasses is loading a tool holder into the spindle while a cart with tool holders and a fixture waits nearby. Realistic shop environment, soft professional lighting, face partly turned away. No readable text, numbers, labels, logos, brands, watermark, title or border. One image only.
+
+3. body-quality-check
+Create one realistic editorial photograph of quality inspection in a CNC shop, wide 3:2, 1536x1024. On an inspection bench, a gloved inspector measures a freshly machined aluminum part with a digital caliper while a small tray separates accepted parts from a few rejected ones. Clean, bright, professional lighting, shallow depth of field. No readable text, numbers, scales, labels, logos, brands, watermark, title or border. One image only.

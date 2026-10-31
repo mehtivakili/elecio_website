@@ -1,0 +1,10 @@
+Mode: imagegen — create new raster image
+
+1. cover
+Create one premium photorealistic editorial cover image for a Persian article about CNC controller manuals, wide 3:2, 1536x1024. On a clean workbench next to a CNC machine, several bound technical manuals with plain covers and no readable text, an open manual showing abstract diagrams without characters, and a tablet displaying an abstract document list with no readable text. Soft natural and industrial light, shallow depth of field, professional documentary style. No readable text, letters, numbers, labels, logos, brands, trademarks, watermark, title or border. One image only.
+
+2. body-manual-at-machine
+Create one realistic editorial photograph of a CNC operator in safety glasses holding an open technical manual with abstract diagrams and no readable text, standing beside a CNC control panel and comparing the manual with the panel, wide 3:2, 1536x1024. Clean workshop, soft professional lighting, face partly turned away. No readable text, numbers, labels, logos, brands, watermark, title or border. One image only.
+
+3. body-nameplate
+Create one realistic close-up editorial photograph of a technician's gloved hand pointing with a pen at a blank metal identification plate on a CNC control cabinet, with a notebook in the other hand, wide 3:2, 1536x1024. The plate must be blank or have unreadable, abstract engraving, no legible characters. Soft lighting, clean industrial setting. No readable text, numbers, labels, logos, brands, watermark, title or border. One image only.

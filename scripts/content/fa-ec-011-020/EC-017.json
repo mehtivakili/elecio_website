@@ -1,0 +1,2006 @@
+{
+ "code": "EC-017",
+ "slug": "oee-چیست",
+ "title": "OEE چیست؟ محاسبه اثربخشی کلی تجهیزات در CNC",
+ "excerpt": "OEE شاخصی است که نشان می‌دهد از زمان برنامه‌ریزی‌شده یک دستگاه چه سهمی واقعاً به تولید قطعه سالم تبدیل شده است. در این مقاله سه مؤلفه OEE، فرمول و مثال عددی، شش ضرر بزرگ و روش جمع‌آوری داده در کارگاه CNC را توضیح می‌دهیم.",
+ "seoTitle": "OEE چیست؟ محاسبه اثربخشی کلی تجهیزات در CNC",
+ "seoDescription": "OEE یا اثربخشی کلی تجهیزات نشان می‌دهد دستگاه CNC واقعاً چقدر تولید می‌کند. فرمول، مثال عددی، شش ضرر بزرگ و روش جمع‌آوری داده را بخوانید.",
+ "focusKeyword": "oee چیست",
+ "secondaryKeywords": "محاسبه OEE، اثربخشی کلی تجهیزات، فرمول OEE، دسترس‌پذیری عملکرد کیفیت، شش ضرر بزرگ، بهره‌وری دستگاه CNC، TPM",
+ "schemaType": "Article",
+ "category": {
+  "slug": "operations",
+  "nameFa": "عملیات و بهره‌وری",
+  "nameEn": "Operations and efficiency",
+  "sortOrder": 30
+ },
+ "tags": [
+  [
+   "oee",
+   "OEE",
+   "OEE"
+  ],
+  [
+   "reporting",
+   "گزارش‌گیری",
+   "Reporting"
+  ],
+  [
+   "production",
+   "تولید",
+   "Production"
+  ],
+  [
+   "downtime",
+   "توقف دستگاه",
+   "Downtime"
+  ],
+  [
+   "cnc-monitoring",
+   "پایش CNC",
+   "CNC monitoring"
+  ]
+ ],
+ "media": [
+  {
+   "file": "oee-چیست-cover-hd.webp",
+   "kind": "cover",
+   "alt": "مدیر تولید در حال بررسی نمودارهای بهره‌وری دستگاه‌های CNC",
+   "caption": "OEE زمان، سرعت و کیفیت تولید را در یک شاخص قابل پیگیری کنار هم قرار می‌دهد"
+  },
+  {
+   "file": "oee-چیست-body-stopped-machine-hd.webp",
+   "kind": "body",
+   "alt": "دستگاه CNC متوقف با اپراتور در حال تعویض ابزار",
+   "caption": "توقف‌ها، آماده‌سازی و تعویض ابزار بخش بزرگی از کاهش دسترس‌پذیری را می‌سازند"
+  },
+  {
+   "file": "oee-چیست-body-quality-check-hd.webp",
+   "kind": "body",
+   "alt": "بازرسی قطعه CNC با کولیس و میکرومتر برای مؤلفه کیفیت",
+   "caption": "مؤلفه کیفیت در OEE سهم قطعات سالم از کل قطعات تولیدشده است"
+  }
+ ],
+ "body": {
+  "type": "doc",
+  "content": [
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "OEE مخفف Overall Equipment Effectiveness و به معنای «اثربخشی کلی تجهیزات» است. این شاخص به یک پرسش ساده اما مهم پاسخ می‌دهد: از زمانی که قرار بود دستگاه تولید کند، چه سهمی واقعاً به تولید قطعه سالم با سرعت درست تبدیل شده است؟ برای کارگاه CNC که دستگاه‌های گران‌قیمت دارد، این عدد می‌تواند نشان دهد ظرفیت واقعی کجا هدر می‌رود."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در این مقاله توضیح می‌دهیم OEE چیست، سه مؤلفه آن چگونه محاسبه می‌شوند، یک مثال عددی کامل می‌آوریم، شش ضرر بزرگ را مرور می‌کنیم و می‌گوییم برای محاسبه درست OEE در کارگاه CNC چه داده‌هایی لازم است و چه خطاهایی رایج است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "OEE چیست؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "OEE ریشه در رویکرد نگهداری بهره‌ور فراگیر (TPM) دارد و برای سنجیدن عملکرد یک دستگاه یا خط تولید به کار می‌رود. این شاخص سه نوع اتلاف را در یک عدد کنار هم قرار می‌دهد:"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "دسترس‌پذیری (Availability):",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " دستگاه چه سهمی از زمان برنامه‌ریزی‌شده واقعاً کار کرده است؟"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "عملکرد (Performance):",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " وقتی کار کرده، با چه سرعتی نسبت به سرعت ایده‌آل تولید کرده است؟"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "کیفیت (Quality):",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " چه سهمی از قطعات تولیدشده سالم و بدون نیاز به دوباره‌کاری بوده است؟"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "OEE = دسترس‌پذیری × عملکرد × کیفیت",
+      "marks": [
+       {
+        "type": "bold"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "ارزش OEE در این است که یک عدد کلی می‌دهد و هم‌زمان نشان می‌دهد مشکل اصلی در کدام مؤلفه است. دو دستگاه با OEE یکسان ممکن است مشکل کاملاً متفاوتی داشته باشند؛ یکی توقف زیاد و دیگری قطعات معیوب."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "سه مؤلفه OEE و فرمول هر کدام"
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "مؤلفه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "فرمول"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "چه چیزی را نشان می‌دهد؟"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دسترس‌پذیری"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "زمان کارکرد ÷ زمان تولید برنامه‌ریزی‌شده"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اثر توقف‌ها، خرابی‌ها و آماده‌سازی‌ها"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "عملکرد"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "(زمان سیکل ایده‌آل × تعداد کل قطعات) ÷ زمان کارکرد"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اثر کندکاری و توقف‌های کوتاه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کیفیت"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تعداد قطعات سالم ÷ تعداد کل قطعات"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اثر قطعات معیوب و دوباره‌کاری"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "دسترس‌پذیری"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "زمان تولید برنامه‌ریزی‌شده، زمانی است که قرار بود دستگاه کار کند؛ مثلاً یک شیفت منهای استراحت‌های برنامه‌ریزی‌شده. زمان کارکرد برابر است با این زمان منهای همه توقف‌ها؛ از خرابی و انتظار برای ابزار تا آماده‌سازی و انتظار برای برنامه."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "عملکرد"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "زمان سیکل ایده‌آل، کوتاه‌ترین زمان سیکل قابل قبول برای یک قطعه در شرایط مطلوب است. اگر دستگاه با پیشروی کمتر از حد مطلوب کار کند یا توقف‌های کوتاه زیادی داشته باشد، عملکرد کاهش می‌یابد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "کیفیت"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "همه قطعاتی که به استاندارد نرسیده‌اند یا نیاز به دوباره‌کاری دارند، از تعداد قطعات سالم کم می‌شوند. قطعات آزمایشی هنگام راه‌اندازی هم بخشی از این اتلاف‌اند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "مثال عددی محاسبه OEE"
+     }
+    ]
+   },
+   {
+    "type": "image",
+    "attrs": {
+     "src": "/uploads/oee-چیست-body-stopped-machine-hd.webp",
+     "alt": "دستگاه CNC متوقف با اپراتور در حال تعویض ابزار",
+     "title": "توقف‌ها، آماده‌سازی و تعویض ابزار بخش بزرگی از کاهش دسترس‌پذیری را می‌سازند"
+    }
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "فرض کنید یک فرز CNC در یک شیفت هشت‌ساعته کار می‌کند. اعداد زیر فرضی‌اند و فقط برای آموزش محاسبه آمده‌اند:"
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "داده"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "مقدار"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "زمان شیفت"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "۴۸۰ دقیقه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "استراحت برنامه‌ریزی‌شده"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "۳۰ دقیقه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "زمان تولید برنامه‌ریزی‌شده"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "۴۵۰ دقیقه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "توقف‌ها (آماده‌سازی، تعویض ابزار، انتظار برای برنامه، خرابی)"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "۶۰ دقیقه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "زمان کارکرد"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "۳۹۰ دقیقه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "زمان سیکل ایده‌آل"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "۱ دقیقه برای هر قطعه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تعداد کل قطعات"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "۳۱۲ قطعه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "قطعات معیوب"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "۸ قطعه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "قطعات سالم"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "۳۰۴ قطعه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "گام اول: دسترس‌پذیری"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "۳۹۰ ÷ ۴۵۰ ≈ ۰٫۸۶۷ یعنی حدود ۸۶٫۷ درصد"
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "گام دوم: عملکرد"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "(۱ × ۳۱۲) ÷ ۳۹۰ = ۰٫۸۰ یعنی ۸۰ درصد"
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "گام سوم: کیفیت"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "۳۰۴ ÷ ۳۱۲ ≈ ۰٫۹۷۴ یعنی حدود ۹۷٫۴ درصد"
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "گام چهارم: OEE"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "۰٫۸۶۷ × ۰٫۸۰ × ۰٫۹۷۴ ≈ ۰٫۶۷۶ یعنی حدود ۶۷٫۶ درصد"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "یک روش دیگر برای بررسی همین عدد: زمان تولید ایده‌آل قطعات سالم را بر زمان برنامه‌ریزی‌شده تقسیم کنید. (۳۰۴ × ۱) ÷ ۴۵۰ ≈ ۰٫۶۷۶؛ همان نتیجه. این روش ساده‌تر نشان می‌دهد OEE یعنی سهم زمان تولید مفید از کل زمان برنامه‌ریزی‌شده."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در این مثال، بزرگ‌ترین اتلاف در مؤلفه عملکرد است؛ یعنی دستگاه هنگام کار کندتر از حد ایده‌آل تولید کرده یا توقف‌های کوتاه زیادی داشته است. همین نتیجه مسیر بهبود را مشخص می‌کند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "شش ضرر بزرگ در OEE"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در ادبیات TPM، اتلاف‌ها معمولاً در شش دسته قرار می‌گیرند که هر کدام روی یکی از مؤلفه‌ها اثر می‌گذارد:"
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ضرر"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "مؤلفه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نمونه در کارگاه CNC"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "خرابی تجهیزات"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دسترس‌پذیری"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "آلارم سروو، خرابی اسپیندل یا قطعه هیدرولیک"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "آماده‌سازی و تنظیم"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دسترس‌پذیری"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "بستن فیکسچر، صفرگیری، تعویض ابزار، انتظار برای برنامه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "توقف‌های کوتاه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "عملکرد"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "گیر کردن براده، توقف‌های کوتاه اپراتور، بازرسی‌های میانی"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کاهش سرعت"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "عملکرد"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پیشروی کمتر از حد مطلوب به‌دلیل احتیاط یا لرزش"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "معیوبی فرایند"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کیفیت"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "قطعه خارج از تلرانس به‌دلیل سایش ابزار یا آفست نادرست"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ضایعات راه‌اندازی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کیفیت"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "قطعات آزمایشی اول کار پس از تغییر سفارش"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "داده لازم برای محاسبه درست OEE"
+     }
+    ]
+   },
+   {
+    "type": "image",
+    "attrs": {
+     "src": "/uploads/oee-چیست-body-quality-check-hd.webp",
+     "alt": "بازرسی قطعه CNC با کولیس و میکرومتر برای مؤلفه کیفیت",
+     "title": "مؤلفه کیفیت در OEE سهم قطعات سالم از کل قطعات تولیدشده است"
+    }
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "OEE فقط به اندازه داده‌ای که از آن محاسبه می‌شود معتبر است. در کارگاه CNC این داده‌ها معمولاً لازم‌اند:"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "زمان شروع و پایان شیفت و استراحت‌های برنامه‌ریزی‌شده"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "زمان‌های توقف همراه با علت هر توقف"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "تعداد قطعات تولیدشده در هر سفارش یا برنامه"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "زمان سیکل ایده‌آل یا استاندارد برای هر قطعه"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "تعداد قطعات معیوب و دوباره‌کاری"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "این داده‌ها را می‌توان با فرم کاغذی، صفحه‌گسترده یا سامانه پایش خودکار جمع‌آوری کرد. روش دستی برای شروع مناسب است، اما به حافظه و دقت افراد وابسته است و توقف‌های کوتاه را معمولاً ثبت نمی‌کند. هرچه داده دقیق‌تر و خودکارتر باشد، تصویر واقعی‌تری از اتلاف‌ها به دست می‌آید."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای طراحی یک گزارش توقف کاربردی، "
+     },
+     {
+      "type": "text",
+      "text": "راهنمای گزارش توقف CNC",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/cnc-downtime-reporting-guide"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را مطالعه کنید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "OEE در کارگاه CNC چه تفاوتی با خط تولید انبوه دارد؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "OEE در اصل برای خطوط تولید انبوه با محصول ثابت رایج شد، اما در کارگاه‌های CNC با سفارش‌های متنوع هم کاربرد دارد؛ به شرط اینکه چند نکته را در نظر بگیرید:"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "آماده‌سازی سهم بزرگ‌تری دارد.",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " در کارگاهی که روزانه چند سفارش کوچک اجرا می‌کند، بستن فیکسچر، صفرگیری، آماده‌کردن ابزار و تأیید قطعه اول ممکن است بخش بزرگی از شیفت را بگیرد. ثبت جداگانه این زمان نشان می‌دهد بهبود روش آماده‌سازی چه اثری دارد."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "زمان سیکل ایده‌آل برای هر برنامه متفاوت است.",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " بهتر است زمان سیکل استاندارد هر برنامه یا هر قطعه ثبت شود؛ نه یک عدد ثابت برای کل دستگاه."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "انتظار برای برنامه و ابزار اتلاف واقعی است.",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " اگر دستگاه آماده است اما برنامه هنوز نرسیده یا ابزار آماده نیست، این زمان را در دسته جداگانه ثبت کنید تا قابل پیگیری باشد."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "قطعه اول و بازرسی میانی.",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " قطعات آزمایشی و زمان بازرسی را شفاف تعریف کنید تا در مقایسه دوره‌ها یکسان محاسبه شوند."
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "با این تعریف‌ها، OEE در کارگاه CNC به ابزاری برای کشف اتلاف‌های پنهان تبدیل می‌شود؛ اتلاف‌هایی که معمولاً در گزارش‌های روزانه دیده نمی‌شوند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "خطاهای رایج در محاسبه OEE"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "استفاده از زمان سیکل فعلی به‌جای زمان سیکل ایده‌آل، که عملکرد را مصنوعی بالا نشان می‌دهد"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "ثبت نکردن توقف‌های کوتاه و در نتیجه بیش‌برآورد دسترس‌پذیری"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "مقایسه OEE دستگاه‌هایی با نوع کار کاملاً متفاوت بدون توجه به زمینه"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "میانگین‌گیری ساده از درصدها به‌جای محاسبه از داده‌های پایه"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "تمرکز روی عدد OEE به‌جای علت‌های پشت آن"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "درباره «OEE مطلوب» عددهای مختلفی در منابع گفته می‌شود؛ اما مهم‌تر از رسیدن به یک عدد عمومی، مقایسه OEE هر دستگاه با گذشته خودش و پیگیری روند بهبود است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "از OEE تا تصمیم مدیریتی"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "OEE وقتی ارزشمند است که به اقدام منجر شود. یک مسیر عملی:"
+     }
+    ]
+   },
+   {
+    "type": "orderedList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "OEE را برای یک یا دو دستگاه کلیدی شروع کنید، نه برای همه دستگاه‌ها به‌یک‌باره."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "سه مؤلفه را جداگانه نمایش دهید تا معلوم شود اتلاف اصلی کجاست."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "علت توقف‌ها را در چند دسته ساده و قابل فهم برای اپراتور تعریف کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "هر هفته بزرگ‌ترین علت اتلاف را انتخاب و برای آن یک اقدام مشخص تعریف کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "اثر اقدام را در هفته‌های بعد روی همان مؤلفه بسنجید."
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای مثال، اگر بخش زیادی از توقف‌ها «انتظار برای برنامه» یا «انتقال برنامه» باشد، اصلاح روش انتقال و مدیریت برنامه‌ها می‌تواند دسترس‌پذیری را بدون خرید دستگاه جدید بهبود دهد."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "اگر می‌خواهید داده‌های زمان کارکرد، توقف و تولید به‌صورت خودکار و در یک داشبورد جمع شوند، "
+     },
+     {
+      "type": "text",
+      "text": "نرم‌افزار الکسیو",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/software"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را ببینید. مدیران کارگاه هم می‌توانند در "
+     },
+     {
+      "type": "text",
+      "text": "صفحه صاحبان کارگاه",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/for/business-owners"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " ارزش اقتصادی این داده‌ها را بررسی کنند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "سؤالات متداول درباره OEE"
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "OEE چیست به زبان ساده؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "OEE نشان می‌دهد از زمانی که دستگاه قرار بود تولید کند، چه سهمی واقعاً به تولید قطعه سالم با سرعت مطلوب تبدیل شده است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "فرمول OEE چیست؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "OEE برابر است با حاصل‌ضرب دسترس‌پذیری، عملکرد و کیفیت. هر سه مؤلفه به‌صورت درصد یا عدد بین صفر و یک بیان می‌شوند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "OEE خوب چقدر است؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در منابع مختلف عددهای متفاوتی برای OEE مطلوب گفته می‌شود. برای کارگاه شما، روند بهبود OEE هر دستگاه نسبت به گذشته خودش معیار مفیدتری است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "تفاوت OEE با بهره‌وری چیست؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "بهره‌وری مفهومی کلی‌تر است و ممکن است نیروی انسانی، مواد و هزینه را هم شامل شود. OEE به‌طور مشخص اثربخشی استفاده از یک تجهیز را می‌سنجد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "برای محاسبه OEE به نرم‌افزار نیاز دارم؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای شروع، فرم کاغذی یا صفحه‌گسترده کافی است. اما برای ثبت دقیق توقف‌های کوتاه و محاسبه مداوم، سامانه پایش خودکار دقت و سرعت بیشتری دارد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "آیا OEE برای کارگاه با تولید تک‌قطعه هم کاربرد دارد؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "بله، اما تعریف زمان سیکل ایده‌آل و مقایسه بین سفارش‌ها دشوارتر است. در این کارگاه‌ها مؤلفه دسترس‌پذیری و علت توقف‌ها معمولاً بیشترین اطلاعات را می‌دهد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "توقف برای تعمیرات برنامه‌ریزی‌شده در OEE حساب می‌شود؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "بسته به تعریف کارگاه. معمولاً اگر تعمیرات از قبل برنامه‌ریزی شده و از زمان تولید برنامه‌ریزی‌شده کسر شده باشد، در دسترس‌پذیری حساب نمی‌شود. مهم این است که تعریف ثابت بماند تا مقایسه دوره‌ها معتبر باشد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "جمع‌بندی"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "OEE شاخصی ساده اما قدرتمند است که زمان، سرعت و کیفیت تولید را کنار هم قرار می‌دهد و نشان می‌دهد ظرفیت دستگاه کجا هدر می‌رود. محاسبه آن با سه فرمول ساده انجام می‌شود، اما ارزش واقعی آن به دقت داده‌ها و تبدیل نتیجه به اقدام بستگی دارد."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "از یک دستگاه شروع کنید، علت توقف‌ها را ساده و منظم ثبت کنید و هر هفته روی بزرگ‌ترین اتلاف تمرکز کنید. اگر برای جمع‌آوری خودکار داده و ساخت گزارش تولید به راهکار نیاز دارید، دمو "
+     },
+     {
+      "type": "text",
+      "text": "نرم‌افزار الکسیو",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/software"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را درخواست کنید."
+     }
+    ]
+   }
+  ]
+ }
+}

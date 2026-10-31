@@ -1,0 +1,10 @@
+Mode: imagegen — create new raster image
+
+1. cover
+Create one premium photorealistic editorial cover image for a Persian technical article about running very large CNC programs with drip feed, wide 3:2, 1536x1024. Inside a CNC milling machine, a ball-nose end mill is finishing a complex curved surface of a steel mold cavity, with very fine visible toolpath scallops on the machined surface and a light coolant mist. Photographed through the machine window, crisp detail, professional industrial lighting. No readable text, letters, numbers, labels, logos, brands, trademarks, watermark, title or border. One image only.
+
+2. body-data-stream
+Create one realistic editorial photograph illustrating continuous program streaming to a CNC machine, wide 3:2, 1536x1024. A compact industrial communication module mounted beside a CNC control panel with a small status light glowing, cable neatly routed, while the machine is visibly cutting a mold surface through the window in the background. Subtle, realistic, no sci-fi graphics. No readable text, numbers, labels, logos, brands, watermark, title or border. One image only.
+
+3. body-safe-restart
+Create one realistic editorial photograph of a CNC operator wearing safety glasses carefully inspecting a ball-nose tool and a partially finished mold surface after a planned machine stop, wide 3:2, 1536x1024. The machine door is open, spindle stopped, operator's hand pointing at the surface, face partially turned away. Clean workshop, soft professional light. No readable text, numbers, labels, logos, brands, watermark, title or border. One image only.

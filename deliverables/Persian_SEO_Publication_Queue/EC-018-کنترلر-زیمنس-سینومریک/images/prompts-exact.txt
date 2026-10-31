@@ -1,0 +1,10 @@
+Mode: imagegen — create new raster image
+
+1. cover
+Create one premium photorealistic editorial cover image for a Persian technical article comparing CNC controller families, wide 3:2, 1536x1024. A modern CNC control panel with a wide display showing an abstract 3D part simulation with no readable characters, mounted on a contemporary milling machine in a clean workshop, with soft reflections on the glass. Professional neutral lighting, shallow depth of field. Avoid brand trade dress or recognizable product designs. No readable text, letters, numbers, labels, logos, brands, trademarks, watermark, title or border. One image only.
+
+2. body-usb-front
+Create one realistic close-up editorial photograph of an operator's gloved hand inserting a small USB flash drive into a protected front port on a modern CNC control panel, wide 3:2, 1536x1024. The port cover is flipped open, panel keys softly out of focus, clean industrial lighting. No readable text, numbers, labels, logos, brands, watermark, title or border. One image only.
+
+3. body-shop-network
+Create one realistic editorial photograph of an industrial Ethernet cable with a robust connector plugged into the back of a modern CNC control unit inside a clean cabinet, wide 3:2, 1536x1024, with a small industrial network switch mounted nearby on a DIN rail and tidy cable management. Soft professional lighting, shallow depth of field. No readable text, numbers, labels, logos, brands, watermark, title or border. One image only.

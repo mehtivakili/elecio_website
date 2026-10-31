@@ -1,0 +1,1680 @@
+{
+ "code": "EC-019",
+ "slug": "آفست-ابزار-و-صفر-قطعه",
+ "title": "آفست ابزار و صفر قطعه در CNC؛ G54 تا G59",
+ "excerpt": "صفر قطعه و آفست ابزار تعیین می‌کنند برنامه CNC دقیقاً کجا و با چه ابعادی روی قطعه اجرا شود. در این راهنما مختصات ماشین و قطعه، G54 تا G59، آفست طول و شعاع ابزار، آفست‌های تراش، روش گرفتن صفر و خطاهای رایج را با مثال توضیح می‌دهیم.",
+ "seoTitle": "آفست ابزار و صفر قطعه در CNC؛ G54 تا G59",
+ "seoDescription": "صفر قطعه و آفست ابزار پایه دقت هر برنامه CNC هستند. تفاوت G54 تا G59، آفست طول و شعاع ابزار، روش گرفتن صفر و خطاهای پرهزینه را با مثال بیاموزید.",
+ "focusKeyword": "آفست ابزار",
+ "secondaryKeywords": "صفر قطعه، G54، Work Offset، آفست طول ابزار، G43، آفست شعاع ابزار، G41 G42، مختصات ماشین و قطعه، آفست سایش",
+ "schemaType": "TechArticle",
+ "category": {
+  "slug": "cnc-programming",
+  "nameFa": "برنامه‌نویسی CNC",
+  "nameEn": "CNC Programming",
+  "sortOrder": 15
+ },
+ "tags": [
+  [
+   "work-offset",
+   "صفر قطعه",
+   "Work offset"
+  ],
+  [
+   "tool-offset",
+   "آفست ابزار",
+   "Tool offset"
+  ],
+  [
+   "g-code",
+   "جی کد",
+   "G-code"
+  ],
+  [
+   "cnc-programming",
+   "برنامه‌نویسی CNC",
+   "CNC programming"
+  ],
+  [
+   "g-codes",
+   "کدهای G",
+   "G codes"
+  ]
+ ],
+ "media": [
+  {
+   "file": "آفست-ابزار-و-صفر-قطعه-cover-hd.webp",
+   "kind": "cover",
+   "alt": "پراب لمسی در حال گرفتن صفر قطعه روی فرز CNC",
+   "caption": "صفر قطعه و آفست ابزار نقطه اتصال برنامه با جای واقعی قطعه و طول واقعی ابزار هستند"
+  },
+  {
+   "file": "آفست-ابزار-و-صفر-قطعه-body-tool-setter-hd.webp",
+   "kind": "body",
+   "alt": "اندازه‌گیری طول ابزار با ابزارسنج روی میز فرز CNC",
+   "caption": "اندازه‌گیری دقیق طول ابزار، پایه آفست طول ابزار در برنامه است"
+  },
+  {
+   "file": "آفست-ابزار-و-صفر-قطعه-body-lathe-turret-hd.webp",
+   "kind": "body",
+   "alt": "برجک تراش CNC با چند ابزار و قطعه بسته‌شده در سه‌نظام",
+   "caption": "در تراش، هر ابزار برجک آفست هندسی و آفست سایش جداگانه دارد"
+  }
+ ],
+ "body": {
+  "type": "doc",
+  "content": [
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "آفست ابزار و صفر قطعه دو مفهومی هستند که برنامه CNC را به دنیای واقعی وصل می‌کنند. برنامه‌نویس مسیر ابزار را نسبت به یک نقطه مرجع روی قطعه می‌نویسد و فرض می‌کند ابزار طول و قطر مشخصی دارد. اما قطعه هر بار در جای کمی متفاوتی روی میز بسته می‌شود و ابزارها هم طول و قطر واقعی خودشان را دارند. صفر قطعه و آفست ابزار همین فاصله بین «فرض برنامه» و «واقعیت ماشین» را پر می‌کنند."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "اگر این دو درست تنظیم نشوند، بهترین برنامه هم قطعه را خراب می‌کند یا ابزار را به قطعه و فیکسچر می‌کوبد. در این راهنما مختصات ماشین و قطعه، کدهای G54 تا G59، آفست طول و شعاع ابزار در فرز، آفست‌های تراش، روش‌های گرفتن صفر و خطاهای پرهزینه را با مثال توضیح می‌دهیم. کدهای این مقاله بر اساس کنترلرهای رایج سازگار با فانوک است و در کنترلرهای دیگر ممکن است متفاوت باشد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "مختصات ماشین و مختصات قطعه"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "هر ماشین CNC یک دستگاه مختصات ثابت دارد که مبدأ آن را سازنده تعیین کرده است. این نقطه معمولاً با رفرنس‌گیری محورها پس از روشن‌شدن ماشین مشخص می‌شود و به آن مختصات ماشین (Machine Coordinate) می‌گویند. برنامه‌نویس اما معمولاً نمی‌خواهد مسیر ابزار را نسبت به این نقطه دور از قطعه بنویسد."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "به همین دلیل یک دستگاه مختصات دیگر تعریف می‌شود که مبدأ آن روی خود قطعه است؛ مثلاً گوشه بالایی قطعه یا مرکز یک سوراخ. به این مبدأ صفر قطعه (Work Zero) و به فاصله آن از مبدأ ماشین، آفست کار یا Work Offset می‌گویند. کنترلر این فاصله را ذخیره می‌کند و هر مختصاتی را که در برنامه نوشته شده، به مختصات ماشین تبدیل می‌کند."
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "مفهوم"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "مبدأ"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "چه کسی تعیین می‌کند؟"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کاربرد"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "مختصات ماشین"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نقطه مرجع ماشین"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "سازنده ماشین"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "حرکات ایمن، تعویض ابزار، حدود حرکت"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "مختصات قطعه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "صفر قطعه روی قطعه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "برنامه‌نویس و اپراتور"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نوشتن و اجرای مسیر ابزار"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "آفست کار"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "فاصله صفر قطعه از مبدأ ماشین"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اپراتور هنگام صفرگیری"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تبدیل مختصات برنامه به مختصات ماشین"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "اگر با ساختار کلی برنامه CNC آشنا نیستید، "
+     },
+     {
+      "type": "text",
+      "text": "راهنمای جی کد",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/جی-کد-چیست"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را پیش از ادامه بخوانید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "صفر قطعه و G54 تا G59"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در بسیاری از کنترلرها شش آفست کار استاندارد با کدهای G54 تا G59 در دسترس است. هر کد به یک ردیف در جدول آفست‌های کار اشاره می‌کند که مقادیر X، Y و Z آن را اپراتور هنگام صفرگیری وارد یا اندازه‌گیری می‌کند."
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کد"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کاربرد رایج"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "G54"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "رایج‌ترین آفست کار؛ معمولاً برای قطعه یا گیره اول"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "G55 تا G59"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "آفست‌های بعدی برای چند قطعه یا چند گیره روی یک میز"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "آفست‌های اضافی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "بسیاری از کنترلرها با آپشن، آفست‌های کار بیشتری ارائه می‌دهند"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "G53"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "حرکت در مختصات ماشین برای همان بلوک، بدون استفاده از آفست کار"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "مثال: دو گیره روی یک میز"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "فرض کنید دو گیره روی میز فرز بسته شده و در هر کدام یک قطعه یکسان قرار دارد. برنامه‌نویس مسیر ابزار را یک بار می‌نویسد و آن را یک بار با G54 برای گیره اول و یک بار با G55 برای گیره دوم اجرا می‌کند. اپراتور فقط کافی است صفر هر گیره را در ردیف مربوط ثبت کند. این روش زمان آماده‌سازی را کم و احتمال خطا را کمتر می‌کند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "آفست طول ابزار و G43"
+     }
+    ]
+   },
+   {
+    "type": "image",
+    "attrs": {
+     "src": "/uploads/آفست-ابزار-و-صفر-قطعه-body-tool-setter-hd.webp",
+     "alt": "اندازه‌گیری طول ابزار با ابزارسنج روی میز فرز CNC",
+     "title": "اندازه‌گیری دقیق طول ابزار، پایه آفست طول ابزار در برنامه است"
+    }
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "ابزارها طول‌های متفاوتی دارند. اگر کنترلر طول هر ابزار را نداند، نوک یک ابزار بلند زودتر از ابزار کوتاه به قطعه می‌رسد. آفست طول ابزار (Tool Length Offset) این تفاوت را جبران می‌کند."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در کنترلرهای سازگار با فانوک، آفست طول معمولاً با G43 و آدرس H فعال می‌شود؛ مثلاً "
+     },
+     {
+      "type": "text",
+      "text": "G43 H01 Z50.0",
+      "marks": [
+       {
+        "type": "code"
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " یعنی آفست طول ذخیره‌شده در ردیف ۱ را اعمال کن و به ارتفاع ۵۰ میلی‌متر بالای صفر قطعه برو. G49 آفست طول را لغو می‌کند. قاعده رایج این است که شماره H با شماره ابزار یکسان باشد تا اشتباه کمتر شود."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "روش‌های اندازه‌گیری طول ابزار"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "ابزارسنج روی میز یا پراب ابزار:",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " دقیق و سریع، به‌خصوص با چرخه‌های اندازه‌گیری خودکار."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "ابزارسنج بیرون از ماشین (Presetter):",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " ابزار پیش از نصب اندازه‌گیری و مقادیر وارد ماشین می‌شود."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "لمس سطح مرجع:",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " ابزار با یک بلوک یا سطح مرجع با ارتفاع معلوم تماس داده می‌شود؛ ساده‌تر اما وابسته به مهارت اپراتور."
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "آفست شعاع ابزار و G41 و G42"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در فرزکاری کانتورها، مسیر ابزار می‌تواند بر اساس مرکز ابزار یا بر اساس لبه قطعه نوشته شود. اگر برنامه بر اساس لبه قطعه نوشته شده باشد، کنترلر با جبران شعاع ابزار (Cutter Radius Compensation) مسیر مرکز ابزار را به اندازه شعاع آن جابه‌جا می‌کند. G41 جبران در سمت چپ مسیر و G42 جبران در سمت راست مسیر را فعال می‌کند و G40 آن را لغو می‌کند. مقدار شعاع در ردیفی ذخیره می‌شود که با آدرس D فراخوانی می‌شود."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "مزیت این روش این است که اپراتور می‌تواند با تغییر کوچک مقدار آفست شعاع، اندازه نهایی کانتور را اصلاح کند؛ بدون اینکه برنامه دوباره نوشته شود. نکته مهم: ورود و خروج جبران شعاع باید روی یک حرکت خطی با طول کافی و دور از قطعه انجام شود؛ وگرنه کنترلر آلارم می‌دهد یا ابزار در گوشه‌ها اشتباه حرکت می‌کند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "آفست‌ها در تراش CNC"
+     }
+    ]
+   },
+   {
+    "type": "image",
+    "attrs": {
+     "src": "/uploads/آفست-ابزار-و-صفر-قطعه-body-lathe-turret-hd.webp",
+     "alt": "برجک تراش CNC با چند ابزار و قطعه بسته‌شده در سه‌نظام",
+     "title": "در تراش، هر ابزار برجک آفست هندسی و آفست سایش جداگانه دارد"
+    }
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در تراش، ساختار کمی متفاوت است. هر ابزار برجک دو نوع آفست دارد:"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "آفست هندسی (Geometry):",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " موقعیت نوک ابزار نسبت به مرجع، که هنگام نصب و اندازه‌گیری ابزار تعیین می‌شود."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "آفست سایش (Wear):",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " اصلاحات کوچک برای جبران سایش ابزار یا رساندن قطعه به اندازه دقیق."
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در بسیاری از تراش‌های سازگار با فانوک، کد T چهاررقمی هم ابزار و هم شماره آفست را انتخاب می‌کند؛ مثلاً T0101 یعنی ابزار شماره ۱ با آفست شماره ۱. اگر قطر قطعه پس از چند قطعه کمی بزرگ‌تر از اندازه شد، اپراتور معمولاً مقدار آفست سایش محور X را کمی تغییر می‌دهد؛ نه آفست هندسی را."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای آشنایی با اجزای برجک و عملیات تراش، "
+     },
+     {
+      "type": "text",
+      "text": "مقاله تراش CNC چیست",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/تراش-cnc-چیست"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را ببینید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "روش گرفتن صفر قطعه در فرز"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "روش صفرگیری به ماشین، تجهیزات و دقت مورد نیاز بستگی دارد. یک روند عمومی برای گرفتن صفر X و Y و Z:"
+     }
+    ]
+   },
+   {
+    "type": "orderedList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "قطعه را محکم و تمیز ببندید و از عدم وجود براده زیر قطعه مطمئن شوید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "ابزار مرجع یا پراب را در اسپیندل قرار دهید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "برای X و Y، لبه‌های قطعه را با پراب لمسی، لبه‌یاب یا ساعت اندیکاتور پیدا کنید؛ برای صفر در مرکز سوراخ، از چرخه‌های اندازه‌گیری مرکز استفاده کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "شعاع لبه‌یاب یا پراب را در محاسبه لحاظ کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "برای Z، سطح بالایی قطعه را با ابزار مرجع یا پراب لمس کنید و رابطه آن با آفست طول ابزار را رعایت کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "مقادیر را در ردیف درست جدول آفست کار (مثلاً G54) ثبت کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "پیش از اجرای برنامه، با حرکت آهسته به نقطه صفر و بالای قطعه، درستی آن را کنترل کنید."
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "خطاهای رایج و پرهزینه در آفست‌ها"
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "خطا"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پیامد احتمالی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پیشگیری"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ثبت صفر در ردیف اشتباه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اجرای برنامه در جای نادرست و برخورد"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نام‌گذاری و بازبینی ردیف آفست پیش از اجرا"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "فراموش کردن G43 یا H اشتباه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "برخورد ابزار با قطعه یا برش در ارتفاع نادرست"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "استاندارد کردن یکسانی شماره ابزار و H"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "لحاظ نکردن شعاع لبه‌یاب"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "خطای ابعادی به اندازه شعاع"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "چک‌لیست صفرگیری و بازبینی دوم"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تغییر آفست هندسی به‌جای سایش در تراش"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "از دست رفتن مرجع ابزار"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اصلاح‌های کوچک فقط در آفست سایش"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ورود جبران شعاع روی قوس"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "آلارم یا مسیر نادرست"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ورود جبران روی حرکت خطی ایمن"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "استفاده از آفست قطعه قبلی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اجرای برنامه با صفر کهنه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پاک یا به‌روزرسانی آفست در هر آماده‌سازی"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "نکات حرفه‌ای برای کاهش خطا"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "در ابتدای هر برنامه، یک بلوک ایمن قرار دهید که آفست‌ها و جبران‌های قبلی را لغو کند."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "در برگه آماده‌سازی، شماره آفست کار و شماره H و D هر ابزار را مشخص کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "پس از تعویض ابزار یا اینسرت، طول یا موقعیت آن را دوباره اندازه‌گیری کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "اجرای اول برنامه را با Single Block و پیشروی کاهش‌یافته انجام دهید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "آفست‌ها را پیش از تغییرات مهم یادداشت کنید تا امکان بازگشت داشته باشید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "کدهای M مرتبط مثل روشن‌کردن اسپیندل و خنک‌کاری را هم در ترتیب درست بنویسید؛ "
+         },
+         {
+          "type": "text",
+          "text": "فهرست کدهای M در CNC",
+          "marks": [
+           {
+            "type": "link",
+            "attrs": {
+             "href": "/fa/blog/کدهای-m-در-cnc"
+            }
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " را ببینید."
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای اپراتورها، داشتن برنامه درست و نسخه تأییدشده در کنار دستگاه به همان اندازه صفرگیری درست اهمیت دارد. "
+     },
+     {
+      "type": "text",
+      "text": "صفحه اپراتورهای CNC",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/for/operators"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " نشان می‌دهد چگونه می‌توان دسترسی به برنامه درست را ساده‌تر کرد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "سؤالات متداول درباره آفست ابزار و صفر قطعه"
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "صفر قطعه چیست؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "صفر قطعه نقطه‌ای روی قطعه است که برنامه‌نویس مختصات مسیر ابزار را نسبت به آن نوشته است. اپراتور فاصله این نقطه از مبدأ ماشین را در آفست کار ثبت می‌کند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "تفاوت G54 و G55 چیست؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "هر دو آفست کار هستند و به ردیف‌های مختلف جدول آفست اشاره می‌کنند. می‌توان از آن‌ها برای چند قطعه یا چند گیره روی یک میز استفاده کرد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "G43 چه کاری انجام می‌دهد؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در کنترلرهای سازگار با فانوک، G43 آفست طول ابزار را از ردیفی که با آدرس H مشخص شده فعال می‌کند تا تفاوت طول ابزارها جبران شود."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "تفاوت آفست هندسی و آفست سایش در تراش چیست؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "آفست هندسی موقعیت پایه نوک ابزار است و آفست سایش برای اصلاحات کوچک ناشی از سایش یا رساندن قطعه به اندازه دقیق استفاده می‌شود."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "چرا بعد از صفرگیری هم ابعاد قطعه درست نیست؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "ممکن است شعاع لبه‌یاب لحاظ نشده باشد، ابزار سایش داشته باشد، آفست شعاع یا طول ابزار اشتباه باشد یا قطعه هنگام بستن جابه‌جا شده باشد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "آیا G54 در همه کنترلرها یکسان است؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در بسیاری از کنترلرهای رایج G54 تا G59 آفست‌های کار استاندارد هستند، اما جزئیات و آفست‌های اضافی در کنترلرهای مختلف متفاوت است. دفترچه همان کنترلر را بررسی کنید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "جمع‌بندی"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "صفر قطعه به کنترلر می‌گوید قطعه کجاست و آفست ابزار می‌گوید ابزار چقدر بلند و چقدر پهن است. با درک تفاوت مختصات ماشین و قطعه، استفاده درست از G54 تا G59، فعال‌کردن آفست طول با G43 و جبران شعاع با G41 و G42، و تمایز آفست هندسی و سایش در تراش، بخش بزرگی از خطاهای پرهزینه حذف می‌شود."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "یک چک‌لیست ساده صفرگیری، استاندارد کردن شماره‌گذاری آفست‌ها و اجرای اول با احتیاط، بهترین بیمه‌نامه کارگاه در برابر برخورد ابزار و قطعه معیوب است. دفترچه‌های برنامه‌نویسی کنترلر خود را هم می‌توانید در "
+     },
+     {
+      "type": "text",
+      "text": "کتابخانه اسناد",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/documents"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " پیدا کنید."
+     }
+    ]
+   }
+  ]
+ }
+}

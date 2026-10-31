@@ -32,6 +32,8 @@
     "content:import-fa-ec-008-010": "tsx scripts/import-fa-ec-008-010.ts",
     "content:validate-fa-ec-008-010": "tsx scripts/import-fa-ec-008-010.ts --dry-run",
     "content:validate-fa-ec-004-007": "tsx scripts/import-fa-publication-drafts.ts --dry-run",
+    "content:import-fa-ec-011-020": "tsx scripts/import-fa-ec-011-020.ts",
+    "content:validate-fa-ec-011-020": "tsx scripts/import-fa-ec-011-020.ts --dry-run",
     "content:backfill-blog-images": "tsx scripts/backfill-blog-image-plan.ts"
   },
   "dependencies": {

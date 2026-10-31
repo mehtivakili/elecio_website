@@ -1,0 +1,10 @@
+Mode: imagegen — create new raster image
+
+1. cover
+Create one premium photorealistic editorial cover image for a Persian technical article about CNC work offsets and tool offsets, wide 3:2, 1536x1024. Close-up inside a CNC milling machine: a touch probe in the spindle is gently contacting the edge of a precisely clamped aluminum workpiece in a vise, with the machine table and clamping visible and clean. Crisp detail, soft industrial lighting, technically plausible. No readable text, letters, numbers, labels, logos, brands, trademarks, watermark, title or border. One image only.
+
+2. body-tool-setter
+Create one realistic editorial photograph of a CNC milling tool being measured on a table-mounted tool length setter, wide 3:2, 1536x1024. The end mill tip touches the setter's measuring surface, the machine table is clean, coolant off, soft professional lighting, shallow depth of field. No readable text, numbers, scales, labels, logos, brands, watermark, title or border. One image only.
+
+3. body-lathe-turret
+Create one realistic editorial photograph of a CNC lathe turret holding several different turning and boring tools, positioned near a steel workpiece clamped in a three-jaw chuck, wide 3:2, 1536x1024. Clean machine interior, realistic metal textures, professional industrial lighting, photographed through the open door with the machine stopped. No readable text, numbers, labels, logos, brands, watermark, title or border. One image only.

@@ -1,0 +1,10 @@
+Mode: imagegen — create new raster image
+
+1. cover
+Create one premium photorealistic editorial cover image for a Persian technical article explaining DNC (distributed numerical control) for CNC machines, wide 3:2, 1536x1024. A clean modern machine shop with three or four CNC milling and turning machines in a row, their control panels visible but with no readable screens, and a compact industrial computer workstation in the foreground. Very subtle, elegant light lines suggest data flowing from the workstation to each machine without looking like sci-fi graphics. Neutral industrial lighting, documentary style, technically plausible equipment, safety doors closed. No readable text, letters, numbers, labels, logos, brands, trademarks, watermark, title or border. One image only.
+
+2. body-serial-vs-network
+Create one realistic editorial photograph comparing two ways of connecting a CNC machine for program transfer, wide 3:2, 1536x1024. On the left side of the frame, the back of an older CNC control cabinet with a classic 25-pin serial connector and a shielded serial cable neatly attached; on the right side, a compact modern industrial communication module with an antenna mounted near a newer CNC control. Clean, well-organized cabling, realistic connectors, soft professional lighting, shallow depth of field, authentic workshop background. No readable text, numbers, labels, logos, brands, watermark, title or border. One image only.
+
+3. body-program-library
+Create one realistic editorial photograph of a CNC programmer selecting an approved program from a central program library, wide 3:2, 1536x1024. The programmer sits at a clean desk near the shop floor with a laptop showing an abstract file-tree interface with no readable text, while CNC machines are softly visible through a glass partition behind. Natural professional posture, safety glasses on the desk, tidy environment, soft daylight mixed with industrial light. No readable text, numbers, labels, logos, brands, watermark, title or border. One image only.

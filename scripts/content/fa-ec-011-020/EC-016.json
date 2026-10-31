@@ -1,0 +1,1850 @@
+{
+ "code": "EC-016",
+ "slug": "آلارم-فانوک",
+ "title": "آلارم‌های رایج فانوک؛ معنی، علت و روش رفع",
+ "excerpt": "آلارم‌های کنترلر فانوک زبان مشترک دستگاه با اپراتور و تعمیرکار هستند. در این راهنما ساختار پیام آلارم، معنای پیشوندهایی مثل PS، SV، OT و SR، علت‌های رایج، اقدام امن پیش از ریست و زمان تماس با متخصص را توضیح می‌دهیم.",
+ "seoTitle": "آلارم‌های رایج فانوک؛ معنی، علت و روش رفع",
+ "seoDescription": "آلارم‌های کنترلر فانوک را چگونه بخوانیم؟ دسته‌های PS، SV، OT و SR، علت‌های رایج، اقدام امن پیش از ریست و زمان تماس با تعمیرکار را بشناسید.",
+ "focusKeyword": "آلارم فانوک",
+ "secondaryKeywords": "کد آلارم فانوک، آلارم SV فانوک، آلارم OT، آلارم PS، آلارم SR، ریست آلارم فانوک، عیب‌یابی کنترلر فانوک، Maintenance Manual فانوک",
+ "schemaType": "TechArticle",
+ "category": {
+  "slug": "controller-setup",
+  "nameFa": "تنظیم کنترلر",
+  "nameEn": "Controller setup",
+  "sortOrder": 20
+ },
+ "tags": [
+  [
+   "fanuc",
+   "Fanuc",
+   "Fanuc"
+  ],
+  [
+   "cnc-alarms",
+   "آلارم CNC",
+   "CNC alarms"
+  ],
+  [
+   "troubleshooting",
+   "عیب‌یابی",
+   "Troubleshooting"
+  ],
+  [
+   "cnc-controller",
+   "کنترلر CNC",
+   "CNC controller"
+  ],
+  [
+   "rs232",
+   "RS-232 CNC",
+   "RS-232 CNC"
+  ]
+ ],
+ "media": [
+  {
+   "file": "آلارم-فانوک-cover-hd.webp",
+   "kind": "cover",
+   "alt": "تکنسین در حال بررسی تابلو و کنترلر دستگاه CNC",
+   "caption": "خواندن دقیق آلارم و بررسی علت، پیش از ریست، از توقف‌های تکراری جلوگیری می‌کند"
+  },
+  {
+   "file": "آلارم-فانوک-body-alarm-screen-hd.webp",
+   "kind": "body",
+   "alt": "اپراتور در حال یادداشت پیام آلارم از نمایشگر کنترلر",
+   "caption": "ثبت دقیق شماره و متن آلارم، اولین قدم عیب‌یابی است"
+  },
+  {
+   "file": "آلارم-فانوک-body-drive-inspection-hd.webp",
+   "kind": "body",
+   "alt": "بررسی ماژول‌های درایو و کابل‌های سروو در کابینت دستگاه CNC",
+   "caption": "آلارم‌های سروو و اسپیندل معمولاً به بررسی تخصصی درایو، موتور و کابل‌ها نیاز دارند"
+  }
+ ],
+ "body": {
+  "type": "doc",
+  "content": [
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "آلارم فانوک پیامی است که کنترلر وقتی با شرایط غیرعادی یا خطرناک روبه‌رو می‌شود نمایش می‌دهد و معمولاً حرکت ماشین را متوقف می‌کند. برخی آلارم‌ها با یک اصلاح ساده در برنامه یا یک ریست برطرف می‌شوند؛ اما برخی دیگر نشانه مشکل جدی در سروو، اسپیندل، باتری یا ارتباطات هستند و ریست کردن بی‌دقت آن‌ها می‌تواند خسارت را بیشتر کند."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در این راهنما ساختار پیام آلارم در کنترلرهای فانوک، معنای دسته‌های رایج، علت‌های متداول و یک روش امن برای برخورد با آلارم را توضیح می‌دهیم. یک نکته اساسی: شماره و متن آلارم‌ها بین سری‌های مختلف فانوک یکسان نیست. مرجع قطعی، دفترچه نگهداری (Maintenance Manual) همان سری کنترلر است و نمونه‌های این مقاله فقط برای آشنایی آمده‌اند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "ساختار پیام آلارم در کنترلر فانوک"
+     }
+    ]
+   },
+   {
+    "type": "image",
+    "attrs": {
+     "src": "/uploads/آلارم-فانوک-body-alarm-screen-hd.webp",
+     "alt": "اپراتور در حال یادداشت پیام آلارم از نمایشگر کنترلر",
+     "title": "ثبت دقیق شماره و متن آلارم، اولین قدم عیب‌یابی است"
+    }
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در سری‌های جدیدتر فانوک مانند 0i-D و 0i-F، پیام آلارم معمولاً سه بخش دارد: یک پیشوند دوحرفی که دسته آلارم را نشان می‌دهد، یک شماره چهاررقمی و یک متن کوتاه انگلیسی. در سری‌های قدیمی‌تر، آلارم‌ها بیشتر با یک شماره و متن نمایش داده می‌شوند و دسته‌بندی از روی بازه شماره‌ها مشخص می‌شود."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای عیب‌یابی درست، همیشه این اطلاعات را کامل یادداشت کنید:"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "پیشوند و شماره دقیق آلارم"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "متن کامل پیام، حتی اگر طولانی باشد"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "محور یا بخشی که آلارم به آن اشاره می‌کند"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "کاری که ماشین هنگام بروز آلارم انجام می‌داد"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "آیا آلارم تکراری است یا اولین بار رخ داده"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "اگر سری دقیق کنترلر دستگاه را نمی‌دانید، ابتدا "
+     },
+     {
+      "type": "text",
+      "text": "راهنمای کنترلر فانوک",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/کنترلر-فانوک"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را ببینید؛ بدون دانستن سری، استفاده از دفترچه درست ممکن نیست."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "دسته‌بندی آلارم‌های فانوک"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "جدول زیر پیشوندهای رایج را در سری‌های جدیدتر فانوک نشان می‌دهد. جزئیات و فهرست کامل را در دفترچه نگهداری همان سری بررسی کنید."
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پیشوند"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دسته کلی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نمونه علت‌های رایج"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "چه کسی معمولاً رسیدگی می‌کند؟"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "PS"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "خطای برنامه یا عملیات"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "فرمت نادرست کد، مقدار غیرمجاز، ترکیب نادرست کدها"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "برنامه‌نویس یا اپراتور"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "SV"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "سروو"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "خطای موقعیت، بار زیاد، مشکل درایو، موتور یا کابل بازخورد"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تعمیرکار متخصص"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "OT"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "حد حرکت (Overtravel)"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "عبور محور از حد نرم‌افزاری یا سخت‌افزاری"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اپراتور با احتیاط، و در صورت تکرار، تعمیرکار"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "SR"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ارتباطات و ورودی/خروجی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تنظیمات نادرست ارتباط، کابل، قطع ارتباط هنگام انتقال"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اپراتور یا مسئول انتقال برنامه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "SP"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اسپیندل"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "مشکل درایو یا موتور اسپیندل، بار زیاد"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تعمیرکار متخصص"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "OH"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "گرمای بیش از حد"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دمای کابینت یا موتور، فن معیوب"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تعمیرکار و بررسی تهویه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "DS"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "سایر موارد"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "از جمله هشدارهای مرتبط با باتری موقعیت مطلق"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تعمیرکار یا مسئول نگهداری"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "SW و PW"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پارامتر و راه‌اندازی مجدد"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "فعال بودن مجوز نوشتن پارامتر، نیاز به خاموش و روشن کردن کنترلر"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "مسئول فنی آگاه به پارامترها"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "آلارم‌های رایج برنامه (PS)"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "آلارم‌های PS معمولاً نتیجه خطا در برنامه یا ترتیب عملیات هستند و کمتر به سخت‌افزار مربوط می‌شوند. نمونه‌های متداول:"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "استفاده از کدی که روی این کنترلر یا آپشن‌های فعال آن وجود ندارد"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "ترکیب کدهایی که نباید در یک بلوک بیایند"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "مقدار خارج از محدوده برای یک آدرس، مثلاً پیشروی یا دور غیرمجاز"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "فراخوانی زیربرنامه‌ای که در حافظه وجود ندارد"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "خطا در سیکل‌های ثابت به‌دلیل مقدار ناقص یا نادرست"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای رفع این آلارم‌ها، بلوکی را که آلارم در آن رخ داده پیدا کنید، آن را با دفترچه برنامه‌نویسی همان سری مقایسه کنید و پس از اصلاح، برنامه را با احتیاط از یک نقطه امن ادامه دهید. اگر برنامه خروجی CAM است، اصلاح باید در پست‌پروسسور یا تنظیمات CAM هم انجام شود تا خطا تکرار نشود."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "آلارم‌های سروو و اسپیندل (SV و SP)"
+     }
+    ]
+   },
+   {
+    "type": "image",
+    "attrs": {
+     "src": "/uploads/آلارم-فانوک-body-drive-inspection-hd.webp",
+     "alt": "بررسی ماژول‌های درایو و کابل‌های سروو در کابینت دستگاه CNC",
+     "title": "آلارم‌های سروو و اسپیندل معمولاً به بررسی تخصصی درایو، موتور و کابل‌ها نیاز دارند"
+    }
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "آلارم‌های سروو و اسپیندل معمولاً جدی‌تر هستند. ممکن است نشانه گیر کردن مکانیکی، بار بیش از حد، خرابی موتور، کابل آسیب‌دیده، مشکل درایو یا خطای انکودر باشند. چند اصل مهم:"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "آلارم سروو را پشت سر هم ریست نکنید؛ هر بار ممکن است آسیب بیشتری وارد شود."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "بررسی کنید آیا محور به مانعی برخورد کرده یا مکانیزم مکانیکی گیر کرده است."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "اگر آلارم پس از یک برخورد رخ داده، پیش از ادامه کار، دقت و سلامت مکانیکی بررسی شود."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "بررسی درایو، موتور و کابل‌ها باید فقط توسط فرد متخصص و با رعایت اصول ایمنی برق انجام شود."
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "آلارم حد حرکت (OT)"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "آلارم OT وقتی رخ می‌دهد که یک محور به حد نرم‌افزاری یا سخت‌افزاری خود برسد. در بسیاری از سری‌های جدیدتر، آلارم حد نرم‌افزاری مثبت و منفی با شماره‌هایی مانند OT0500 و OT0501 نمایش داده می‌شود که باید با دفترچه همان سری تطبیق داده شود."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "علت‌های رایج: صفر قطعه یا آفست نادرست، برنامه‌ای که برای ماشین بزرگ‌تر نوشته شده، یا حرکت دستی بی‌دقت. برای خروج از این وضعیت معمولاً محور در جهت مخالف و با سرعت کم حرکت داده می‌شود. اگر حد سخت‌افزاری فعال شده باشد، روش خروج به طراحی سازنده ماشین بستگی دارد و باید طبق دفترچه ماشین انجام شود."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "آلارم‌های ارتباط و انتقال برنامه (SR)"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "آلارم‌های دسته SR در سری‌های جدیدتر و آلارم‌های ارتباطی معادل در سری‌های قدیمی‌تر، معمولاً هنگام ارسال یا دریافت برنامه یا در حین دریپ فید رخ می‌دهند. یکی از نمونه‌های شناخته‌شده، آلارمی با متن DR SIGNAL OFF است که در سری‌های قدیمی‌تر با شماره 086 و در برخی سری‌های جدیدتر با پیشوند SR دیده می‌شود و معمولاً به آماده نبودن دستگاه طرف مقابل یا مشکل کابل و تنظیمات دست‌دهی اشاره دارد."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "علت‌های متداول آلارم‌های ارتباطی:"
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "علت"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نشانه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اقدام اولیه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تنظیمات ناهماهنگ سرعت یا فرمت کاراکتر"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "انتقال شروع نمی‌شود یا کاراکترها خراب‌اند"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تنظیمات دو طرف را مقایسه کنید"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کانال ورودی و خروجی نادرست"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کنترلر به درگاه دیگری گوش می‌دهد"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کانال فعال را با دفترچه بررسی کنید"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کابل معیوب یا سیم‌بندی نادرست"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "قطع و وصل یا عدم ارتباط"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "سیم‌بندی و اتصال را کنترل کنید"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کنترل جریان نادرست در دریپ فید"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "توقف وسط برنامه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تنظیم کنترل جریان را اصلاح کنید"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "آماده نبودن طرف مقابل"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "آلارم هنگام شروع انتقال"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ابتدا نرم‌افزار یا دستگاه DNC را آماده کنید"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای بررسی گام‌به‌گام تنظیمات ارتباطی، "
+     },
+     {
+      "type": "text",
+      "text": "چک‌لیست اتصال RS-232 فانوک",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/fanuc-rs232-checklist"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را ببینید. اگر آلارم در حین اجرای برنامه حجیم رخ می‌دهد، "
+     },
+     {
+      "type": "text",
+      "text": "راهنمای دریپ فید",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/دریپ-فید-cnc"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " هم کمک می‌کند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "آلارم‌های پارامتر، باتری و راه‌اندازی مجدد"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "دو آلارم بسیار رایج در کار روزمره به پارامترها مربوط‌اند. وقتی مجوز نوشتن پارامتر فعال باشد، کنترلر یک هشدار نمایش می‌دهد (در سری‌های جدیدتر با پیشوند SW و در سری‌های قدیمی‌تر معمولاً با شماره 100). همچنین پس از تغییر برخی پارامترها، کنترلر اعلام می‌کند که باید خاموش و روشن شود (در سری‌های جدیدتر با پیشوند PW و در سری‌های قدیمی با شماره 000)."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "هشدارهای باتری را هم جدی بگیرید. ضعیف شدن باتری حافظه کنترلر یا باتری انکودرهای موقعیت مطلق می‌تواند به از دست رفتن پارامترها یا موقعیت مرجع محورها منجر شود. تعویض باتری باید دقیقاً طبق دفترچه نگهداری انجام شود؛ در برخی موارد تعویض باید با روشن بودن کنترلر انجام شود تا داده‌ها پاک نشوند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "اقدام امن پیش از ریست آلارم"
+     }
+    ]
+   },
+   {
+    "type": "orderedList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "ماشین را در وضعیت ایمن نگه دارید؛ درب را باز نکنید تا اسپیندل کاملاً متوقف شود."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "پیشوند، شماره و متن کامل آلارم را یادداشت کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "بررسی کنید ماشین هنگام بروز آلارم دقیقاً چه کاری انجام می‌داد."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "آلارم را در دفترچه نگهداری همان سری جست‌وجو کنید و علت‌های احتمالی را بخوانید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "اگر علت روشن و ساده است (مثلاً خطای برنامه)، آن را برطرف و سپس ریست کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "اگر آلارم سروو، اسپیندل، حرارت یا باتری است، پیش از ادامه با متخصص مشورت کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "آلارم و اقدام انجام‌شده را در دفتر نگهداری دستگاه ثبت کنید."
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "دفتر ثبت آلارم؛ ابزار ساده برای پیشگیری"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "بسیاری از خرابی‌های جدی قبل از وقوع، به‌صورت آلارم‌های کوچک و تکراری خود را نشان می‌دهند. یک دفتر ساده یا فرم الکترونیکی کنار هر دستگاه، با ستون‌های تاریخ، شیفت، پیشوند و شماره آلارم، کاری که ماشین انجام می‌داد، اقدام انجام‌شده و نام فرد، در چند ماه الگوهای مهمی را آشکار می‌کند. مثلاً اگر آلارم بار زیاد روی یک محور هر هفته در یک برنامه خاص تکرار شود، ممکن است مشکل در مسیر ابزار، روانکاری راهنماها یا خود محور باشد. همین داده‌ها در گفت‌وگو با تعمیرکار هم زمان تشخیص را کوتاه می‌کنند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "اشتباهات رایج در برخورد با آلارم فانوک"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "ریست پشت سر هم آلارم بدون فهمیدن علت"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "استفاده از دفترچه سری دیگر برای تفسیر آلارم"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "تغییر پارامترها برای «حذف» آلارم بدون شناخت اثر آن"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "نادیده گرفتن هشدار باتری تا زمان از دست رفتن پارامترها"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "ثبت نکردن آلارم‌ها و از دست دادن الگوی آلارم‌های تکراری"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "باز کردن کابینت برق بدون آموزش و رعایت اصول ایمنی"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "سؤالات متداول درباره آلارم فانوک"
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "کد آلارم فانوک را از کجا بفهمم؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "معنای دقیق هر آلارم در دفترچه نگهداری (Maintenance Manual) همان سری کنترلر آمده است. دفترچه‌های بسیاری از سری‌ها در کتابخانه اسناد الکسیو قابل دسترسی‌اند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "آلارم SV در فانوک یعنی چه؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "پیشوند SV در سری‌های جدیدتر به آلارم‌های سروو اشاره دارد؛ مثل خطای موقعیت، بار زیاد یا مشکل درایو و موتور. این آلارم‌ها معمولاً نیاز به بررسی تخصصی دارند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "چگونه آلارم فانوک را ریست کنم؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "معمولاً با کلید RESET پنل. اما پیش از ریست، علت را پیدا و برطرف کنید؛ برخی آلارم‌ها فقط با خاموش و روشن کردن کنترلر یا اقدام فنی برطرف می‌شوند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "چرا پس از تغییر پارامتر، کنترلر می‌خواهد خاموش و روشن شود؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برخی پارامترها فقط هنگام راه‌اندازی کنترلر خوانده می‌شوند. کنترلر با یک آلارم مخصوص اعلام می‌کند که برای اعمال تغییر باید خاموش و روشن شود."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "آلارم هنگام انتقال برنامه از چیست؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "بیشتر به تنظیمات ارتباطی ناهماهنگ، کانال اشتباه، کابل معیوب یا آماده نبودن طرف مقابل مربوط است. تنظیمات دو طرف را مقایسه کنید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "چه زمانی باید با تعمیرکار تماس بگیرم؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "وقتی آلارم به سروو، اسپیندل، حرارت، باتری یا ایمنی مربوط است، پس از ریست تکرار می‌شود یا پس از برخورد ابزار رخ داده است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "جمع‌بندی"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "آلارم‌های فانوک ابزار ارتباط کنترلر با اپراتور و تعمیرکار هستند. با شناخت دسته‌بندی پیشوندها، ثبت دقیق پیام‌ها و استفاده از دفترچه نگهداری درست، می‌توان بسیاری از آلارم‌ها را سریع و امن برطرف کرد و از آلارم‌های جدی، پیش از تبدیل شدن به خرابی پرهزینه، باخبر شد."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای دسترسی به دفترچه‌های نگهداری فانوک به "
+     },
+     {
+      "type": "text",
+      "text": "کتابخانه اسناد فانوک",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/documents/fanuc"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " مراجعه کنید. اگر آلارم‌های ارتباطی یا مشکلات انتقال برنامه دارید، تیم فنی الکسیو از طریق "
+     },
+     {
+      "type": "text",
+      "text": "صفحه تماس",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/contact"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " آماده بررسی است."
+     }
+    ]
+   }
+  ]
+ }
+}

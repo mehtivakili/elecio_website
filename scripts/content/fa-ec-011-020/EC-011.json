@@ -1,0 +1,2157 @@
+{
+ "code": "EC-011",
+ "slug": "dnc-چیست",
+ "title": "DNC چیست؟ کاربرد سیستم DNC در دستگاه‌های CNC",
+ "excerpt": "DNC روشی برای رساندن برنامه از کامپیوتر یا سرور به دستگاه CNC به‌صورت کنترل‌شده است. در این راهنما معنای DNC، تفاوت آن با CNC، انواع سیمی و بی‌سیم، مقایسه با USB و معیارهای انتخاب یک سیستم DNC را بررسی می‌کنیم.",
+ "seoTitle": "DNC چیست؟ کاربرد سیستم DNC در دستگاه‌های CNC",
+ "seoDescription": "DNC چیست و چه مشکلی را در کارگاه CNC حل می‌کند؟ تفاوت DNC با انتقال USB، انواع سیمی و بی‌سیم، اجرای برنامه حجیم و معیارهای انتخاب سیستم DNC را بخوانید.",
+ "focusKeyword": "dnc چیست",
+ "secondaryKeywords": "سیستم DNC، Direct Numerical Control، Distributed Numerical Control، DNC در CNC، شبکه DNC، DNC بی‌سیم، انتقال برنامه CNC، دریپ فید",
+ "schemaType": "TechArticle",
+ "category": {
+  "slug": "cnc-guides",
+  "nameFa": "راهنماهای CNC",
+  "nameEn": "CNC guides",
+  "sortOrder": 10
+ },
+ "tags": [
+  [
+   "dnc",
+   "DNC",
+   "DNC"
+  ],
+  [
+   "cnc-file-transfer",
+   "انتقال فایل CNC",
+   "CNC file transfer"
+  ],
+  [
+   "cnc-program-transfer",
+   "انتقال برنامه CNC",
+   "CNC program transfer"
+  ],
+  [
+   "cnc-networking",
+   "شبکه CNC",
+   "CNC networking"
+  ],
+  [
+   "rs232",
+   "RS-232 CNC",
+   "RS-232 CNC"
+  ],
+  [
+   "cnc-program-management",
+   "مدیریت برنامه CNC",
+   "CNC program management"
+  ]
+ ],
+ "media": [
+  {
+   "file": "dnc-چیست-cover-hd.webp",
+   "kind": "cover",
+   "alt": "چند دستگاه CNC متصل به یک سیستم مرکزی انتقال برنامه در کارگاه",
+   "caption": "سیستم DNC برنامه را از یک مرجع کنترل‌شده به چند دستگاه CNC می‌رساند"
+  },
+  {
+   "file": "dnc-چیست-body-serial-vs-network-hd.webp",
+   "kind": "body",
+   "alt": "مقایسه اتصال سریال و اتصال شبکه‌ای دستگاه CNC",
+   "caption": "اتصال سریال قدیمی و اتصال شبکه‌ای یا بی‌سیم، دو مسیر رایج برای پیاده‌سازی DNC هستند"
+  },
+  {
+   "file": "dnc-چیست-body-program-library-hd.webp",
+   "kind": "body",
+   "alt": "برنامه‌نویس در حال انتخاب نسخه تأییدشده برنامه CNC از کتابخانه مرکزی",
+   "caption": "در DNC، برنامه تأییدشده از یک کتابخانه مرکزی انتخاب و به دستگاه درست فرستاده می‌شود"
+  }
+ ],
+ "body": {
+  "type": "doc",
+  "content": [
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "DNC چیست؟ اگر بخواهیم ساده بگوییم، DNC روشی است برای اینکه برنامه دستگاه CNC به‌جای جابه‌جا شدن با فلش، کارت حافظه یا تایپ دستی، از یک کامپیوتر یا سرور مرکزی و از مسیر کنترل‌شده به دستگاه برسد. در کارگاهی که چند دستگاه CNC با کنترلرهای مختلف دارد، همین موضوع ساده می‌تواند تفاوت بین یک روز کاری منظم و یک روز پر از خطای نسخه، توقف و رفت‌وآمد بیهوده را رقم بزند."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در این مقاله توضیح می‌دهیم DNC دقیقاً چیست، چه تفاوتی با CNC دارد، چطور کار می‌کند، چه انواعی دارد و در مقایسه با USB و کارت حافظه چه مزیت‌ها و محدودیت‌هایی دارد. در پایان هم یک چک‌لیست عملی برای انتخاب سیستم DNC مناسب کارگاه ارائه می‌کنیم."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "DNC چیست و مخفف چه عبارتی است؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "DNC در ابتدا مخفف Direct Numerical Control بود. در دهه‌های اولیه کنترل عددی، کامپیوترهای گران‌قیمت مرکزی برنامه را مستقیم به چند ماشین NC می‌فرستادند؛ زیرا خود ماشین‌ها حافظه و توان پردازشی چندانی نداشتند. با ورود کنترلرهای CNC که حافظه و پردازنده داخلی دارند، معنای رایج DNC به Distributed Numerical Control تغییر کرد؛ یعنی توزیع برنامه‌ها از یک مرجع مرکزی به دستگاه‌هایی که خودشان برنامه را اجرا می‌کنند."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "امروزه وقتی در کارگاه از DNC صحبت می‌شود، معمولاً منظور مجموعه‌ای از سخت‌افزار و نرم‌افزار است که این کارها را انجام می‌دهد:"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "ارسال برنامه NC یا G-code از کامپیوتر یا سرور به حافظه کنترلر"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "دریافت برنامه اصلاح‌شده از دستگاه و بازگرداندن آن به مرجع مرکزی"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "اجرای برنامه‌های حجیم به‌صورت تکه‌تکه وقتی حافظه کنترلر کافی نیست (دریپ فید)"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "نگه‌داری کتابخانه منظم برنامه‌ها و جلوگیری از اجرای نسخه اشتباه"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "ثبت اینکه چه برنامه‌ای، چه زمانی و برای کدام دستگاه ارسال شده است"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای آشنایی با ساختار خود برنامه‌ها، "
+     },
+     {
+      "type": "text",
+      "text": "راهنمای جی کد",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/جی-کد-چیست"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را ببینید. در ادامه تمرکز ما روی مسیر رسیدن برنامه به دستگاه است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "تفاوت DNC و CNC چیست؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "این دو اصطلاح گاهی به جای هم استفاده می‌شوند، اما نقش متفاوتی دارند. CNC یعنی خود دستگاه و کنترلری که برنامه را می‌خواند و محورها، اسپیندل و تجهیزات جانبی را فرمان می‌دهد. DNC لایه ارتباطی و مدیریتی بالای آن است که تعیین می‌کند برنامه از کجا و چگونه به این کنترلر برسد."
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "موضوع"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "CNC"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "DNC"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نقش اصلی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اجرای برنامه و کنترل حرکت ماشین"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "رساندن، دریافت و مدیریت برنامه‌ها"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "محل قرارگیری"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "روی خود دستگاه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "بین کامپیوتر یا سرور و دستگاه‌ها"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ورودی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "برنامه NC در حافظه یا ورودی ارتباطی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "فایل‌های کتابخانه مرکزی یا خروجی CAM"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پرسش کلیدی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دستگاه این برنامه را چگونه اجرا کند؟"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کدام نسخه برنامه، از چه مسیری و به کدام دستگاه برسد؟"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نمونه مشکل"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "آلارم سروو یا خطای برنامه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ارسال نسخه قدیمی یا قطع ارتباط هنگام انتقال"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "به بیان ساده، دستگاه CNC بدون DNC هم کار می‌کند؛ اما هرچه تعداد دستگاه‌ها، تنوع کنترلرها و حجم برنامه‌ها بیشتر شود، نبود یک روش کنترل‌شده برای انتقال برنامه هزینه‌های بیشتری ایجاد می‌کند. اگر با ساختار خود دستگاه آشنا نیستید، "
+     },
+     {
+      "type": "text",
+      "text": "مقاله دستگاه CNC چیست",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/دستگاه-cnc-چیست"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " نقطه شروع خوبی است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "سیستم DNC چگونه کار می‌کند؟"
+     }
+    ]
+   },
+   {
+    "type": "image",
+    "attrs": {
+     "src": "/uploads/dnc-چیست-body-program-library-hd.webp",
+     "alt": "برنامه‌نویس در حال انتخاب نسخه تأییدشده برنامه CNC از کتابخانه مرکزی",
+     "title": "در DNC، برنامه تأییدشده از یک کتابخانه مرکزی انتخاب و به دستگاه درست فرستاده می‌شود"
+    }
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "یک سیستم DNC معمولاً از سه بخش تشکیل می‌شود: مرجع برنامه‌ها، مسیر ارتباطی و تنظیمات سمت کنترلر. هر سه بخش باید با هم هماهنگ باشند تا انتقال قابل اعتماد باشد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "۱. مرجع مرکزی برنامه‌ها"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برنامه‌ها در یک کامپیوتر، سرور یا نرم‌افزار مدیریت برنامه نگه‌داری می‌شوند. در حالت ساده این مرجع یک پوشه منظم است؛ در حالت پیشرفته‌تر، نرم‌افزار نسخه‌ها را ثبت می‌کند، دسترسی کاربران را محدود می‌کند و مشخص می‌کند کدام نسخه برای تولید تأیید شده است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "۲. مسیر ارتباطی"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برنامه از مرجع مرکزی از طریق یک مسیر ارتباطی به دستگاه می‌رسد. در دستگاه‌های قدیمی‌تر این مسیر معمولاً پورت سریال RS-232 است. در کنترلرهای جدیدتر ممکن است اترنت، پوشه اشتراکی شبکه یا FTP هم در دسترس باشد. در راهکارهای جدید، یک ماژول کنار دستگاه می‌تواند ارتباط سریال دستگاه را به شبکه بی‌سیم یا سیمی کارگاه وصل کند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "۳. تنظیمات سمت کنترلر"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "کنترلر باید برای دریافت یا ارسال برنامه آماده باشد. در ارتباط سریال، پارامترهایی مانند سرعت انتقال (Baud rate)، تعداد بیت داده، بیت توقف، توازن و روش کنترل جریان باید در دو طرف یکسان باشند. اگر یکی از این تنظیمات اشتباه باشد، انتقال یا اصلاً شروع نمی‌شود یا برنامه ناقص و با کاراکترهای خراب می‌رسد."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای یک نمونه عملی از این تنظیمات، "
+     },
+     {
+      "type": "text",
+      "text": "چک‌لیست اتصال RS-232 کنترلر فانوک",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/fanuc-rs232-checklist"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را مطالعه کنید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "انواع DNC: سیمی، شبکه‌ای و بی‌سیم"
+     }
+    ]
+   },
+   {
+    "type": "image",
+    "attrs": {
+     "src": "/uploads/dnc-چیست-body-serial-vs-network-hd.webp",
+     "alt": "مقایسه اتصال سریال و اتصال شبکه‌ای دستگاه CNC",
+     "title": "اتصال سریال قدیمی و اتصال شبکه‌ای یا بی‌سیم، دو مسیر رایج برای پیاده‌سازی DNC هستند"
+    }
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "انتخاب نوع DNC بیش از هر چیز به کنترلرهای موجود، فاصله دستگاه‌ها از هم و زیرساخت شبکه کارگاه بستگی دارد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "DNC سیمی با کابل سریال"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در این روش هر دستگاه با کابل RS-232 به یک کامپیوتر یا مبدل وصل می‌شود. مزیت آن سازگاری با دستگاه‌های قدیمی است؛ اما طول کابل محدود است، کابل‌کشی در کارگاه دست‌وپاگیر می‌شود و نویز الکتریکی یا اتصال ضعیف می‌تواند انتقال را خراب کند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "DNC شبکه‌ای"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در کنترلرهایی که پورت اترنت دارند، برنامه از طریق شبکه کارگاه منتقل می‌شود. سرعت و راحتی این روش معمولاً بیشتر است، اما به آپشن‌های کنترلر، تنظیم درست شبکه و رعایت مسائل امنیتی وابسته است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "DNC بی‌سیم"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در این روش یک ماژول ارتباطی کنار دستگاه نصب می‌شود و ارتباط آن با مرجع مرکزی از طریق Wi-Fi برقرار می‌شود. این روش برای کارگاه‌هایی که کابل‌کشی دشوار است یا دستگاه‌ها مدام جابه‌جا می‌شوند جذاب است؛ به شرط اینکه پوشش و پایداری شبکه بی‌سیم در محل دستگاه‌ها بررسی شده باشد."
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نوع DNC"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "مناسب برای"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "مزیت اصلی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نکته قابل توجه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "سیمی سریال"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دستگاه‌های قدیمی و تعداد کم دستگاه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "سازگاری گسترده با کنترلرهای RS-232"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "محدودیت طول کابل و حساسیت به نویز"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "شبکه‌ای"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کنترلرهای دارای اترنت"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "سرعت و مدیریت راحت‌تر"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نیاز به آپشن کنترلر و پیکربندی شبکه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "بی‌سیم"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کارگاه با کابل‌کشی دشوار یا چیدمان متغیر"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "حذف کابل‌های طولانی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نیاز به پوشش پایدار Wi-Fi در محل دستگاه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "DNC در برابر USB و کارت حافظه"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "بسیاری از کارگاه‌ها هنوز برنامه را با فلش USB یا کارت حافظه جابه‌جا می‌کنند. این روش برای چند برنامه کوچک و یک دستگاه ممکن است کافی باشد، اما با بزرگ‌شدن کارگاه مشکلاتش آشکار می‌شود."
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "معیار"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "USB یا کارت حافظه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "DNC"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کنترل نسخه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "وابسته به دقت افراد؛ نسخه‌های متعدد روی فلش‌ها پخش می‌شود"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "برنامه از مرجع مشخص ارسال و ثبت می‌شود"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "زمان اپراتور"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "رفت‌وآمد بین دفتر و دستگاه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ارسال یا درخواست برنامه از کنار دستگاه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "برنامه‌های حجیم"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "محدود به حافظه کنترلر یا قابلیت اجرای مستقیم از حافظه جانبی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "امکان دریپ فید در صورت پشتیبانی کنترلر"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ریسک امنیتی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "انتقال فایل‌های ناشناخته و خطر بدافزار"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دسترسی کنترل‌شده و مسیر مشخص"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دستگاه‌های قدیمی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "بسیاری از آن‌ها اصلاً پورت USB ندارند"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "از طریق RS-232 قابل اتصال‌اند"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "این مقایسه به این معنا نیست که USB همیشه اشتباه است؛ بلکه یعنی هرچه تعداد دستگاه‌ها و برنامه‌ها بیشتر شود، هزینه پنهان روش دستی بالاتر می‌رود. برای مقایسه کامل روش‌های انتقال، "
+     },
+     {
+      "type": "text",
+      "text": "راهنمای کامل انتقال فایل CNC",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/cnc-file-transfer-guide"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را ببینید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "DNC چه مشکلاتی را در کارگاه حل می‌کند؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "ارزش DNC در عمل با کاهش خطا و توقف سنجیده می‌شود، نه با اصطلاحات فنی. چند سناریوی رایج:"
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "اجرای نسخه اشتباه برنامه"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برنامه‌نویس یک اصلاح کوچک در مسیر ابزار انجام داده، اما نسخه قدیمی هنوز روی فلش اپراتور است. نتیجه می‌تواند یک قطعه معیوب یا حتی برخورد ابزار باشد. با DNC، اپراتور برنامه را از مرجع تأییدشده دریافت می‌کند و احتمال این خطا کم می‌شود."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "کمبود حافظه برای برنامه‌های سه‌بعدی"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "خروجی نرم‌افزارهای CAM برای قالب‌سازی یا سطوح پیچیده ممکن است از حافظه کنترلرهای قدیمی بزرگ‌تر باشد. در این حالت DNC با روش دریپ فید برنامه را بخش‌به‌بخش به کنترلر می‌رساند تا کنترلر همزمان با دریافت، آن را اجرا کند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "گم‌شدن برنامه‌های اصلاح‌شده روی دستگاه"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "اپراتور با تجربه گاهی برنامه را روی خود دستگاه اصلاح می‌کند. اگر این نسخه به مرجع مرکزی برنگردد، دفعه بعد دوباره همان مشکل تکرار می‌شود. DNC امکان دریافت برنامه از دستگاه و بایگانی آن را فراهم می‌کند."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای اینکه برنامه‌ها و پارامترها در صورت خرابی از دست نروند، "
+     },
+     {
+      "type": "text",
+      "text": "راهنمای پشتیبان‌گیری و امنیت فایل‌های CNC",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/cnc-backup-security-basics"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را هم بخوانید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "نمونه عملی: کارگاهی با پنج دستگاه و سه نوع کنترلر"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "فرض کنید کارگاهی دو فرز با کنترلر فانوک قدیمی، یک فرز با کنترلر زیمنس و دو تراش با کنترلرهای مختلف دارد. برنامه‌ها در کامپیوتر دفتر فنی ساخته می‌شوند و با فلش به سالن تولید می‌روند. سه مشکل تکرارشونده دارند: فرزهای قدیمی پورت USB ندارند و برنامه با کامپیوتر قدیمی و کابل سریال منتقل می‌شود، برنامه‌های قالب در حافظه یکی از فرزها جا نمی‌شوند، و هر چند هفته یک بار نسخه اشتباه اجرا می‌شود."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "یک مسیر منطقی برای این کارگاه می‌تواند این باشد:"
+     }
+    ]
+   },
+   {
+    "type": "orderedList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "فهرست کامل دستگاه‌ها، مدل کنترلر، درگاه‌های ارتباطی و حجم حافظه هر کدام تهیه شود."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "برای هر کنترلر روش اتصال مناسب (سریال، شبکه یا ماژول بی‌سیم) مشخص شود."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "یک مرجع مرکزی برنامه با ساختار پوشه یا نرم‌افزار مدیریت نسخه ایجاد شود."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "قانون ساده‌ای تعریف شود: فقط برنامه‌های پوشه «تأییدشده» برای تولید ارسال شوند."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "برای فرزی که حافظه کم دارد، اجرای برنامه حجیم با دریپ فید روی یک قطعه آزمایشی تست شود."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "پس از چند هفته، تعداد خطاهای نسخه و زمان صرف‌شده برای انتقال با قبل مقایسه شود."
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "معیارهای انتخاب سیستم DNC"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "انتخاب DNC فقط مقایسه قیمت نیست. این پرسش‌ها را پیش از تصمیم بررسی کنید:"
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "معیار"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پرسش کلیدی"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "سازگاری کنترلر"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "آیا با همه کنترلرهای فعلی کارگاه (از جمله مدل‌های قدیمی) کار می‌کند؟"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "روش اتصال"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "سریال، شبکه یا بی‌سیم؛ و آیا با زیرساخت کارگاه شما سازگار است؟"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دریپ فید"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "آیا اجرای برنامه‌های بزرگ‌تر از حافظه کنترلر را پشتیبانی می‌کند؟"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "مدیریت نسخه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "آیا مشخص است کدام نسخه تأییدشده است و چه کسی آن را ارسال کرده؟"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "رابط کاربری"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "آیا اپراتور می‌تواند بدون رفت‌وآمد، برنامه را از کنار دستگاه درخواست کند؟"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پشتیبانی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "آیا تیم پشتیبانی با کنترلرهای رایج در ایران آشناست و پاسخ‌گوست؟"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "اگر می‌خواهید بدانید یک راهکار DNC بی‌سیم چگونه این معیارها را پوشش می‌دهد، "
+     },
+     {
+      "type": "text",
+      "text": "صفحه محصول Smart DNC الکسیو",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/product"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را ببینید و سازگاری آن را با کنترلر دستگاه‌های خود بررسی کنید. دفترچه‌های رسمی کنترلرها را هم می‌توانید در "
+     },
+     {
+      "type": "text",
+      "text": "کتابخانه اسناد CNC",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/documents"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " پیدا کنید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "اشتباهات رایج در راه‌اندازی DNC"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "شروع بدون فهرست دقیق کنترلرها و درگاه‌های ارتباطی دستگاه‌ها"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "یکسان فرض کردن تنظیمات سریال همه دستگاه‌ها در حالی که هر کنترلر پارامترهای خودش را دارد"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "استفاده از کابل بی‌کیفیت یا بدون شیلد در محیط پرنویز کارگاه"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "نگه‌داشتن چند نسخه از یک برنامه بدون نام‌گذاری و قانون مشخص"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "تست نکردن دریپ فید روی قطعه آزمایشی پیش از استفاده در تولید"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "نادیده گرفتن امنیت شبکه و دسترسی کاربران به برنامه‌ها"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "سؤالات متداول درباره DNC"
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "DNC مخفف چیست؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در ابتدا مخفف Direct Numerical Control بود و امروز بیشتر به معنای Distributed Numerical Control به کار می‌رود؛ یعنی توزیع کنترل‌شده برنامه‌ها از یک مرجع مرکزی به دستگاه‌های CNC."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "آیا DNC فقط برای دستگاه‌های قدیمی است؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "خیر. دستگاه‌های قدیمی بیشترین سود را از DNC می‌برند چون معمولاً USB یا شبکه ندارند؛ اما در دستگاه‌های جدید هم مدیریت نسخه، ثبت ارسال‌ها و حذف رفت‌وآمد با فلش ارزشمند است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "دریپ فید چه ربطی به DNC دارد؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "دریپ فید یکی از قابلیت‌های DNC است که برنامه‌ای بزرگ‌تر از حافظه کنترلر را به‌صورت پیوسته به آن می‌رساند تا همزمان اجرا شود. این روش برای برنامه‌های حجیم سه‌بعدی کاربرد دارد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "آیا برای DNC حتماً به کامپیوتر کنار هر دستگاه نیاز است؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "نه لزوماً. در روش‌های جدید، یک ماژول ارتباطی کنار دستگاه و یک نرم‌افزار مرکزی کافی است و اپراتور می‌تواند برنامه را از کنار دستگاه یا از طریق رابط نرم‌افزاری درخواست کند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "DNC بی‌سیم چقدر قابل اعتماد است؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "قابلیت اطمینان آن به کیفیت پوشش Wi-Fi در محل دستگاه، طراحی ماژول و مدیریت خطای انتقال بستگی دارد. پیش از استفاده گسترده، انتقال و اجرای برنامه روی یک دستگاه به‌صورت آزمایشی بررسی شود."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "آیا DNC جایگزین نرم‌افزار CAM است؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "خیر. CAM برنامه را تولید می‌کند و DNC آن را به دستگاه می‌رساند و مدیریت می‌کند. این دو مکمل یکدیگرند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "جمع‌بندی"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "DNC پاسخی به یک پرسش ساده اما مهم است: کدام نسخه برنامه، از چه مسیری و به کدام دستگاه برسد؟ در کارگاهی با یک دستگاه و برنامه‌های کوچک، روش دستی ممکن است کافی باشد؛ اما وقتی تعداد دستگاه‌ها، تنوع کنترلرها و حجم برنامه‌ها افزایش پیدا می‌کند، DNC خطای نسخه، زمان تلف‌شده و مشکل حافظه را کاهش می‌دهد."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای شروع، فهرست کنترلرها و روش ارتباطی هر دستگاه را تهیه کنید، یک مرجع مرکزی برای برنامه‌های تأییدشده بسازید و راهکاری انتخاب کنید که با دستگاه‌های قدیمی و جدید شما سازگار باشد. اگر برای بررسی سازگاری به کمک نیاز دارید، از طریق "
+     },
+     {
+      "type": "text",
+      "text": "صفحه تماس",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/contact"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " با تیم فنی الکسیو در ارتباط باشید."
+     }
+    ]
+   }
+  ]
+ }
+}

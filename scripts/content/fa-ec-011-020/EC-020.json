@@ -1,0 +1,1819 @@
+{
+ "code": "EC-020",
+ "slug": "دفترچه-راهنمای-کنترلر-cnc",
+ "title": "دفترچه راهنمای کنترلر CNC؛ پیدا کردن منوال درست",
+ "excerpt": "هر کنترلر CNC چند نوع دفترچه دارد و استفاده از دفترچه اشتباه می‌تواند به تنظیمات نادرست و توقف دستگاه منجر شود. در این راهنما انواع دفترچه‌ها، روش خواندن شماره سند و نسخه، انتخاب دفترچه مناسب مدل و استفاده امن از آن را توضیح می‌دهیم.",
+ "seoTitle": "دفترچه راهنمای کنترلر CNC؛ پیدا کردن منوال درست",
+ "seoDescription": "برای هر کنترلر CNC کدام دفترچه لازم است؟ تفاوت Operator، Programming، Maintenance و Parameter Manual، خواندن شماره سند و دسترسی به اسناد را ببینید.",
+ "focusKeyword": "منوال فانوک",
+ "secondaryKeywords": "دفترچه راهنمای کنترلر CNC، دانلود منوال فانوک، دفترچه زیمنس سینومریک، کاتالوگ هایدنهاین، Operator Manual، Maintenance Manual، Parameter Manual، شماره سند فانوک",
+ "schemaType": "Article",
+ "category": {
+  "slug": "cnc-technical-guides",
+  "nameFa": "راهنماهای فنی CNC",
+  "nameEn": "CNC Technical Guides",
+  "sortOrder": 12
+ },
+ "tags": [
+  [
+   "cnc-manuals",
+   "دفترچه کنترلر CNC",
+   "CNC manuals"
+  ],
+  [
+   "fanuc",
+   "Fanuc",
+   "Fanuc"
+  ],
+  [
+   "siemens",
+   "Siemens",
+   "Siemens"
+  ],
+  [
+   "heidenhain",
+   "هایدنهاین",
+   "HEIDENHAIN"
+  ],
+  [
+   "cnc-controller",
+   "کنترلر CNC",
+   "CNC controller"
+  ]
+ ],
+ "media": [
+  {
+   "file": "دفترچه-راهنمای-کنترلر-cnc-cover-hd.webp",
+   "kind": "cover",
+   "alt": "دفترچه‌های فنی و تبلت روی میز کار کنار دستگاه CNC",
+   "caption": "دفترچه درست، مرجع قطعی برنامه‌نویسی، تنظیمات و عیب‌یابی هر کنترلر است"
+  },
+  {
+   "file": "دفترچه-راهنمای-کنترلر-cnc-body-manual-at-machine-hd.webp",
+   "kind": "body",
+   "alt": "اپراتور در حال مطالعه دفترچه کنار پنل کنترلر CNC",
+   "caption": "دفترچه اپراتوری کنار دستگاه، زمان یافتن روش درست در منوها را کوتاه می‌کند"
+  },
+  {
+   "file": "دفترچه-راهنمای-کنترلر-cnc-body-nameplate-hd.webp",
+   "kind": "body",
+   "alt": "بررسی پلاک مشخصات و پیکربندی کنترلر برای انتخاب دفترچه",
+   "caption": "شناسایی دقیق مدل و نسخه نرم‌افزار، پیش‌نیاز انتخاب دفترچه درست است"
+  }
+ ],
+ "body": {
+  "type": "doc",
+  "content": [
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "هر کسی که با دستگاه CNC کار کرده، دست‌کم یک بار به دنبال «منوال فانوک» یا دفترچه کنترلر دستگاهش گشته است. مشکل این است که هر کنترلر نه یک دفترچه، بلکه مجموعه‌ای از دفترچه‌ها دارد و هر کدام برای کار متفاوتی نوشته شده‌اند. اگر دفترچه سری یا نسخه دیگری را بردارید، ممکن است منوها، پارامترها یا آلارم‌ها با دستگاه شما یکی نباشد و همین موضوع به تنظیم نادرست یا توقف طولانی منجر شود."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در این راهنما انواع رایج دفترچه‌های کنترلر را معرفی می‌کنیم، توضیح می‌دهیم شماره سند و نسخه را چگونه بخوانیم، دفترچه مناسب مدل دستگاه را چگونه پیدا کنیم و چه نکاتی برای استفاده امن از آن‌ها لازم است. مثال‌ها بیشتر از فانوک، زیمنس و هایدنهاین است، اما منطق کلی برای سایر کنترلرها هم صدق می‌کند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "چرا دفترچه درست اهمیت دارد؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "کنترلرهای CNC پیچیده‌اند و رفتارشان به سری، نسخه نرم‌افزار و آپشن‌های فعال بستگی دارد. دفترچه رسمی تنها مرجعی است که این جزئیات را دقیق بیان می‌کند. چند نمونه از موقعیت‌هایی که دفترچه درست تعیین‌کننده است:"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "تفسیر یک آلارم ناشناخته و تصمیم درباره ریست یا تماس با تعمیرکار"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "تنظیم پارامترهای ارتباطی برای انتقال برنامه"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "نوشتن برنامه با سیکل‌ها و کدهای مخصوص همان کنترلر"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "تعویض باتری حافظه بدون از دست رفتن داده‌ها"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "پشتیبان‌گیری و بازیابی پارامترها پس از خرابی"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای مثال، همان‌طور که در "
+     },
+     {
+      "type": "text",
+      "text": "راهنمای آلارم‌های رایج فانوک",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/آلارم-فانوک"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " توضیح دادیم، شماره و متن آلارم‌ها بین سری‌های مختلف یکسان نیست و فقط دفترچه نگهداری همان سری معنای دقیق آن‌ها را می‌گوید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "انواع دفترچه کنترلر CNC"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "نام‌ها بین سازندگان کمی متفاوت است، اما بیشتر کنترلرها دفترچه‌هایی با این نقش‌ها دارند:"
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نوع دفترچه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "مخاطب اصلی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "محتوای رایج"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دفترچه اپراتوری (Operator Manual)"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اپراتور"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کار با پنل، منوها، اجرای برنامه، صفرگیری، آفست‌ها، انتقال برنامه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دفترچه برنامه‌نویسی (Programming Manual)"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "برنامه‌نویس"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کدهای G و M، سیکل‌ها، ماکرو و ساختار برنامه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دفترچه نگهداری (Maintenance Manual)"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تعمیرکار و مسئول نگهداری"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "فهرست آلارم‌ها، عیب‌یابی، تعویض قطعات و باتری، پشتیبان‌گیری"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دفترچه پارامتر (Parameter Manual)"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "مسئول فنی آموزش‌دیده"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "توضیح پارامترها و اثر هر کدام"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دفترچه راه‌اندازی (Connection یا Commissioning Manual)"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "سازنده ماشین و متخصص راه‌اندازی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اتصالات سخت‌افزاری، سیم‌بندی و راه‌اندازی"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "دفترچه سازنده ماشین"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "همه کاربران"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کدهای M اختصاصی، ایمنی، روانکاری و نگهداری مکانیکی"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "یک اشتباه رایج این است که فقط دفترچه کنترلر را مرجع بدانیم. بخش مهمی از رفتار ماشین، مانند کدهای M اختصاصی، تعویض ابزار و تجهیزات جانبی، را سازنده ماشین تعریف می‌کند و در دفترچه خود ماشین آمده است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "دفترچه اپراتوری و برنامه‌نویسی"
+     }
+    ]
+   },
+   {
+    "type": "image",
+    "attrs": {
+     "src": "/uploads/دفترچه-راهنمای-کنترلر-cnc-body-manual-at-machine-hd.webp",
+     "alt": "اپراتور در حال مطالعه دفترچه کنار پنل کنترلر CNC",
+     "title": "دفترچه اپراتوری کنار دستگاه، زمان یافتن روش درست در منوها را کوتاه می‌کند"
+    }
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "این دو دفترچه بیشترین استفاده روزمره را دارند. اپراتور با دفترچه اپراتوری روش اجرای برنامه، صفرگیری، مدیریت آفست‌ها و انتقال برنامه را پیدا می‌کند و برنامه‌نویس با دفترچه برنامه‌نویسی دستورات، سیکل‌ها و محدودیت‌های کنترلر را بررسی می‌کند. در برخی سری‌ها، دفترچه‌های جداگانه‌ای برای فرز و تراش وجود دارد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "دفترچه نگهداری و پارامتر"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "این دفترچه‌ها برای افراد آموزش‌دیده نوشته شده‌اند. دفترچه نگهداری فهرست آلارم‌ها و روش‌های عیب‌یابی را دارد و دفترچه پارامتر اثر هر پارامتر را توضیح می‌دهد. تغییر پارامترها بدون درک کامل، می‌تواند رفتار محورها یا ایمنی ماشین را تغییر دهد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "شماره سند و نسخه را چگونه بخوانیم؟"
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "دفترچه‌های فانوک"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "دفترچه‌های فانوک معمولاً یک شماره سند با پیشوند B دارند؛ مثلاً قالبی شبیه B-6xxxxEN همراه با شماره ویرایش. حروف بعد از عدد معمولاً زبان دفترچه را نشان می‌دهند و عددی که پس از خط تیره یا اسلش می‌آید، شماره ویرایش است. برای یک سری کنترلر ممکن است چند دفترچه با شماره‌های متفاوت برای اپراتوری، برنامه‌نویسی، نگهداری و پارامتر وجود داشته باشد. پیش از استفاده، بررسی کنید شماره سند مربوط به سری کنترلر شما باشد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "دفترچه‌های زیمنس"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "دفترچه‌های سینومریک معمولاً بر اساس خانواده کنترلر و نوع دفترچه نام‌گذاری می‌شوند و تاریخ ویرایش (ماه و سال) روی آن‌ها درج است. دفترچه‌های برنامه‌نویسی، اپراتوری، تشخیص عیب (Diagnostics) و راه‌اندازی جداگانه‌اند. نسخه نرم‌افزار کنترلر اهمیت زیادی دارد؛ زیرا منوها و امکانات بین نسخه‌ها تغییر می‌کنند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "دفترچه‌های هایدنهاین"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در کنترلرهای هایدنهاین، دفترچه‌های کاربر معمولاً بر اساس نوع برنامه‌نویسی (مانند Klartext یا ISO) و برای سیکل‌ها جداگانه منتشر می‌شوند و به شماره نرم‌افزار NC کنترلر وابسته‌اند. تطبیق شماره نرم‌افزار NC دستگاه با دفترچه، کلید انتخاب نسخه درست است."
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "سازنده"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "شناسه اصلی برای تطبیق"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "محل یافتن روی دستگاه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "فانوک"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نام سری کنترلر و شماره سند دفترچه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "قاب پنل، صفحه پیکربندی سیستم"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "زیمنس"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "خانواده کنترلر و نسخه نرم‌افزار"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "صفحه اطلاعات نسخه در کنترلر"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "هایدنهاین"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "مدل TNC و شماره نرم‌افزار NC"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "صفحه اطلاعات نرم‌افزار در کنترلر"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "چگونه دفترچه مناسب مدل دستگاه را پیدا کنیم؟"
+     }
+    ]
+   },
+   {
+    "type": "image",
+    "attrs": {
+     "src": "/uploads/دفترچه-راهنمای-کنترلر-cnc-body-nameplate-hd.webp",
+     "alt": "بررسی پلاک مشخصات و پیکربندی کنترلر برای انتخاب دفترچه",
+     "title": "شناسایی دقیق مدل و نسخه نرم‌افزار، پیش‌نیاز انتخاب دفترچه درست است"
+    }
+   },
+   {
+    "type": "orderedList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "مدل دقیق کنترلر را مشخص کنید.",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " نام سری را از قاب پنل، صفحه پیکربندی یا پلاک کابینت یادداشت کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "نسخه نرم‌افزار را ثبت کنید.",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " در بسیاری از کنترلرها از منوی سیستم قابل مشاهده است."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "نوع کار را مشخص کنید.",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " برنامه‌نویسی، اپراتوری، عیب‌یابی یا پارامتر؛ هر کدام دفترچه جداگانه دارد."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "نسخه فرز یا تراش را جدا کنید.",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " بسیاری از سری‌ها دفترچه‌های مجزا برای این دو دارند."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "دفترچه سازنده ماشین را کنار دفترچه کنترلر نگه دارید.",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " کدهای اختصاصی و نگهداری مکانیکی در آن است."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "منبع معتبر انتخاب کنید.",
+          "marks": [
+           {
+            "type": "bold"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " دفترچه را از سازنده، نمایندگی یا مرجع مطمئن تهیه کنید."
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "اگر در تشخیص سری کنترلر تردید دارید، "
+     },
+     {
+      "type": "text",
+      "text": "راهنمای کنترلر فانوک",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/کنترلر-فانوک"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " و "
+     },
+     {
+      "type": "text",
+      "text": "راهنمای کنترلر زیمنس سینومریک",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/کنترلر-زیمنس-سینومریک"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " روش‌های شناسایی را توضیح داده‌اند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "نکات استفاده امن از دفترچه‌ها"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "دفترچه سری یا نسخه دیگر را حتی اگر «تقریباً مشابه» به نظر می‌رسد، برای تنظیم پارامترها استفاده نکنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "پیش از هر تغییر پارامتر بر اساس دفترچه، از پارامترها و برنامه‌ها نسخه پشتیبان بگیرید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "دستورالعمل‌های ایمنی دفترچه سازنده ماشین را بر هر منبع عمومی مقدم بدانید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "نسخه چاپی بخش‌های پرکاربرد مثل منوهای انتقال برنامه و آفست‌ها را کنار دستگاه نگه دارید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "دفترچه‌های دیجیتال را در یک پوشه منظم با نام سری و نسخه نگه‌داری کنید تا دفعه بعد سریع پیدا شوند."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "از فایل‌های با منبع نامعلوم که ممکن است ناقص یا اصلاح‌شده باشند پرهیز کنید."
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "دفترچه‌ها و انتقال برنامه"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "یکی از پرکاربردترین بخش‌های دفترچه اپراتوری، فصل ورودی و خروجی داده یا انتقال برنامه است. تنظیمات ارتباط سریال، کانال‌های ورودی و خروجی، استفاده از کارت حافظه یا USB و حالت اجرای برنامه از ورودی ارتباطی در این فصل‌ها توضیح داده می‌شوند. هنگام راه‌اندازی یک سیستم DNC یا رفع آلارم‌های ارتباطی، این فصل اولین مرجع است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "کتابخانه اسناد الکسیو"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای اینکه پیدا کردن دفترچه درست ساده‌تر شود، الکسیو کتابخانه‌ای از دفترچه‌های کنترلرهای رایج مانند فانوک، زیمنس، هایدنهاین، میتسوبیشی، هاس و چند برند دیگر را بر اساس سری و مدل دسته‌بندی کرده است. در این کتابخانه، دفترچه‌ها برای هر سری کنترلر کنار هم قرار گرفته‌اند و منبع اصلی هر سند هم مشخص است."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای شروع، به "
+     },
+     {
+      "type": "text",
+      "text": "کتابخانه اسناد CNC",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/documents"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " بروید و برند کنترلر خود را انتخاب کنید. اگر کنترلر فانوک دارید، مستقیم به "
+     },
+     {
+      "type": "text",
+      "text": "صفحه اسناد فانوک",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/documents/fanuc"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " مراجعه کنید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "وقتی دستگاه کارکرده بدون دفترچه به کارگاه می‌رسد"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "بسیاری از دستگاه‌های کارکرده بدون دفترچه‌های اصلی خریداری می‌شوند. در این حالت پیش از هر تنظیم یا تعمیر، این کارها را انجام دهید:"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "مدل دستگاه، سازنده ماشین، سری کنترلر و نسخه نرم‌افزار را از روی دستگاه ثبت کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "از فروشنده قبلی بپرسید آیا نسخه پشتیبان پارامترها، برنامه PLC و دفترچه‌ها را دارد."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "دفترچه‌های کنترلر را بر اساس سری از منبع معتبر یا کتابخانه اسناد تهیه کنید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "برای کدهای M اختصاصی و نگهداری مکانیکی، با سازنده ماشین یا نمایندگی آن تماس بگیرید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "یک پوشه کامل برای همان دستگاه بسازید تا دفعه بعد همه اسناد یک‌جا در دسترس باشند."
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "این چند قدم ساده، زمان عیب‌یابی در اولین خرابی را به‌شدت کوتاه می‌کند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "اشتباهات رایج در استفاده از دفترچه کنترلر"
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اشتباه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پیامد"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "راه درست"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "استفاده از دفترچه سری دیگر"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "منوها و پارامترهای نامنطبق"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تطبیق دقیق سری و نسخه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اتکا به فهرست آلارم عمومی اینترنتی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تفسیر نادرست آلارم"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "استفاده از دفترچه نگهداری همان سری"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نادیده گرفتن دفترچه سازنده ماشین"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اشتباه در کدهای M و ایمنی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "استفاده هم‌زمان از دفترچه کنترلر و ماشین"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تغییر پارامتر بدون نسخه پشتیبان"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "از کار افتادن دستگاه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پشتیبان‌گیری پیش از هر تغییر"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "سؤالات متداول درباره دفترچه کنترلر CNC"
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "منوال فانوک را از کجا دانلود کنم؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "دفترچه‌های رسمی از طریق فانوک، نمایندگی یا سازنده ماشین قابل تهیه‌اند. بسیاری از دفترچه‌های سری‌های رایج فانوک در کتابخانه اسناد الکسیو بر اساس سری دسته‌بندی شده‌اند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "تفاوت Operator Manual و Maintenance Manual چیست؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "دفترچه اپراتوری برای کار روزمره با پنل، اجرای برنامه و آفست‌هاست؛ دفترچه نگهداری برای عیب‌یابی، فهرست آلارم‌ها و تعویض قطعات و مخاطب آن تعمیرکار است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "شماره سند دفترچه فانوک چه معنایی دارد؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "شماره سند فانوک معمولاً با B شروع می‌شود و حروف و اعداد پس از آن، دفترچه، زبان و شماره ویرایش را مشخص می‌کنند. باید مطمئن شوید شماره سند به سری کنترلر شما مربوط است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "آیا دفترچه یک سری فانوک برای سری دیگر قابل استفاده است؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای مفاهیم کلی ممکن است مفید باشد، اما برای پارامترها، آلارم‌ها و منوها باید از دفترچه همان سری استفاده کنید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "چرا دفترچه با منوهای دستگاهم یکی نیست؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "احتمالاً نسخه نرم‌افزار کنترلر با نسخه دفترچه متفاوت است یا سازنده ماشین منوها را سفارشی کرده است. نسخه نرم‌افزار را بررسی و دفترچه منطبق را پیدا کنید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "دفترچه کدهای M دستگاهم کجاست؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "کدهای M اختصاصی معمولاً در دفترچه سازنده ماشین آمده‌اند، نه در دفترچه عمومی کنترلر."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "جمع‌بندی"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "دفترچه درست مهم‌ترین ابزار برای کار امن و دقیق با هر کنترلر CNC است. پیش از جست‌وجو، سری دقیق کنترلر، نسخه نرم‌افزار و نوع کار خود را مشخص کنید؛ سپس دفترچه اپراتوری، برنامه‌نویسی، نگهداری یا پارامتر مناسب را از منبع معتبر بردارید و آن را کنار دفترچه سازنده ماشین استفاده کنید."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای دسترسی سریع به دفترچه‌های کنترلرهای رایج بر اساس سری و مدل، "
+     },
+     {
+      "type": "text",
+      "text": "کتابخانه اسناد CNC الکسیو",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/documents"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را ببینید."
+     }
+    ]
+   }
+  ]
+ }
+}

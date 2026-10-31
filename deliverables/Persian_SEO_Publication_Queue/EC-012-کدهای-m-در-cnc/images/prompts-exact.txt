@@ -1,0 +1,10 @@
+Mode: imagegen — create new raster image
+
+1. cover
+Create one premium photorealistic editorial cover image for a Persian technical article about CNC M-codes, wide 3:2, 1536x1024. Close view of a generic CNC machining center operator panel with physical buttons, feed and spindle override knobs and a dimmed screen with no readable content, with the machine's spindle, tool holder and a coolant nozzle softly visible through the open window in the background. Clean industrial lighting, crisp detail, documentary style, technically plausible. No readable text, letters, numbers, labels, logos, brands, trademarks, watermark, title or border. One image only.
+
+2. body-coolant-spindle
+Create one realistic editorial photograph inside a CNC milling machine enclosure, wide 3:2, 1536x1024. A rotating end mill in the spindle cutting an aluminum block while a controlled stream of milky coolant is directed at the cutting zone from a flexible nozzle. Motion blur on the tool only, sharp chips, realistic lighting and reflections, photographed through the machine window with safety in mind. No readable text, numbers, labels, logos, brands, watermark, title or border. One image only.
+
+3. body-tool-change
+Create one realistic editorial photograph of an automatic tool change in a vertical CNC machining center, wide 3:2, 1536x1024. The tool changer arm or carousel is presenting a tool holder to the spindle, with several generic tool holders loaded in the magazine. Clean metallic surfaces, realistic mechanics, soft industrial lighting, photographed through the machine window. No readable text, numbers, labels, logos, brands, watermark, title or border. One image only.

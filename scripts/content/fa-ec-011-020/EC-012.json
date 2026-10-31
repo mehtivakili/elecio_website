@@ -1,0 +1,2518 @@
+{
+ "code": "EC-012",
+ "slug": "کدهای-m-در-cnc",
+ "title": "کدهای M در CNC؛ فهرست کاربردی با مثال",
+ "excerpt": "کدهای M فرمان‌های کمکی برنامه CNC هستند که اسپیندل، خنک‌کاری، تعویض ابزار و پایان برنامه را کنترل می‌کنند. در این راهنما فهرست کدهای پرکاربرد، تفاوت آن‌ها در فرز و تراش و خطاهای رایج را با مثال بررسی می‌کنیم.",
+ "seoTitle": "کدهای M در CNC؛ فهرست کاربردی با مثال",
+ "seoDescription": "کدهای M فرمان‌های کمکی دستگاه CNC هستند. فهرست کدهای پرکاربرد مانند M03، M05، M06 و M30، تفاوت فرز و تراش و خطاهای رایج را با مثال ببینید.",
+ "focusKeyword": "کدهای m",
+ "secondaryKeywords": "کد M چیست، M code، کد M03، کد M30، کدهای کمکی CNC، کدهای M فرز، کدهای M تراش، تفاوت کد G و M",
+ "schemaType": "TechArticle",
+ "category": {
+  "slug": "cnc-programming",
+  "nameFa": "برنامه‌نویسی CNC",
+  "nameEn": "CNC Programming",
+  "sortOrder": 15
+ },
+ "tags": [
+  [
+   "m-codes",
+   "کدهای M",
+   "M codes"
+  ],
+  [
+   "g-code",
+   "جی کد",
+   "G-code"
+  ],
+  [
+   "cnc-programming",
+   "برنامه‌نویسی CNC",
+   "CNC programming"
+  ],
+  [
+   "cnc-program",
+   "برنامه CNC",
+   "CNC program"
+  ],
+  [
+   "g-codes",
+   "کدهای G",
+   "G codes"
+  ]
+ ],
+ "media": [
+  {
+   "file": "کدهای-m-در-cnc-cover-hd.webp",
+   "kind": "cover",
+   "alt": "پنل اپراتور دستگاه CNC در کنار اسپیندل آماده‌به‌کار",
+   "caption": "کدهای M کارهای کمکی ماشین مثل روشن‌کردن اسپیندل، خنک‌کاری و تعویض ابزار را فرمان می‌دهند"
+  },
+  {
+   "file": "کدهای-m-در-cnc-body-coolant-spindle-hd.webp",
+   "kind": "body",
+   "alt": "اسپیندل فرز CNC با جریان خنک‌کاری روشن هنگام برش",
+   "caption": "کدهای M03 و M08 به ترتیب چرخش اسپیندل و جریان خنک‌کاری را فعال می‌کنند"
+  },
+  {
+   "file": "کدهای-m-در-cnc-body-tool-change-hd.webp",
+   "kind": "body",
+   "alt": "تعویض خودکار ابزار در مرکز ماشین‌کاری CNC",
+   "caption": "کد M06 در بسیاری از فرزها تعویض ابزار را انجام می‌دهد و جزئیات آن به سازنده دستگاه بستگی دارد"
+  }
+ ],
+ "body": {
+  "type": "doc",
+  "content": [
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "کدهای M در برنامه CNC همان فرمان‌هایی هستند که کارهای کمکی ماشین را انجام می‌دهند؛ کارهایی مثل روشن و خاموش‌کردن اسپیندل، باز و بسته‌کردن خنک‌کاری، تعویض ابزار، توقف برنامه و پایان دادن به آن. اگر کدهای G مسیر حرکت ابزار را تعیین می‌کنند، کدهای M مشخص می‌کنند ماشین در هر لحظه چه کار جانبی‌ای انجام دهد."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در این راهنما فهرست کدهای M پرکاربرد را با توضیح و مثال مرور می‌کنیم، تفاوت آن‌ها را در فرز و تراش توضیح می‌دهیم و خطاهایی را که در کارگاه بیشترین هزینه را ایجاد می‌کنند بررسی می‌کنیم. یک نکته مهم را از همین ابتدا در نظر داشته باشید: معنای بسیاری از کدهای M به سازنده دستگاه بستگی دارد و مرجع نهایی همیشه دفترچه همان ماشین است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "کد M چیست؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "حرف M در برنامه CNC معمولاً به Miscellaneous Function یا «فرمان کمکی» اشاره دارد. کنترلر وقتی به یک کد M می‌رسد، در بیشتر موارد آن را به منطق کنترل ماشین (PLC یا Ladder سازنده) می‌سپارد تا عملی مانند چرخش اسپیندل یا باز شدن شیر خنک‌کاری انجام شود."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "به همین دلیل است که بخشی از کدهای M تقریباً در همه ماشین‌ها یکسان‌اند و بخش دیگر کاملاً اختصاصی هستند. سازنده یک فرز ممکن است برای باز کردن درب اتوماتیک، فعال کردن نوار نقاله براده یا قفل کردن محور دوار، کد M خاص خودش را تعریف کرده باشد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "تفاوت کد G و کد M"
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ویژگی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کد G"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کد M"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نقش اصلی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تعیین نوع حرکت و حالت‌های برنامه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "فرمان‌های کمکی و عملکردهای ماشین"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نمونه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "G00 حرکت سریع، G01 حرکت خطی با پیشروی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "M03 چرخش اسپیندل، M08 خنک‌کاری"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "یکسانی بین ماشین‌ها"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "بخش زیادی استاندارد است، اما تفاوت کنترلرها وجود دارد"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کدهای پایه مشترک‌اند، کدهای سطح بالاتر اختصاصی سازنده‌اند"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اجراکننده"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "هسته کنترل عددی و سیستم حرکت"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "معمولاً منطق ماشین (PLC)"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "اگر با کدهای حرکتی آشنا نیستید، ابتدا "
+     },
+     {
+      "type": "text",
+      "text": "راهنمای کامل جی کد",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/جی-کد-چیست"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را بخوانید؛ این مقاله مکمل آن است و روی کدهای M تمرکز دارد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "جدول کدهای M پرکاربرد"
+     }
+    ]
+   },
+   {
+    "type": "image",
+    "attrs": {
+     "src": "/uploads/کدهای-m-در-cnc-body-coolant-spindle-hd.webp",
+     "alt": "اسپیندل فرز CNC با جریان خنک‌کاری روشن هنگام برش",
+     "title": "کدهای M03 و M08 به ترتیب چرخش اسپیندل و جریان خنک‌کاری را فعال می‌کنند"
+    }
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "جدول زیر کدهایی را نشان می‌دهد که در بسیاری از کنترلرهای رایج مانند فانوک و کنترلرهای سازگار با آن معنای مشابه دارند. با این حال، پیش از استفاده در برنامه واقعی، آن‌ها را با دفترچه ماشین خود تطبیق دهید."
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کد"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کاربرد رایج"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "توضیح"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "M00"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "توقف برنامه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اجرای برنامه متوقف می‌شود تا اپراتور با فشار Cycle Start ادامه دهد"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "M01"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "توقف اختیاری"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "فقط وقتی کلید Optional Stop روی پنل فعال باشد توقف می‌کند"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "M02"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پایان برنامه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پایان برنامه؛ رفتار بازگشت به ابتدا در کنترلرها متفاوت است"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "M03"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "چرخش اسپیندل در جهت ساعتگرد"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "همراه با کد S برای تعیین دور استفاده می‌شود"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "M04"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "چرخش اسپیندل در جهت پادساعتگرد"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "برای ابزارهای چپ‌گرد یا برخی عملیات تراشکاری"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "M05"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "توقف اسپیندل"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پیش از تعویض ابزار یا پایان کار"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "M06"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تعویض ابزار"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "در بسیاری از فرزها همراه با کد T؛ در تراش معمولاً لازم نیست"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "M08"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "روشن‌کردن خنک‌کاری"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "جریان اصلی مایع خنک‌کاری فعال می‌شود"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "M09"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "خاموش‌کردن خنک‌کاری"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پیش از تعویض ابزار یا پایان برنامه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "M30"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پایان برنامه و بازگشت به ابتدا"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "رایج‌ترین روش پایان برنامه در کارگاه"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "M98"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "فراخوانی زیربرنامه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "با آدرس P شماره زیربرنامه مشخص می‌شود"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "M99"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پایان زیربرنامه و بازگشت"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "در پایان زیربرنامه یا برای تکرار برنامه اصلی"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "کدهای اسپیندل: M03، M04 و M05"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "کد M03 اسپیندل را در جهت ساعتگرد می‌چرخاند. دور اسپیندل با کد S تعیین می‌شود؛ مثلاً "
+     },
+     {
+      "type": "text",
+      "text": "S2000 M03",
+      "marks": [
+       {
+        "type": "code"
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " یعنی اسپیندل با دور ۲۰۰۰ دور بر دقیقه در جهت ساعتگرد بچرخد. جهت ساعتگرد از دید کدام سمت تعریف می‌شود به استاندارد ماشین وابسته است و برای ابزارهای معمولی راست‌بُر، M03 جهت درست برش است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "کدهای خنک‌کاری: M08 و M09"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "M08 جریان اصلی خنک‌کاری را باز و M09 آن را می‌بندد. بعضی ماشین‌ها کدهای دیگری هم برای مه‌پاشی، خنک‌کاری از داخل ابزار یا دمش هوا دارند که کاملاً اختصاصی سازنده‌اند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "کدهای پایان برنامه: M02 و M30"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در گذشته M02 فقط پایان برنامه را اعلام می‌کرد و M30 علاوه بر پایان، نوار برنامه را به ابتدا برمی‌گرداند. در کنترلرهای امروزی رفتار این دو بسته به پارامترهای کنترلر ممکن است شبیه یا متفاوت باشد. در کارگاه‌ها M30 رایج‌تر است، چون برنامه را برای قطعه بعدی آماده می‌کند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "کدهای M در فرز و تراش چه تفاوتی دارند؟"
+     }
+    ]
+   },
+   {
+    "type": "image",
+    "attrs": {
+     "src": "/uploads/کدهای-m-در-cnc-body-tool-change-hd.webp",
+     "alt": "تعویض خودکار ابزار در مرکز ماشین‌کاری CNC",
+     "title": "کد M06 در بسیاری از فرزها تعویض ابزار را انجام می‌دهد و جزئیات آن به سازنده دستگاه بستگی دارد"
+    }
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "کدهای پایه در فرز و تراش مشابه‌اند، اما ساختار ماشین باعث تفاوت‌هایی می‌شود:"
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "موضوع"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "فرز CNC"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تراش CNC"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "تعویض ابزار"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "معمولاً با T و M06"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "معمولاً فقط با کد T مثل T0101 و بدون M06"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "چرخش"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اسپیندل ابزار را می‌چرخاند"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اسپیندل قطعه کار را می‌چرخاند"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کدهای اختصاصی رایج"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "قفل یا آزادسازی محور دوار، درب اتوماتیک"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "باز و بسته‌کردن سه‌نظام، مرغک، نوار نقاله"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ابزار گردان"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "در فرزها همان اسپیندل اصلی است"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "در تراش‌های دارای ابزار گردان، کدهای جداگانه برای ابزار گردان تعریف می‌شود"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای آشنایی بیشتر با ساختار و عملیات تراش، "
+     },
+     {
+      "type": "text",
+      "text": "مقاله تراش CNC چیست",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/blog/تراش-cnc-چیست"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " را ببینید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "کدهای M اختصاصی سازنده"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "هر سازنده ماشین ممکن است کدهای M خود را برای تجهیزات جانبی تعریف کند. چند نمونه رایج از کارکردهایی که معمولاً کد اختصاصی دارند:"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "جهت‌یابی اسپیندل برای تعویض ابزار یا عملیات خاص"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "قفل و آزادسازی محور دوار یا میز تقسیم"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "روشن و خاموش‌کردن نوار نقاله براده"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "باز و بسته‌کردن درب اتوماتیک یا گیره هیدرولیک"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "فعال‌کردن پراب اندازه‌گیری"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "خنک‌کاری از داخل ابزار یا دمش هوا"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "شماره این کدها در ماشین‌های مختلف متفاوت است. اگر برنامه‌ای را از یک ماشین به ماشین دیگر منتقل می‌کنید، همه کدهای M غیرپایه را دوباره بررسی کنید. دفترچه‌های برنامه‌نویسی و اپراتوری بسیاری از کنترلرها در "
+     },
+     {
+      "type": "text",
+      "text": "کتابخانه اسناد CNC الکسیو",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/documents"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " در دسترس است."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "نمونه برنامه ساده با کدهای M"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برنامه زیر یک نمونه آموزشی ساده برای فرز با کنترلر سازگار با فانوک است. مختصات و مقادیر فرضی‌اند و فقط ترتیب منطقی کدهای M را نشان می‌دهند:"
+     }
+    ]
+   },
+   {
+    "type": "orderedList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "O1001",
+          "marks": [
+           {
+            "type": "code"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " شماره برنامه"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "G21 G17 G40 G49 G80 G90",
+          "marks": [
+           {
+            "type": "code"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " تعیین حالت‌های ایمن اولیه"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "T01 M06",
+          "marks": [
+           {
+            "type": "code"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " انتخاب و تعویض ابزار شماره ۱"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "G54 G00 X0 Y0",
+          "marks": [
+           {
+            "type": "code"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " انتخاب صفر قطعه و حرکت سریع"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "S2500 M03",
+          "marks": [
+           {
+            "type": "code"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " چرخش اسپیندل با دور ۲۵۰۰"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "G43 H01 Z50.0 M08",
+          "marks": [
+           {
+            "type": "code"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " اعمال آفست طول ابزار و روشن‌کردن خنک‌کاری"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "G01 Z-2.0 F150",
+          "marks": [
+           {
+            "type": "code"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " ورود ابزار به قطعه با پیشروی"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "G01 X40.0 F300",
+          "marks": [
+           {
+            "type": "code"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " حرکت خطی برش"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "G00 Z50.0 M09",
+          "marks": [
+           {
+            "type": "code"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " خروج سریع و خاموش‌کردن خنک‌کاری"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "M05",
+          "marks": [
+           {
+            "type": "code"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " توقف اسپیندل"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "G28 G91 Z0",
+          "marks": [
+           {
+            "type": "code"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " بازگشت محور Z به مبدأ ماشین"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "M30",
+          "marks": [
+           {
+            "type": "code"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "text": " پایان برنامه و بازگشت به ابتدا"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "به ترتیب منطقی دقت کنید: اسپیندل پیش از ورود ابزار به قطعه روشن می‌شود، خنک‌کاری پیش از برش باز می‌شود و پیش از تعویض ابزار یا پایان برنامه، خنک‌کاری و اسپیندل خاموش می‌شوند. در ماشین واقعی، دستورهای بازگشت و تعویض ابزار باید مطابق دفترچه همان ماشین نوشته شوند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "چند کد M در یک خط؛ مجاز است یا نه؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در بسیاری از کنترلرهای قدیمی‌تر فقط یک کد M در هر بلوک مجاز است و قرار دادن دو کد M در یک خط ممکن است آلارم بدهد یا یکی از آن‌ها نادیده گرفته شود. برخی کنترلرهای جدیدتر با تنظیم پارامتر اجازه چند کد M در یک بلوک را می‌دهند. قاعده امن این است که تا وقتی از رفتار کنترلر خود مطمئن نیستید، هر کد M را در بلوک جداگانه بنویسید یا آن را با یک حرکت ترکیب کنید."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "خطاهای رایج در استفاده از کدهای M"
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "content": [
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "خطا"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پیامد احتمالی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableHeader",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پیشگیری"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "ورود ابزار به قطعه پیش از M03"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "شکستن ابزار یا آسیب به قطعه"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اسپیندل را پیش از حرکت برشی روشن کنید"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "فراموش‌کردن M09 پیش از تعویض ابزار"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پاشیدن مایع خنک‌کاری و کثیفی ماشین"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "خنک‌کاری را پیش از تعویض ابزار ببندید"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "استفاده از کد اختصاصی ماشین دیگر"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اجرای فرمان ناخواسته یا آلارم"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "کدهای غیرپایه را با دفترچه ماشین مقصد تطبیق دهید"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "اشتباه بین M01 و M00"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "توقف نکردن برنامه در نقطه بازرسی"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "برای بازرسی حتمی از M00 استفاده کنید"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "M04 به‌جای M03"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "برش با جهت نادرست و آسیب ابزار"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "جهت اسپیندل را با نوع ابزار تطبیق دهید"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "tableRow",
+      "content": [
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "نبود M30 در پایان"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "برنامه برای قطعه بعدی آماده نمی‌شود"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "tableCell",
+        "content": [
+         {
+          "type": "paragraph",
+          "content": [
+           {
+            "type": "text",
+            "text": "پایان برنامه را استاندارد کنید"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "نکات حرفه‌ای برای برنامه‌نویسان و اپراتورها"
+     }
+    ]
+   },
+   {
+    "type": "bulletList",
+    "content": [
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "در بالای هر برنامه، یک بلوک ایمن شامل کدهای G لغوکننده و حالت‌های پایه قرار دهید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "برای نقاط بازرسی در تولید سری از M01 استفاده کنید تا اپراتور در صورت نیاز توقف را فعال کند."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "فهرست کدهای M اختصاصی هر ماشین را چاپ کنید و کنار دستگاه نگه دارید."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "اگر برنامه را با نرم‌افزار CAM تولید می‌کنید، پست‌پروسسور باید کدهای M همان ماشین را بشناسد."
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "listItem",
+      "content": [
+       {
+        "type": "paragraph",
+        "content": [
+         {
+          "type": "text",
+          "text": "برنامه اصلاح‌شده روی دستگاه را به مرجع مرکزی برگردانید تا نسخه درست گم نشود."
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "برای برنامه‌نویسانی که با چند ماشین و کنترلر سروکار دارند، "
+     },
+     {
+      "type": "text",
+      "text": "صفحه برنامه‌نویسان CNC",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/for/programmers"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " نشان می‌دهد چگونه می‌توان انتقال و مدیریت برنامه‌ها را منظم کرد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "سؤالات متداول درباره کدهای M"
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "کد M چیست به زبان ساده؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "کد M فرمانی در برنامه CNC است که کار کمکی ماشین مانند روشن‌کردن اسپیندل، باز کردن خنک‌کاری یا تعویض ابزار را انجام می‌دهد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "تفاوت M02 و M30 چیست؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "هر دو پایان برنامه را اعلام می‌کنند. M30 در بیشتر کنترلرها برنامه را به ابتدا برمی‌گرداند تا برای قطعه بعدی آماده باشد؛ رفتار M02 به تنظیمات کنترلر بستگی دارد."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "چرا M06 در تراش استفاده نمی‌شود؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در بیشتر تراش‌های CNC، تعویض ابزار با چرخش برجک و فقط با کد T انجام می‌شود؛ مثلاً T0101 ابزار شماره ۱ را با آفست شماره ۱ انتخاب می‌کند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "آیا کدهای M در همه دستگاه‌ها یکسان است؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "کدهای پایه مانند M03، M05، M08 و M30 در بیشتر ماشین‌ها مشابه‌اند، اما بسیاری از کدها اختصاصی سازنده‌اند و باید با دفترچه ماشین تطبیق داده شوند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "M98 و M99 برای چیست؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "M98 یک زیربرنامه را فراخوانی می‌کند و M99 در پایان زیربرنامه اجرا را به برنامه اصلی برمی‌گرداند. این دو برای تکرار عملیات مشابه بسیار کاربردی‌اند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 3
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "فهرست کامل کدهای M دستگاهم را از کجا پیدا کنم؟"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "در دفترچه اپراتوری یا برنامه‌نویسی سازنده ماشین و کنترلر. بسیاری از این دفترچه‌ها در کتابخانه اسناد الکسیو قابل دسترسی‌اند."
+     }
+    ]
+   },
+   {
+    "type": "heading",
+    "attrs": {
+     "level": 2
+    },
+    "content": [
+     {
+      "type": "text",
+      "text": "جمع‌بندی"
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "کدهای M بخش کوچکی از برنامه CNC را تشکیل می‌دهند، اما اشتباه در آن‌ها می‌تواند گران تمام شود. کدهای پایه مانند M03، M05، M06، M08، M09 و M30 را باید با دقت و به ترتیب منطقی به کار برد و کدهای اختصاصی را همیشه با دفترچه همان ماشین تطبیق داد."
+     }
+    ]
+   },
+   {
+    "type": "paragraph",
+    "content": [
+     {
+      "type": "text",
+      "text": "اگر برنامه‌ها بین چند ماشین جابه‌جا می‌شوند، یک فهرست مستند از کدهای هر ماشین و یک مرجع مرکزی برای برنامه‌های تأییدشده، بیشتر خطاهای رایج را حذف می‌کند. برای ادامه یادگیری، دفترچه‌های برنامه‌نویسی کنترلر خود را از "
+     },
+     {
+      "type": "text",
+      "text": "کتابخانه اسناد",
+      "marks": [
+       {
+        "type": "link",
+        "attrs": {
+         "href": "/fa/documents"
+        }
+       }
+      ]
+     },
+     {
+      "type": "text",
+      "text": " دریافت کنید."
+     }
+    ]
+   }
+  ]
+ }
+}

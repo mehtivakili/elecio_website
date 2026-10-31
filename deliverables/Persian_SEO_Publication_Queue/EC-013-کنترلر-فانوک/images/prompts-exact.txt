@@ -1,0 +1,10 @@
+Mode: imagegen — create new raster image
+
+1. cover
+Create one premium photorealistic editorial cover image for a Persian technical article about industrial CNC controllers, wide 3:2, 1536x1024. Three-quarter view of a generic industrial CNC control panel with a physical keypad, override knobs and a monitor showing an abstract dim interface with no readable characters, mounted on the side of a vertical milling machine in a clean workshop. Neutral professional lighting, shallow depth of field, technically plausible. Avoid any brand trade dress or signature brand colors. No readable text, letters, numbers, labels, logos, brands, trademarks, watermark, title or border. One image only.
+
+2. body-memory-card
+Create one realistic close-up editorial photograph of the side of a generic CNC control panel showing a memory card slot with a card partially inserted, and next to it a protective cover over a communication port, wide 3:2, 1536x1024. A gloved operator hand is gently inserting the card. Clean surfaces, realistic plastic and metal textures, soft industrial lighting. No readable text, numbers, labels, logos, brands, watermark, title or border. One image only.
+
+3. body-legacy-cabinet
+Create one realistic editorial photograph of an older but well-maintained CNC machine control cabinet opened for inspection, wide 3:2, 1536x1024, showing neat wiring, control boards and a shielded serial cable connected to a classic 25-pin connector. A technician's gloved hand points at the connector, face not visible. Soft workshop lighting, authentic industrial atmosphere. No readable text, numbers, labels, logos, brands, watermark, title or border. One image only.
