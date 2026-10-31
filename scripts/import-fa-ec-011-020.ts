@@ -178,6 +178,7 @@ async function main() {
       ? new Date(lastExisting.getTime() + cadenceDays * 86_400_000)
       : configuredStart && configuredStart > new Date(Date.now() + 5 * 60_000) ? configuredStart : tomorrowAtNine();
 
+    const firstSlot = nextSlot;
     for (const article of imported) {
       await trx('posts').where({ id: article.id }).update({
         status: 'published', publication_queue_active: true, queued_at: trx.fn.now(),
@@ -187,9 +188,9 @@ async function main() {
       nextSlot = new Date(nextSlot.getTime() + cadenceDays * 86_400_000);
     }
     if (!existing.length && imported.length) {
+      // Pass the Date itself: MySQL DATETIME rejects the ISO string with "T" and "Z".
       await trx('publication_queue_settings').where({ id: 1 }).update({
-        first_publish_at: (imported[0] as typeof imported[0] & { scheduledFor: string }).scheduledFor,
-        updated_at: trx.fn.now(),
+        first_publish_at: firstSlot, updated_at: trx.fn.now(),
       });
     }
     return { cadenceDays, imported };
